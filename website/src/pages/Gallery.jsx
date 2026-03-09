@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import useSEO from '../hooks/useSEO'
 import { HOTEL_IMAGES } from '../constants/hotel'
 import ImageLightbox from '../components/shared/ImageLightbox'
-import { useGalleryImages, useGalleryCategories } from '../hooks/useSupabase'
+import { useGalleryImages, useGalleryCategories, usePageContent } from '../hooks/useSupabase'
 
 export default function Gallery() {
   const [activeFilter, setActiveFilter] = useState('all')
@@ -12,6 +12,11 @@ export default function Gallery() {
 
   const { data: categories } = useGalleryCategories()
   const { data: allImages, isLoading, isError } = useGalleryImages()
+  const { data: content } = usePageContent('gallery')
+
+  const heroImage = content?.hero_image_url || HOTEL_IMAGES.littleIonian
+  const heroTitle = content?.hero_title || 'Gallery'
+  const heroSubtitle = content?.hero_subtitle || ''
 
   useSEO({
     title: 'Gallery',
@@ -38,17 +43,12 @@ export default function Gallery() {
       {/* Page Hero */}
       <section
         className="relative h-[40vh] min-h-[320px] flex items-center justify-center"
-        style={{
-          backgroundImage: `url(${HOTEL_IMAGES.littleIonian})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
+        style={{ backgroundImage: `url(${heroImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         <div className="absolute inset-0 bg-navy/60" />
         <div className="relative z-10 text-center text-white px-4">
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl">
-            Gallery
-          </h1>
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl">{heroTitle}</h1>
+          {heroSubtitle && <p className="text-white/80 text-lg mt-4 max-w-2xl mx-auto">{heroSubtitle}</p>}
         </div>
       </section>
 

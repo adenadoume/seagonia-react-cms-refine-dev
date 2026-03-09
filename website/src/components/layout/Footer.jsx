@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Phone, Mail, MapPin, Instagram, Facebook } from 'lucide-react'
 import { HOTEL } from '../../constants/hotel'
 import { subscribeNewsletter } from '../../services/api'
+import { useHotelSettings } from '../../hooks/useSupabase'
 
 const QUICK_LINKS = [
   { label: 'The Area', to: '/area' },
@@ -17,7 +18,16 @@ const QUICK_LINKS = [
 
 export default function Footer() {
   const [email, setEmail] = useState('')
-  const [subscribeStatus, setSubscribeStatus] = useState('idle') // idle | loading | success | error
+  const [subscribeStatus, setSubscribeStatus] = useState('idle')
+  const { data: settings } = useHotelSettings()
+
+  const phone = settings?.phone || HOTEL.contact.phone
+  const emailAddr = settings?.email || HOTEL.contact.email
+  const address = settings?.address || HOTEL.contact.address
+  const tagline = settings?.tagline || HOTEL.tagline
+  const description = settings?.description || 'A boutique hotel nestled in the serene village of Pogonia, overlooking the crystal-clear waters of Paleros. A timeless retreat where the Ionian Sea meets Greek hospitality.'
+  const instagram = settings?.instagram_url || HOTEL.social?.instagram
+  const facebook = settings?.facebook_url || HOTEL.social?.facebook
 
   const handleSubscribe = async (e) => {
     e.preventDefault()
@@ -47,11 +57,10 @@ export default function Footer() {
               SEAGONIA
             </Link>
             <p className="font-serif text-gold-light italic text-base">
-              {HOTEL.tagline}
+              {tagline}
             </p>
             <p className="font-sans text-white/60 text-sm leading-relaxed">
-              A boutique hotel nestled in the serene village of Pogonia, overlooking the crystal-clear
-              waters of Paleros. A timeless retreat where the Ionian Sea meets Greek hospitality.
+              {description}
             </p>
 
             {/* Newsletter */}
@@ -112,35 +121,35 @@ export default function Footer() {
             <ul className="flex flex-col gap-4">
               <li>
                 <a
-                  href={`tel:${HOTEL.contact.phone}`}
+                  href={`tel:${phone}`}
                   className="flex items-start gap-3 text-sm font-sans text-white/60 hover:text-white transition-colors"
                 >
                   <Phone size={15} className="mt-0.5 shrink-0 text-gold" />
-                  <span>{HOTEL.contact.phone}</span>
+                  <span>{phone}</span>
                 </a>
               </li>
               <li>
                 <a
-                  href={`mailto:${HOTEL.contact.email}`}
+                  href={`mailto:${emailAddr}`}
                   className="flex items-start gap-3 text-sm font-sans text-white/60 hover:text-white transition-colors"
                 >
                   <Mail size={15} className="mt-0.5 shrink-0 text-gold" />
-                  <span>{HOTEL.contact.email}</span>
+                  <span>{emailAddr}</span>
                 </a>
               </li>
               <li>
                 <div className="flex items-start gap-3 text-sm font-sans text-white/60">
                   <MapPin size={15} className="mt-0.5 shrink-0 text-gold" />
-                  <span>{HOTEL.contact.address}</span>
+                  <span>{address}</span>
                 </div>
               </li>
             </ul>
 
             {/* Social */}
             <div className="flex items-center gap-5 mt-3">
-              {HOTEL.social?.instagram && (
+              {instagram && (
                 <a
-                  href={HOTEL.social.instagram}
+                  href={instagram}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
@@ -149,9 +158,9 @@ export default function Footer() {
                   <Instagram size={20} />
                 </a>
               )}
-              {HOTEL.social?.facebook && (
+              {facebook && (
                 <a
-                  href={HOTEL.social.facebook}
+                  href={facebook}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"

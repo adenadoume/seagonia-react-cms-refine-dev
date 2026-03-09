@@ -13,6 +13,7 @@ import {
 import useSEO from '../hooks/useSEO'
 import { HOTEL, HOTEL_IMAGES } from '../constants/hotel'
 import SectionHeader from '../components/shared/SectionHeader'
+import { usePageContent } from '../hooks/useSupabase'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -92,6 +93,11 @@ function AnimatedCounter({ target, suffix = '' }) {
 }
 
 export default function Hotel() {
+  const { data: content } = usePageContent('hotel')
+  const heroImage = content?.hero_image_url || HOTEL_IMAGES.entrance
+  const heroTitle = content?.hero_title || 'The Hotel'
+  const heroSubtitle = content?.hero_subtitle || ''
+
   useSEO({
     title: 'The Hotel',
     description:
@@ -103,11 +109,7 @@ export default function Hotel() {
       {/* Hero */}
       <section
         className="relative h-[50vh] min-h-[400px] flex items-center justify-center"
-        style={{
-          backgroundImage: `url(${HOTEL_IMAGES.entrance})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
+        style={{ backgroundImage: `url(${heroImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         <div className="absolute inset-0 bg-navy/50" />
         <div className="relative z-10 text-center text-white px-4">
@@ -117,8 +119,9 @@ export default function Hotel() {
             transition={{ duration: 0.7 }}
             className="font-serif text-4xl md:text-5xl lg:text-6xl"
           >
-            The Hotel
+            {heroTitle}
           </motion.h1>
+          {heroSubtitle && <p className="text-white/80 text-lg mt-4 max-w-2xl mx-auto">{heroSubtitle}</p>}
         </div>
       </section>
 

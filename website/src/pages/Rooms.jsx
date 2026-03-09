@@ -1,10 +1,15 @@
 import useSEO from '../hooks/useSEO'
 import { HOTEL_IMAGES } from '../constants/hotel'
 import RoomCard from '../components/shared/RoomCard'
-import { useRooms } from '../hooks/useSupabase'
+import { useRooms, usePageContent } from '../hooks/useSupabase'
 
 export default function Rooms() {
   const { data: rooms, isLoading, isError } = useRooms()
+  const { data: content } = usePageContent('rooms')
+
+  const heroImage = content?.hero_image_url || HOTEL_IMAGES.pogoniaPanorama
+  const heroTitle = content?.hero_title || 'Our Rooms'
+  const heroSubtitle = content?.hero_subtitle || '58 rooms across 6 unique types, each thoughtfully designed for comfort and tranquility by the Ionian Sea.'
 
   useSEO({
     title: 'Our Rooms',
@@ -17,21 +22,14 @@ export default function Rooms() {
       {/* Page Hero */}
       <section
         className="relative h-[40vh] min-h-[320px] flex items-center justify-center"
-        style={{
-          backgroundImage: `url(${HOTEL_IMAGES.pogoniaPanorama})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
+        style={{ backgroundImage: `url(${heroImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         <div className="absolute inset-0 bg-stone/60" />
         <div className="relative z-10 text-center text-white px-4">
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl">
-            Our Rooms
-          </h1>
-          <p className="text-white/80 text-lg mt-4 max-w-2xl mx-auto">
-            58 rooms across 6 unique types, each thoughtfully designed for
-            comfort and tranquility by the Ionian Sea.
-          </p>
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl">{heroTitle}</h1>
+          {heroSubtitle && (
+            <p className="text-white/80 text-lg mt-4 max-w-2xl mx-auto">{heroSubtitle}</p>
+          )}
         </div>
       </section>
 

@@ -23,7 +23,7 @@ import {
 import useSEO from '../hooks/useSEO'
 import { PLACEHOLDER_IMAGES } from '../constants/hotel'
 import SectionHeader from '../components/shared/SectionHeader'
-import { useAmenities, useExperiences } from '../hooks/useSupabase'
+import { useAmenities, useExperiences, usePageContent } from '../hooks/useSupabase'
 
 const iconMap = {
   Waves,
@@ -80,6 +80,11 @@ const fbVenues = [
 export default function Amenities() {
   const { data: amenities, isLoading: amenitiesLoading } = useAmenities()
   const { data: experiences, isLoading: experiencesLoading } = useExperiences()
+  const { data: content } = usePageContent('amenities')
+
+  const heroImage = content?.hero_image_url || PLACEHOLDER_IMAGES.pool
+  const heroTitle = content?.hero_title || 'Hotel Amenities & Experiences'
+  const heroSubtitle = content?.hero_subtitle || ''
 
   useSEO({
     title: 'Amenities & Experiences',
@@ -92,17 +97,12 @@ export default function Amenities() {
       {/* Page Hero */}
       <section
         className="relative h-[40vh] min-h-[320px] flex items-center justify-center"
-        style={{
-          backgroundImage: `url(${PLACEHOLDER_IMAGES.pool})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
+        style={{ backgroundImage: `url(${heroImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         <div className="absolute inset-0 bg-stone/60" />
         <div className="relative z-10 text-center text-white px-4">
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl">
-            Hotel Amenities & Experiences
-          </h1>
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl">{heroTitle}</h1>
+          {heroSubtitle && <p className="text-white/80 text-lg mt-4 max-w-2xl mx-auto">{heroSubtitle}</p>}
         </div>
       </section>
 

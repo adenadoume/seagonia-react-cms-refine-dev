@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import useSEO from '../hooks/useSEO'
 import { HOTEL_IMAGES } from '../constants/hotel'
 import SectionHeader from '../components/shared/SectionHeader'
+import { usePageContent } from '../hooks/useSupabase'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -23,6 +24,11 @@ const stagger = {
 }
 
 export default function Dining() {
+  const { data: content } = usePageContent('dining')
+  const heroImage = content?.hero_image_url || HOTEL_IMAGES.galiaRooftop
+  const heroTitle = content?.hero_title || 'Dining'
+  const heroSubtitle = content?.hero_subtitle || ''
+
   useSEO({
     title: 'Dining',
     description:
@@ -34,11 +40,7 @@ export default function Dining() {
       {/* Hero */}
       <section
         className="relative h-[50vh] min-h-[400px] flex items-center justify-center"
-        style={{
-          backgroundImage: `url(${HOTEL_IMAGES.galiaRooftop})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
+        style={{ backgroundImage: `url(${heroImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         <div className="absolute inset-0 bg-navy/50" />
         <motion.div
@@ -47,9 +49,8 @@ export default function Dining() {
           transition={{ duration: 0.8 }}
           className="relative z-10 text-center text-white px-4"
         >
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-hero font-semibold">
-            Dining
-          </h1>
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-hero font-semibold">{heroTitle}</h1>
+          {heroSubtitle && <p className="text-white/80 text-lg mt-4 max-w-2xl mx-auto">{heroSubtitle}</p>}
         </motion.div>
       </section>
 
