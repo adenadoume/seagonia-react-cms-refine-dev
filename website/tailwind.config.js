@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    './app/**/*.{js,jsx,ts,tsx}',
-    './components/**/*.{js,jsx,ts,tsx}',
-  ],
+  content: ['./index.html', './src/**/*.{js,jsx}'],
   theme: {
     extend: {
       colors: {
@@ -14,8 +11,8 @@ export default {
         charcoal: { DEFAULT: '#2D2D2D' },
       },
       fontFamily: {
-        serif: ['var(--font-cormorant)', 'Georgia', 'serif'],
-        sans:  ['var(--font-outfit)', 'system-ui', 'sans-serif'],
+        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
+        sans:  ['Outfit', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         'display': ['6rem', { lineHeight: '1.05', letterSpacing: '0.04em' }],
