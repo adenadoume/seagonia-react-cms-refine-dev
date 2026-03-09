@@ -134,6 +134,9 @@ function HomeForm({ data, onSave, saving, saved }) {
     dining_body: extra.dining_body || '',
     cta_heading: extra.cta_heading || 'Plan Your Stay',
     cta_subheading: extra.cta_subheading || '',
+    seo_title: extra.seo_title || '',
+    seo_description: extra.seo_description || '',
+    seo_og_image: extra.seo_og_image || '',
   })
   const [customSections, setCustomSections] = useState(extra.custom_sections || [])
 
@@ -154,6 +157,9 @@ function HomeForm({ data, onSave, saving, saved }) {
         dining_body: ex.dining_body || '',
         cta_heading: ex.cta_heading || 'Plan Your Stay',
         cta_subheading: ex.cta_subheading || '',
+        seo_title: ex.seo_title || '',
+        seo_description: ex.seo_description || '',
+        seo_og_image: ex.seo_og_image || '',
       })
       setCustomSections(ex.custom_sections || [])
     }
@@ -180,6 +186,9 @@ function HomeForm({ data, onSave, saving, saved }) {
         dining_body: form.dining_body,
         cta_heading: form.cta_heading,
         cta_subheading: form.cta_subheading,
+        seo_title: form.seo_title,
+        seo_description: form.seo_description,
+        seo_og_image: form.seo_og_image,
         custom_sections: customSections,
       },
     })
@@ -261,6 +270,23 @@ function HomeForm({ data, onSave, saving, saved }) {
         </div>
       </section>
 
+      {/* SEO */}
+      <section className="bg-slate-800 border border-gold/30 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-gold uppercase tracking-wide">SEO — Search Engine</h3>
+        <p className="text-slate-500 text-xs">Overrides the page title and description shown in Google. Leave blank to use the page heading as fallback.</p>
+        <div>
+          <label className="label">SEO Title <span className="text-slate-600 normal-case font-normal">(shown in Google, ~60 chars)</span></label>
+          <input className="input" value={form.seo_title} onChange={(e) => set('seo_title', e.target.value)} placeholder="e.g. Seagonia Hotel — Boutique Hotel in Paleros, Greece" />
+          {form.seo_title && <p className={`text-xs mt-1 ${form.seo_title.length > 60 ? 'text-amber-400' : 'text-slate-500'}`}>{form.seo_title.length}/60 chars</p>}
+        </div>
+        <div>
+          <label className="label">SEO Description <span className="text-slate-600 normal-case font-normal">(shown in Google, ~155 chars)</span></label>
+          <textarea className="input" rows={2} value={form.seo_description} onChange={(e) => set('seo_description', e.target.value)} placeholder="e.g. A boutique 58-room hotel in Pogonia village overlooking the Ionian Sea near Paleros, Greece." />
+          {form.seo_description && <p className={`text-xs mt-1 ${form.seo_description.length > 155 ? 'text-amber-400' : 'text-slate-500'}`}>{form.seo_description.length}/155 chars</p>}
+        </div>
+        <ImagePicker label="OG Share Image (shown when sharing on social / WhatsApp)" value={form.seo_og_image} onChange={(v) => set('seo_og_image', v)} />
+      </section>
+
       {/* Custom sections */}
       <div>
         <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-4">Custom Sections</h3>
@@ -284,6 +310,9 @@ function GenericPageForm({ data, onSave, saving, saved }) {
     hero_title: data?.hero_title || '',
     hero_subtitle: data?.hero_subtitle || '',
     hero_image_url: data?.hero_image_url || '',
+    seo_title: extra.seo_title || '',
+    seo_description: extra.seo_description || '',
+    seo_og_image: extra.seo_og_image || '',
   })
   const [customSections, setCustomSections] = useState(extra.custom_sections || [])
 
@@ -294,6 +323,9 @@ function GenericPageForm({ data, onSave, saving, saved }) {
         hero_title: data.hero_title || '',
         hero_subtitle: data.hero_subtitle || '',
         hero_image_url: data.hero_image_url || '',
+        seo_title: ex.seo_title || '',
+        seo_description: ex.seo_description || '',
+        seo_og_image: ex.seo_og_image || '',
       })
       setCustomSections(ex.custom_sections || [])
     }
@@ -305,9 +337,14 @@ function GenericPageForm({ data, onSave, saving, saved }) {
     e.preventDefault()
     onSave({
       id: data.id,
-      ...form,
+      hero_title: form.hero_title,
+      hero_subtitle: form.hero_subtitle,
+      hero_image_url: form.hero_image_url,
       extra_content: {
         ...(data.extra_content || {}),
+        seo_title: form.seo_title,
+        seo_description: form.seo_description,
+        seo_og_image: form.seo_og_image,
         custom_sections: customSections,
       },
     })
@@ -326,6 +363,23 @@ function GenericPageForm({ data, onSave, saving, saved }) {
           <textarea className="input" rows={2} value={form.hero_subtitle} onChange={(e) => set('hero_subtitle', e.target.value)} />
         </div>
         <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} />
+      </section>
+
+      {/* SEO */}
+      <section className="bg-slate-800 border border-gold/30 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-gold uppercase tracking-wide">SEO — Search Engine</h3>
+        <p className="text-slate-500 text-xs">Overrides what Google shows. Leave blank to use the hero title/subtitle as fallback.</p>
+        <div>
+          <label className="label">SEO Title <span className="text-slate-600 normal-case font-normal">(~60 chars)</span></label>
+          <input className="input" value={form.seo_title} onChange={(e) => set('seo_title', e.target.value)} placeholder="e.g. Rooms at Seagonia Hotel — Ionian Coast, Greece" />
+          {form.seo_title && <p className={`text-xs mt-1 ${form.seo_title.length > 60 ? 'text-amber-400' : 'text-slate-500'}`}>{form.seo_title.length}/60 chars</p>}
+        </div>
+        <div>
+          <label className="label">SEO Description <span className="text-slate-600 normal-case font-normal">(~155 chars)</span></label>
+          <textarea className="input" rows={2} value={form.seo_description} onChange={(e) => set('seo_description', e.target.value)} placeholder="e.g. Explore our 58 rooms across 6 unique types overlooking the Ionian Sea." />
+          {form.seo_description && <p className={`text-xs mt-1 ${form.seo_description.length > 155 ? 'text-amber-400' : 'text-slate-500'}`}>{form.seo_description.length}/155 chars</p>}
+        </div>
+        <ImagePicker label="OG Share Image (shown when shared on social / WhatsApp)" value={form.seo_og_image} onChange={(v) => set('seo_og_image', v)} />
       </section>
 
       {/* Custom sections */}
