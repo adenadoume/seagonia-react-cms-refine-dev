@@ -1,3 +1,4 @@
+import CustomSections from '../components/shared/CustomSections'
 import { useEffect, useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import {
@@ -305,6 +306,7 @@ export default function Hotel() {
           </motion.p>
         </div>
       </section>
+      <CustomSections sections={extra.custom_sections} />
     </>
   )
 }

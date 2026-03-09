@@ -1,3 +1,4 @@
+import CustomSections from '../components/shared/CustomSections'
 import useSEO from '../hooks/useSEO'
 import { HOTEL_IMAGES } from '../constants/hotel'
 import RoomCard from '../components/shared/RoomCard'
@@ -78,6 +79,7 @@ export default function Rooms() {
           )}
         </div>
       </section>
+      <CustomSections sections={extra.custom_sections} />
     </>
   )
 }

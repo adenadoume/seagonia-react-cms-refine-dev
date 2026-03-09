@@ -1,3 +1,4 @@
+import CustomSections from '../components/shared/CustomSections'
 import { motion } from 'framer-motion'
 import { Car, Ship, Plane, Navigation } from 'lucide-react'
 import useSEO from '../hooks/useSEO'
@@ -447,6 +448,7 @@ export default function Area() {
           </motion.div>
         </div>
       </section>
+      <CustomSections sections={extra.custom_sections} />
     </>
   )
 }

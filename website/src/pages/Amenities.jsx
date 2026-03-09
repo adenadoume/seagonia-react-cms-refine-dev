@@ -1,3 +1,4 @@
+import CustomSections from '../components/shared/CustomSections'
 import { motion } from 'framer-motion'
 import {
   Waves,
@@ -300,6 +301,7 @@ export default function Amenities() {
           </div>
         </div>
       </section>
+      <CustomSections sections={extra.custom_sections} />
     </>
   )
 }

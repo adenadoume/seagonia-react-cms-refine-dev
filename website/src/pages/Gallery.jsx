@@ -1,3 +1,4 @@
+import CustomSections from '../components/shared/CustomSections'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useSEO from '../hooks/useSEO'
@@ -136,6 +137,7 @@ export default function Gallery() {
           )
         }
       />
+      <CustomSections sections={extra.custom_sections} />
     </>
   )
 }

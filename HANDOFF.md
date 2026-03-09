@@ -2,109 +2,79 @@
 
 ## Project Overview
 Boutique hotel website (Seagonia Hotel, Pogonia near Paleros, Greece) with:
-- **Public website** — React + Vite + Tailwind at `/website`
-- **Admin panel** — currently Refine + Ant Design at `/admin` (to be rebuilt)
-- **Database** — Supabase (PostgreSQL)
-- **Images** — Cloudinary (`dvgmbgqge`) + local `/images/hotel/` folder
-- **Supabase project** — `https://supabase.com/dashboard/project/pnjfxostbiscwihpatjk`
+- **Public website** — React + Vite + Tailwind at `/website` (port 3000)
+- **Admin panel** — Custom React + Vite + Tailwind at `/admin` (port 5174)
+- **Database** — Supabase project `pnjfxostbiscwihpatjk`
+- **Images** — 77 local images at `website/public/images/hotel/img-001.jpg` … `img-077.jpg`
+- **Deployment** — Vercel, Root Directory: `website`, Framework: Vite
+
+⚠️ **DO NOT migrate to Next.js** — was attempted, reverted. SEO is handled via `useSEO` hook (sets title, description, OG tags dynamically). Google crawls JS fine for a hotel site.
 
 ---
 
-## Current State
+## Current State — COMPLETED ✅
 
-### Website Wiring — COMPLETED ✅
-All pages now pull live data from Supabase instead of static constants.
+### Website
+- All pages wired to Supabase (hero image, title, subtitle, SEO fields)
+- `useSEO` hook sets title + meta description + OG + Twitter tags per page
+- SEO fields (seo_title, seo_description, seo_og_image) editable in admin → Pages
+- Stored in `page_content.extra_content` JSONB
+- Footer wired to `hotel_settings`
+- framer-motion v12, React 19, react-router-dom v7
 
-**Files modified:**
-- `website/src/main.jsx` — Added `QueryClientProvider` (React Query)
-- `website/src/pages/Home.jsx` — Uses `usePageContent('home')`, `useTestimonials()`, `useRooms()` (featured)
-- `website/src/pages/Rooms.jsx` — Uses `useRooms()`
-- `website/src/pages/RoomDetail.jsx` — Uses `useRoom(slug)`, `useHotelSettings()`
-- `website/src/pages/Gallery.jsx` — Uses `useGalleryImages()`, `useGalleryCategories()`
-- `website/src/pages/Amenities.jsx` — Uses `useAmenities()`, `useExperiences()`
+### Admin Panel (dark theme, slate-900/800)
+- **Dashboard** — stats cards (rooms, messages, subscribers, gallery count)
+- **Pages** — hero fields + SEO section (gold border) + custom sections per page
+- **Rooms** — full CRUD + ImagePicker
+- **Gallery** — full CRUD + ImagePicker + category filter
+- **Testimonials** — full CRUD
+- **Amenities** — full CRUD
+- **Experiences** — full CRUD + ImagePicker
+- **Settings** — hotel_settings (phone, email, address, social links)
+- **Messages** — contact form inbox (read + status)
+- **Newsletter** — subscriber list
 
-**Files NOT yet wired (editorial/complex layout, deferred):**
-- `Experiences.jsx` — Very complex per-section editorial layout, needs `page_content` extra_content JSON
-- `Dining.jsx` — Similar editorial layout
-- `Area.jsx` — Similar editorial layout
-- `Hotel.jsx` — Similar editorial layout
-
-**New seed file created:**
-- `supabase/seed/002_page_content.sql` — Run this in Supabase SQL Editor to populate page_content table
-
-### Data Layer — Already Built ✅
-- `website/src/lib/supabase.js` — Supabase client + `hotelAPI` with all queries
-- `website/src/hooks/useSupabase.js` — React Query hooks for all tables
-
----
-
-## How page_content Works (Home page)
-The `page_content` table uses named columns + `extra_content` JSONB:
-
-```
-section_1_title     → Intro heading ("A Peaceful Retreat...")
-section_1_text      → Intro body paragraph
-section_1_image_url → Intro image
-section_2_title     → Accommodation heading ("58 Rooms by the Sea")
-section_3_title     → Experiences heading ("Discover the Ionian")
-extra_content JSONB → {
-  intro_eyebrow, accommodation_eyebrow, experiences_eyebrow,
-  dining_eyebrow, dining_heading, dining_body,
-  cta_heading, cta_subheading
-}
+### Admin CSS utilities (admin/src/index.css)
+```css
+.btn-edit    — gold border, hover gold text
+.btn-delete  — red border, hover red bg
+.badge-published / .badge-draft
+.input / .label / .card
 ```
 
-All fields have hardcoded fallbacks so the website works even before seeding.
+### ImagePicker component
+- `admin/src/components/ImagePicker.jsx`
+- Grid of 77 local hotel images, filter by number, gold border on selected
+- Used in: Rooms, Gallery, Experiences, Pages (hero + SEO og image + custom sections)
+
+### Custom Sections (admin → Pages)
+- Types: `text`, `image_text`, `image`
+- Stored in `extra_content.custom_sections` array
+- Admin can add/reorder/remove sections
+- **TODO: website does not yet render custom_sections** ← NEXT TASK
 
 ---
 
-## Admin Panel — REBUILT ✅
-**Decision:** Throw away Refine + Ant Design admin. Build custom React admin.
+## Next Features (in order)
 
-**Style reference:** `/Users/nucintosh/PYTHON/containers-claude` — clean table views, colored badges, stat cards. NO Ant Design, NO Refine. Pure Tailwind.
+### 1. Render custom_sections on website pages ← IN PROGRESS
+Each page reads `extra_content.custom_sections` and renders below the main content.
+Section types: `text` (heading + body), `image_text` (image left/right + text), `image` (full-width image + caption)
 
-**Agreed tech stack for new admin:**
-- React + Vite + Tailwind (no Refine, no Ant Design)
-- Supabase JS + React Query
-- Supabase Auth for login
-- Hotel brand palette: cream/gold/navy
+### 2. Header/Footer/Body Script Injection
+Reminder from AI — implement in admin Settings or dedicated Scripts page:
+- **Google Tag Manager** (single GTM container tag, replaces individual tags)
+- **Google Analytics** (via GTM or direct GA4 script)
+- **Google Ads** conversion tracking
+- **Google Maps API key** (for contact/area page map embed)
+- **reCAPTCHA v3** (for contact form)
+- **Cookiebot** (EU cookie consent banner)
 
-**Admin sections planned:**
+Store scripts in `hotel_settings` or new `site_scripts` table as:
+```json
+{ "head": "...", "body_start": "...", "body_end": "..." }
 ```
-Sidebar (text only, no icons)
-Dashboard        — overview stats
-Pages            — edit page_content JSON (form fields per page, not raw JSON)
-Rooms            — table → edit/create
-Gallery          — grid → upload/delete
-Testimonials     — table → edit/create
-Amenities        — table → edit/create
-Experiences      — table → edit/create
-Settings         — hotel name, phone, email, social
-Messages         — contact form inbox (read-only)
-Newsletter       — subscriber list
-```
-
-**Key UX decision:** End user never sees raw JSON. Each page section has labeled form fields that serialize to JSON on save.
-
-**Separate app** — runs on port 5174, separate Vercel project from website.
-
----
-
-## Images Strategy
-- Local images served from `website/public/images/hotel/img-XXX.jpg` (77 images)
-- Cloudinary cloud: `dvgmbgqge` — set up for future uploads
-- Gallery images in Supabase `gallery_images` table have `image_url` field
-- Rooms have `image_url` field in Supabase
-- **TODO:** Migrate images to Cloudinary and update Supabase URLs
-
----
-
-## Next.js Migration Decision
-**Agreed:** Migrate public website to Next.js 14 (App Router) for SEO.
-- Same Supabase data layer — just change env var prefix `VITE_` → `NEXT_PUBLIC_`
-- Use ISR (Incremental Static Regeneration) for rooms/pages
-- Keep admin as separate React app
-- **DO AFTER** admin rebuild is complete
+Inject via `useEffect` in website root or via `index.html` template vars in Vite.
 
 ---
 
@@ -113,65 +83,58 @@ Newsletter       — subscriber list
 hotel_settings      — hotel name, contact, social, total_rooms
 rooms               — 6 types (A-F), slug, image_url, is_featured, bed_options[]
 amenities           — name, icon (Lucide name), description
-room_amenities      — join table rooms↔amenities
 experiences         — name, description, image_url
 testimonials        — quote, name, country, display_order
-gallery_categories  — name, slug (all/hotel/rooms/pool/dining/experiences)
+gallery_categories  — name, slug
 gallery_images      — image_url, category_id, room_id, title
-page_content        — one row per page (home/rooms/gallery/etc), extra_content JSONB
+page_content        — one row per page, extra_content JSONB
 texts               — key-value editable text pairs
-sections            — section visibility/ordering per page
 contact_messages    — from contact form
 newsletter_subscribers
+```
+
+### extra_content JSONB shape (page_content)
+```json
+{
+  "seo_title": "",
+  "seo_description": "",
+  "seo_og_image": "",
+  "custom_sections": [
+    { "id": "uuid", "type": "text", "heading": "", "body": "" },
+    { "id": "uuid", "type": "image_text", "image_url": "", "heading": "", "body": "", "image_position": "left" },
+    { "id": "uuid", "type": "image", "image_url": "", "caption": "" }
+  ],
+  "intro_eyebrow": "", "accommodation_eyebrow": "", ...
+}
 ```
 
 ---
 
 ## Environment Variables
-### Website (`website/.env`)
+### Website (Vercel + `website/.env.local`)
 ```
 VITE_SUPABASE_URL=https://pnjfxostbiscwihpatjk.supabase.co
-VITE_SUPABASE_ANON_KEY=...
-VITE_CLOUDINARY_CLOUD_NAME=dvgmbgqge
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBuamZ4b3N0YmlzY3dpaHBhdGprIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3OTQ5NjMsImV4cCI6MjA4NzM3MDk2M30.caORqFAIgNQNwO9SbhXIwuMWiOiV2WB-pbdT2rLa-58
+VITE_HOTEL_PHONE=+302643041736
+VITE_HOTEL_EMAIL=welcome@seagonia.com
+VITE_HOTEL_ADDRESS=Pogonia, Paleros 300 12, Greece
 ```
-### Admin (`admin/.env`)
-```
-VITE_SUPABASE_URL=https://pnjfxostbiscwihpatjk.supabase.co
-VITE_SUPABASE_ANON_KEY=...
-VITE_CLOUDINARY_CLOUD_NAME=dvgmbgqge
-VITE_CLOUDINARY_API_KEY=...
-```
-
----
-
-## Immediate Next Steps
-1. **Run seed SQL** — Go to Supabase SQL Editor, run `supabase/seed/002_page_content.sql`
-2. **Test website** — `cd website && npm run dev` — all pages should now load live data
-3. **Rebuild admin** — Start fresh React + Tailwind admin (throw away Refine)
-4. **Wire remaining pages** — Experiences, Dining, Area, Hotel (editorial pages)
-5. **Images** — Migrate to Cloudinary, update image_url in Supabase
-6. **Next.js migration** — After admin is done
 
 ---
 
 ## Key File Paths
 ```
-/Users/nucintosh/PYTHON/OIK105 SEAGONIA/seagonia-react-cms-refine-dev/
-├── website/src/
-│   ├── lib/supabase.js          ← Supabase client + hotelAPI queries
-│   ├── hooks/useSupabase.js     ← React Query hooks (all tables)
-│   ├── pages/Home.jsx           ← WIRED ✅
-│   ├── pages/Rooms.jsx          ← WIRED ✅
-│   ├── pages/RoomDetail.jsx     ← WIRED ✅
-│   ├── pages/Gallery.jsx        ← WIRED ✅
-│   ├── pages/Amenities.jsx      ← WIRED ✅
-│   └── constants/hotel.js       ← Static fallback data (keep, used as fallbacks)
-├── admin/                        ← TO BE REBUILT
-├── supabase/
-│   ├── migrations/001_initial_schema.sql
-│   ├── migrations/002_row_level_security.sql
-│   └── seed/
-│       ├── seed_hotel_data.sql  ← Run first
-│       └── 002_page_content.sql ← Run second (NEW)
-└── SETUP_INSTRUCTIONS.md
+/website/src/
+  lib/supabase.js          ← Supabase client + hotelAPI queries
+  hooks/useSupabase.js     ← React Query hooks
+  hooks/useSEO.js          ← Sets title + meta + OG tags
+  pages/                   ← All pages wired to Supabase
+  constants/hotel.js       ← Static fallback data
+/admin/src/
+  pages/PagesEditor.jsx    ← Home + generic page editor with SEO + custom sections
+  pages/RoomsAdmin.jsx
+  pages/GalleryAdmin.jsx
+  pages/SettingsAdmin.jsx
+  components/ImagePicker.jsx
+  hooks/useAdmin.js        ← All admin React Query mutations
 ```

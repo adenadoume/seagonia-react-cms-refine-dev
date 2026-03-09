@@ -1,3 +1,4 @@
+import CustomSections from '../components/shared/CustomSections'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Quote, ChevronDown } from 'lucide-react'
@@ -458,6 +459,7 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+      <CustomSections sections={extra.custom_sections} />
     </>
   )
 }

@@ -1,3 +1,4 @@
+import CustomSections from '../components/shared/CustomSections'
 import { motion } from 'framer-motion'
 import useSEO from '../hooks/useSEO'
 import { HOTEL_IMAGES } from '../constants/hotel'
@@ -452,6 +453,7 @@ export default function Dining() {
           </div>
         </div>
       </section>
+      <CustomSections sections={extra.custom_sections} />
     </>
   )
 }
