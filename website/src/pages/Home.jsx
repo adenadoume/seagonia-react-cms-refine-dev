@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Quote, ChevronDown } from 'lucide-react'
 import useSEO from '../hooks/useSEO'
-import { HOTEL_IMAGES, HOTEL, EXPERIENCES } from '../constants/hotel'
+import { HOTEL_IMAGES } from '../constants/hotel'
+import { useRooms, useTestimonials, usePageContent } from '../hooks/useSupabase'
 
 /* ─── Animation Variants ─── */
 const fadeUp = {
@@ -18,58 +19,6 @@ const fadeIn = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 1, ease: 'easeOut' } },
 }
-
-/* ─── Data ─── */
-const testimonials = [
-  {
-    quote:
-      'Waking up to the sound of the Ionian Sea just steps from our room was pure magic.',
-    name: 'Sophie & Laurent',
-    country: 'France',
-  },
-  {
-    quote:
-      "Paleros is one of Greece's best-kept secrets, and Seagonia is the perfect base.",
-    name: 'James W.',
-    country: 'United Kingdom',
-  },
-  {
-    quote:
-      'The farm-to-table breakfast, the boat trips, the sunsets — everything was unforgettable.',
-    name: 'Anna & Markus',
-    country: 'Germany',
-  },
-]
-
-const featuredRooms = [
-  {
-    name: 'Swim-Up Room',
-    image: HOTEL_IMAGES.roomSwimUp,
-    description: 'Step from your room directly into the pool',
-    slug: 'swim-up-room',
-  },
-  {
-    name: 'Balcony Room',
-    image: HOTEL_IMAGES.roomBalcony,
-    description: 'Panoramic views of the Ionian Sea',
-    slug: 'balcony-room',
-  },
-  {
-    name: 'Seagonia Suite',
-    image: HOTEL_IMAGES.entrance,
-    description: 'The pinnacle of Seagonia hospitality',
-    slug: 'seagonia-suite',
-  },
-]
-
-const experienceGrid = [
-  { title: 'Boat Trips', image: HOTEL_IMAGES.islandBeach },
-  { title: 'Cooking Classes', image: HOTEL_IMAGES.cookingClass },
-  { title: 'Yoga & Wellness', image: HOTEL_IMAGES.yogaGroup },
-  { title: 'Spa & Massage', image: HOTEL_IMAGES.massage },
-  { title: 'Hiking & History', image: HOTEL_IMAGES.hikingView },
-  { title: 'Wine & Dining', image: HOTEL_IMAGES.sunsetDining },
-]
 
 const locationStats = [
   { value: '80m', label: 'To the Beach' },
@@ -94,6 +43,43 @@ function Eyebrow({ children, light = false }) {
    HOME PAGE
    ═══════════════════════════════════════════════════ */
 export default function Home() {
+  const { data: pageContent } = usePageContent('home')
+  const { data: testimonials } = useTestimonials()
+  const { data: allRooms } = useRooms()
+
+  // Use page_content fields with fallbacks to static text
+  const extra = pageContent?.extra_content || {}
+  const introEyebrow = extra.intro_eyebrow || 'Welcome'
+  const introHeading = pageContent?.section_1_title || 'A Peaceful Retreat by the Ionian Sea'
+  const introBody = pageContent?.section_1_text || 'Seagonia Hotel is a peaceful retreat set in a serene natural environment, offering everything you need for a comfortable and rejuvenating stay. Designed with a focus on simplicity and harmony, the spaces are thoughtfully decorated using natural materials and soothing earthy tones.'
+  const introImage = pageContent?.section_1_image_url || HOTEL_IMAGES.entrance
+
+  const accomEyebrow = extra.accommodation_eyebrow || 'Accommodation'
+  const accomHeading = pageContent?.section_2_title || '58 Rooms by the Sea'
+
+  const expEyebrow = extra.experiences_eyebrow || 'Experiences'
+  const expHeading = pageContent?.section_3_title || 'Discover the Ionian'
+
+  const diningEyebrow = extra.dining_eyebrow || 'Dining'
+  const diningHeading = extra.dining_heading || 'Galià Rooftop Restaurant'
+  const diningBody = extra.dining_body || 'Our Mediterranean restaurant set on the upper floor, open to sweeping views of the pool, Paleros bay, and the Acarnanian mountains.'
+
+  const ctaHeading = extra.cta_heading || 'Plan Your Stay'
+  const ctaSubheading = extra.cta_subheading || 'We would love to hear from you'
+
+  // Featured rooms — up to 3
+  const featuredRooms = allRooms?.filter((r) => r.is_featured).slice(0, 3) || []
+
+  // Experience grid — fixed images, titles from experiences if available
+  const experienceGrid = [
+    { title: 'Boat Trips', image: HOTEL_IMAGES.islandBeach },
+    { title: 'Cooking Classes', image: HOTEL_IMAGES.cookingClass },
+    { title: 'Yoga & Wellness', image: HOTEL_IMAGES.yogaGroup },
+    { title: 'Spa & Massage', image: HOTEL_IMAGES.massage },
+    { title: 'Hiking & History', image: HOTEL_IMAGES.hikingView },
+    { title: 'Wine & Dining', image: HOTEL_IMAGES.sunsetDining },
+  ]
+
   useSEO({
     title: 'Boutique Hotel in Paleros',
     description:
@@ -106,15 +92,12 @@ export default function Home() {
           SECTION 1 — Full-Screen Hero
           ──────────────────────────────────────────── */}
       <section className="relative h-screen w-full overflow-hidden">
-        {/* Background image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${HOTEL_IMAGES.hero})` }}
         />
-        {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
-        {/* Content */}
         <div className="relative z-10 flex h-full flex-col items-center justify-center text-center px-6">
           <motion.h1
             variants={fadeIn}
@@ -133,7 +116,6 @@ export default function Home() {
             Your Corner by the Sea
           </motion.p>
 
-          {/* Scroll indicator */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -156,7 +138,6 @@ export default function Home() {
       <section className="bg-cream py-24 lg:py-36">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-16 items-center">
-            {/* Text — 60% */}
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -164,20 +145,15 @@ export default function Home() {
               viewport={{ once: true }}
               className="lg:col-span-3"
             >
-              <Eyebrow>Welcome</Eyebrow>
+              <Eyebrow>{introEyebrow}</Eyebrow>
               <h2 className="font-serif text-heading text-navy mt-4 leading-tight">
-                A Peaceful Retreat by the Ionian Sea
+                {introHeading}
               </h2>
               <p className="font-sans text-lg text-charcoal/70 leading-relaxed mt-6 max-w-xl">
-                Seagonia Hotel is a peaceful retreat set in a serene natural
-                environment, offering everything you need for a comfortable and
-                rejuvenating stay. Designed with a focus on simplicity and
-                harmony, the spaces are thoughtfully decorated using natural
-                materials and soothing earthy tones.
+                {introBody}
               </p>
             </motion.div>
 
-            {/* Image — 40% */}
             <motion.div
               variants={fadeUp}
               custom={1}
@@ -187,7 +163,7 @@ export default function Home() {
               className="lg:col-span-2"
             >
               <img
-                src={HOTEL_IMAGES.entrance}
+                src={introImage}
                 alt="Seagonia Hotel entrance"
                 className="w-full rounded-2xl object-cover aspect-[3/4] shadow-lg"
               />
@@ -197,7 +173,7 @@ export default function Home() {
       </section>
 
       {/* ────────────────────────────────────────────
-          SECTION 3 — Location Teaser (Parallax)
+          SECTION 3 — Location Teaser
           ──────────────────────────────────────────── */}
       <section className="relative h-[70vh] overflow-hidden">
         <div
@@ -218,7 +194,6 @@ export default function Home() {
               Pogonia, Paleros &amp; The Little Ionian
             </h2>
 
-            {/* Counters */}
             <div className="flex flex-wrap justify-center gap-10 lg:gap-20 mt-10">
               {locationStats.map((stat) => (
                 <div key={stat.label} className="text-center">
@@ -252,16 +227,16 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center"
           >
-            <Eyebrow>Accommodation</Eyebrow>
+            <Eyebrow>{accomEyebrow}</Eyebrow>
             <h2 className="font-serif text-heading text-navy mt-4">
-              58 Rooms by the Sea
+              {accomHeading}
             </h2>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
             {featuredRooms.map((room, i) => (
               <motion.div
-                key={room.slug}
+                key={room.id}
                 custom={i}
                 variants={fadeUp}
                 initial="hidden"
@@ -271,7 +246,7 @@ export default function Home() {
               >
                 <div className="overflow-hidden rounded-2xl">
                   <img
-                    src={room.image}
+                    src={room.image_url}
                     alt={room.name}
                     className="w-full aspect-[3/4] object-cover transition-transform duration-700 group-hover:scale-105"
                   />
@@ -280,7 +255,7 @@ export default function Home() {
                   {room.name}
                 </h3>
                 <p className="font-sans text-sm text-charcoal/60 mt-2">
-                  {room.description}
+                  {room.highlight}
                 </p>
                 <Link
                   to={`/rooms/${room.slug}`}
@@ -321,13 +296,12 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center"
           >
-            <Eyebrow>Experiences</Eyebrow>
+            <Eyebrow>{expEyebrow}</Eyebrow>
             <h2 className="font-serif text-heading text-navy mt-4">
-              Discover the Ionian
+              {expHeading}
             </h2>
           </motion.div>
 
-          {/* 2x3 masonry-style grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-16">
             {experienceGrid.map((exp, i) => (
               <motion.div
@@ -346,7 +320,6 @@ export default function Home() {
                   alt={exp.title}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                {/* Hover overlay */}
                 <div className="absolute inset-0 bg-navy/0 group-hover:bg-navy/50 transition-all duration-500 flex items-center justify-center">
                   <span className="font-serif text-2xl text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 text-center px-4">
                     {exp.title}
@@ -390,14 +363,12 @@ export default function Home() {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <Eyebrow light>Dining</Eyebrow>
+            <Eyebrow light>{diningEyebrow}</Eyebrow>
             <h2 className="font-serif text-heading text-white mt-4">
-              Gali&agrave; Rooftop Restaurant
+              {diningHeading}
             </h2>
             <p className="font-sans text-lg text-white/80 leading-relaxed mt-6 max-w-xl mx-auto">
-              Our Mediterranean restaurant set on the upper floor, open to
-              sweeping views of the pool, Paleros bay, and the Acarnanian
-              mountains.
+              {diningBody}
             </p>
             <Link
               to="/dining"
@@ -427,9 +398,9 @@ export default function Home() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-            {testimonials.map((t, i) => (
+            {testimonials?.map((t, i) => (
               <motion.div
-                key={i}
+                key={t.id}
                 custom={i}
                 variants={fadeUp}
                 initial="hidden"
@@ -465,10 +436,10 @@ export default function Home() {
             viewport={{ once: true }}
           >
             <h2 className="font-serif text-heading text-navy">
-              Plan Your Stay
+              {ctaHeading}
             </h2>
             <p className="font-sans text-lg text-charcoal/60 mt-4">
-              We would love to hear from you
+              {ctaSubheading}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
               <Link

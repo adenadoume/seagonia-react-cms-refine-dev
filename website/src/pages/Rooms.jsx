@@ -1,8 +1,11 @@
 import useSEO from '../hooks/useSEO'
-import { ROOMS, PLACEHOLDER_IMAGES } from '../constants/hotel'
+import { HOTEL_IMAGES } from '../constants/hotel'
 import RoomCard from '../components/shared/RoomCard'
+import { useRooms } from '../hooks/useSupabase'
 
 export default function Rooms() {
+  const { data: rooms, isLoading, isError } = useRooms()
+
   useSEO({
     title: 'Our Rooms',
     description:
@@ -15,7 +18,7 @@ export default function Rooms() {
       <section
         className="relative h-[40vh] min-h-[320px] flex items-center justify-center"
         style={{
-          backgroundImage: `url(${PLACEHOLDER_IMAGES.seaView})`,
+          backgroundImage: `url(${HOTEL_IMAGES.pogoniaPanorama})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
@@ -35,22 +38,45 @@ export default function Rooms() {
       {/* Rooms Grid */}
       <section className="section-padding">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {ROOMS.map((room) => (
-              <RoomCard
-                key={room.id}
-                room={{
-                  ...room,
-                  images: [PLACEHOLDER_IMAGES[room.image]],
-                  shortDesc: room.description,
-                  guests: `${room.maxGuests}`,
-                  size: room.floor,
-                  beds: room.bedOptions.join(' / '),
-                }}
-                featured={room.featured}
-              />
-            ))}
-          </div>
+          {isLoading && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3, 4, 5, 6].map((n) => (
+                <div key={n} className="animate-pulse">
+                  <div className="bg-stone/10 rounded-2xl aspect-[3/4]" />
+                  <div className="h-6 bg-stone/10 rounded mt-4 w-2/3" />
+                  <div className="h-4 bg-stone/10 rounded mt-2 w-1/2" />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {isError && (
+            <p className="text-center text-charcoal/60 py-20">
+              Unable to load rooms. Please try again.
+            </p>
+          )}
+
+          {rooms && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {rooms.map((room) => (
+                <RoomCard
+                  key={room.id}
+                  room={{
+                    id: room.id,
+                    name: room.name,
+                    slug: room.slug,
+                    images: [room.image_url],
+                    shortDesc: room.description,
+                    highlight: room.highlight,
+                    guests: `${room.max_guests}`,
+                    size: room.floor,
+                    beds: room.bed_options?.join(' / ') || '',
+                  }}
+                  featured={room.is_featured}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </>

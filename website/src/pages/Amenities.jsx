@@ -15,10 +15,15 @@ import {
   Wifi,
   Leaf,
   Sparkles,
+  HeartPulse,
+  Mountain,
+  Anchor,
+  Sprout,
 } from 'lucide-react'
 import useSEO from '../hooks/useSEO'
-import { AMENITIES, EXPERIENCES, PLACEHOLDER_IMAGES } from '../constants/hotel'
+import { PLACEHOLDER_IMAGES } from '../constants/hotel'
 import SectionHeader from '../components/shared/SectionHeader'
+import { useAmenities, useExperiences } from '../hooks/useSupabase'
 
 const iconMap = {
   Waves,
@@ -36,6 +41,10 @@ const iconMap = {
   Wifi,
   Leaf,
   Sparkles,
+  HeartPulse,
+  Mountain,
+  Anchor,
+  Sprout,
 }
 
 const fadeUp = {
@@ -69,6 +78,9 @@ const fbVenues = [
 ]
 
 export default function Amenities() {
+  const { data: amenities, isLoading: amenitiesLoading } = useAmenities()
+  const { data: experiences, isLoading: experiencesLoading } = useExperiences()
+
   useSEO({
     title: 'Amenities & Experiences',
     description:
@@ -103,7 +115,16 @@ export default function Amenities() {
             subtitle="From pool to spa, farm to table, every comfort is within reach."
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-            {AMENITIES.map((amenity, i) => {
+            {amenitiesLoading &&
+              [...Array(8)].map((_, i) => (
+                <div key={i} className="card p-6 animate-pulse">
+                  <div className="w-8 h-8 bg-stone/10 rounded mb-3" />
+                  <div className="h-5 bg-stone/10 rounded w-2/3 mb-2" />
+                  <div className="h-4 bg-stone/10 rounded w-full" />
+                </div>
+              ))}
+
+            {amenities?.map((amenity, i) => {
               const IconComponent = iconMap[amenity.icon]
               return (
                 <motion.div
@@ -140,7 +161,18 @@ export default function Amenities() {
             subtitle="Create lasting memories with unique experiences on the Ionian coast."
           />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-            {EXPERIENCES.map((exp, i) => {
+            {experiencesLoading &&
+              [...Array(6)].map((_, i) => (
+                <div key={i} className="card overflow-hidden animate-pulse">
+                  <div className="aspect-[3/2] bg-stone/10" />
+                  <div className="p-6">
+                    <div className="h-5 bg-stone/10 rounded w-1/2 mb-2" />
+                    <div className="h-4 bg-stone/10 rounded w-full" />
+                  </div>
+                </div>
+              ))}
+
+            {experiences?.map((exp, i) => {
               const IconComponent = iconMap[exp.icon]
               return (
                 <motion.div
@@ -152,13 +184,15 @@ export default function Amenities() {
                   viewport={{ once: true }}
                   className="card overflow-hidden"
                 >
-                  <div className="aspect-[3/2] overflow-hidden">
-                    <img
-                      src={PLACEHOLDER_IMAGES[exp.image]}
-                      alt={exp.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+                  {exp.image_url && (
+                    <div className="aspect-[3/2] overflow-hidden">
+                      <img
+                        src={exp.image_url}
+                        alt={exp.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
                   <div className="p-6">
                     <div className="flex items-center gap-2 mb-2">
                       {IconComponent && (

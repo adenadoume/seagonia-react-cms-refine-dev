@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Check, Users, BedDouble, Maximize2, Phone } from 'lucide-react'
 import useSEO from '../hooks/useSEO'
-import { ROOMS, PLACEHOLDER_IMAGES, HOTEL } from '../constants/hotel'
+import { useRoom, useHotelSettings } from '../hooks/useSupabase'
 import ImageLightbox from '../components/shared/ImageLightbox'
 
 const commonAmenities = [
@@ -23,19 +23,28 @@ const commonAmenities = [
 
 export default function RoomDetail() {
   const { slug } = useParams()
-  const room = ROOMS.find((r) => r.slug === slug)
+  const { data: room, isLoading, isError } = useRoom(slug)
+  const { data: settings } = useHotelSettings()
 
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
 
   useSEO({
-    title: room ? room.name : 'Room Not Found',
-    description: room
-      ? room.description
-      : 'The requested room could not be found.',
+    title: room ? room.name : 'Room',
+    description: room ? room.description : 'Seagonia Hotel room details.',
   })
 
-  if (!room) {
+  if (isLoading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="animate-pulse text-charcoal/40 font-serif text-xl">
+          Loading...
+        </div>
+      </div>
+    )
+  }
+
+  if (isError || !room) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center px-4 text-center">
         <h1 className="font-serif text-4xl text-stone mb-4">Room Not Found</h1>
@@ -49,12 +58,12 @@ export default function RoomDetail() {
     )
   }
 
-  // Build images array from the room's image key (using placeholder for multiple images)
-  const images = [
-    PLACEHOLDER_IMAGES[room.image],
-    PLACEHOLDER_IMAGES.seaView,
-    PLACEHOLDER_IMAGES.pool,
-  ]
+  // Room amenity names from the join
+  const roomAmenityNames = room.room_amenities
+    ? room.room_amenities.map((ra) => ra.amenity?.name).filter(Boolean)
+    : []
+
+  const images = [room.image_url].filter(Boolean)
 
   function openLightbox(index) {
     setLightboxIndex(index)
@@ -67,9 +76,10 @@ export default function RoomDetail() {
       <section
         className="relative h-[60vh] min-h-[400px]"
         style={{
-          backgroundImage: `url(${images[0]})`,
+          backgroundImage: room.image_url ? `url(${room.image_url})` : undefined,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
+          backgroundColor: room.image_url ? undefined : '#c8b89a',
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
@@ -106,17 +116,21 @@ export default function RoomDetail() {
                 </p>
 
                 {/* Room Amenities */}
-                <h3 className="font-serif text-2xl text-stone mt-10 mb-6">
-                  Room Amenities
-                </h3>
-                <div className="grid grid-cols-2 gap-3">
-                  {room.amenities.map((amenity) => (
-                    <div key={amenity} className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-sea flex-shrink-0" />
-                      <span className="text-stone/80 text-sm">{amenity}</span>
+                {roomAmenityNames.length > 0 && (
+                  <>
+                    <h3 className="font-serif text-2xl text-stone mt-10 mb-6">
+                      Room Amenities
+                    </h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      {roomAmenityNames.map((name) => (
+                        <div key={name} className="flex items-center gap-2">
+                          <Check className="w-4 h-4 text-sea flex-shrink-0" />
+                          <span className="text-stone/80 text-sm">{name}</span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  </>
+                )}
               </motion.div>
             </div>
 
@@ -127,22 +141,26 @@ export default function RoomDetail() {
                   Book This Room
                 </h3>
                 <div className="space-y-3 mb-6">
-                  <div className="flex items-center gap-3 text-stone/70">
-                    <Maximize2 className="w-4 h-4" />
-                    <span className="text-sm">{room.floor}</span>
-                  </div>
+                  {room.floor && (
+                    <div className="flex items-center gap-3 text-stone/70">
+                      <Maximize2 className="w-4 h-4" />
+                      <span className="text-sm">{room.floor}</span>
+                    </div>
+                  )}
                   <div className="flex items-center gap-3 text-stone/70">
                     <Users className="w-4 h-4" />
                     <span className="text-sm">
-                      Up to {room.maxGuests} guests
+                      Up to {room.max_guests} guests
                     </span>
                   </div>
-                  <div className="flex items-center gap-3 text-stone/70">
-                    <BedDouble className="w-4 h-4" />
-                    <span className="text-sm">
-                      {room.bedOptions.join(' or ')}
-                    </span>
-                  </div>
+                  {room.bed_options?.length > 0 && (
+                    <div className="flex items-center gap-3 text-stone/70">
+                      <BedDouble className="w-4 h-4" />
+                      <span className="text-sm">
+                        {room.bed_options.join(' or ')}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <Link
@@ -152,36 +170,40 @@ export default function RoomDetail() {
                   Book Now
                 </Link>
 
-                <div className="mt-6 pt-6 border-t border-stone/10">
-                  <div className="flex items-center gap-2 text-stone/60">
-                    <Phone className="w-4 h-4" />
-                    <a
-                      href={`tel:${HOTEL.contact.phone}`}
-                      className="text-sm hover:text-sea transition-colors"
-                    >
-                      {HOTEL.contact.phone || 'Call for reservations'}
-                    </a>
+                {settings?.phone && (
+                  <div className="mt-6 pt-6 border-t border-stone/10">
+                    <div className="flex items-center gap-2 text-stone/60">
+                      <Phone className="w-4 h-4" />
+                      <a
+                        href={`tel:${settings.phone}`}
+                        className="text-sm hover:text-sea transition-colors"
+                      >
+                        {settings.phone}
+                      </a>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
 
           {/* Image Gallery */}
-          <div className="mt-16">
-            <h3 className="font-serif text-2xl text-stone mb-6">Gallery</h3>
-            <div className="flex gap-3 overflow-x-auto pb-2">
-              {images.map((img, i) => (
-                <img
-                  key={i}
-                  src={img}
-                  alt={`${room.name} ${i + 1}`}
-                  className="h-48 md:h-64 w-auto rounded-lg object-cover cursor-pointer hover:opacity-90 transition-opacity flex-shrink-0"
-                  onClick={() => openLightbox(i)}
-                />
-              ))}
+          {images.length > 0 && (
+            <div className="mt-16">
+              <h3 className="font-serif text-2xl text-stone mb-6">Gallery</h3>
+              <div className="flex gap-3 overflow-x-auto pb-2">
+                {images.map((img, i) => (
+                  <img
+                    key={i}
+                    src={img}
+                    alt={`${room.name} ${i + 1}`}
+                    className="h-48 md:h-64 w-auto rounded-lg object-cover cursor-pointer hover:opacity-90 transition-opacity flex-shrink-0"
+                    onClick={() => openLightbox(i)}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* All rooms include */}
           <div className="mt-16 bg-cream rounded-2xl p-8 md:p-12">
@@ -200,7 +222,6 @@ export default function RoomDetail() {
         </div>
       </section>
 
-      {/* Lightbox */}
       <ImageLightbox
         images={images}
         currentIndex={lightboxIndex}
@@ -208,9 +229,7 @@ export default function RoomDetail() {
         onClose={() => setLightboxOpen(false)}
         onNext={() => setLightboxIndex((prev) => (prev + 1) % images.length)}
         onPrev={() =>
-          setLightboxIndex(
-            (prev) => (prev - 1 + images.length) % images.length
-          )
+          setLightboxIndex((prev) => (prev - 1 + images.length) % images.length)
         }
       />
     </>
