@@ -25,14 +25,15 @@ const stagger = {
 
 export default function Dining() {
   const { data: content } = usePageContent('dining')
+  const extra = content?.extra_content || {}
   const heroImage = content?.hero_image_url || HOTEL_IMAGES.galiaRooftop
   const heroTitle = content?.hero_title || 'Dining'
   const heroSubtitle = content?.hero_subtitle || ''
 
   useSEO({
-    title: 'Dining',
-    description:
-      'Discover the dining experiences at Seagonia Hotel — from Galia rooftop restaurant to farm-to-table cuisine, cooking classes, and beekeeping on the Ionian coast.',
+    title: extra.seo_title || 'Dining',
+    description: extra.seo_description || 'Discover the dining experiences at Seagonia Hotel — from Galia rooftop restaurant to farm-to-table cuisine, cooking classes, and beekeeping on the Ionian coast.',
+    ogImage: extra.seo_og_image,
   })
 
   return (

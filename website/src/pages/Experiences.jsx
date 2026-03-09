@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import useSEO from '../hooks/useSEO'
 import { HOTEL_IMAGES } from '../constants/hotel'
 import SectionHeader from '../components/shared/SectionHeader'
+import { usePageContent } from '../hooks/useSupabase'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -32,10 +33,13 @@ const heroImages = [
 ]
 
 export default function Experiences() {
+  const { data: content } = usePageContent('experiences')
+  const extra = content?.extra_content || {}
+
   useSEO({
-    title: 'Experiences',
-    description:
-      'Explore unique experiences at Seagonia Hotel — wellness, fitness, open water swimming, boat trips, hiking and more on the Ionian coast of Greece.',
+    title: extra.seo_title || 'Experiences',
+    description: extra.seo_description || 'Explore unique experiences at Seagonia Hotel — wellness, fitness, open water swimming, boat trips, hiking and more on the Ionian coast of Greece.',
+    ogImage: extra.seo_og_image,
   })
 
   return (

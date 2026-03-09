@@ -6,15 +6,16 @@ import { useRooms, usePageContent } from '../hooks/useSupabase'
 export default function Rooms() {
   const { data: rooms, isLoading, isError } = useRooms()
   const { data: content } = usePageContent('rooms')
+  const extra = content?.extra_content || {}
 
   const heroImage = content?.hero_image_url || HOTEL_IMAGES.pogoniaPanorama
   const heroTitle = content?.hero_title || 'Our Rooms'
   const heroSubtitle = content?.hero_subtitle || '58 rooms across 6 unique types, each thoughtfully designed for comfort and tranquility by the Ionian Sea.'
 
   useSEO({
-    title: 'Our Rooms',
-    description:
-      'Explore 58 rooms across 6 unique types at Seagonia Hotel — from garden rooms and swim-up suites to panoramic balcony rooms on the Ionian coast.',
+    title: extra.seo_title || 'Our Rooms',
+    description: extra.seo_description || 'Explore 58 rooms across 6 unique types at Seagonia Hotel — from garden rooms and swim-up suites to panoramic balcony rooms on the Ionian coast.',
+    ogImage: extra.seo_og_image,
   })
 
   return (

@@ -94,14 +94,15 @@ function AnimatedCounter({ target, suffix = '' }) {
 
 export default function Hotel() {
   const { data: content } = usePageContent('hotel')
+  const extra = content?.extra_content || {}
   const heroImage = content?.hero_image_url || HOTEL_IMAGES.entrance
   const heroTitle = content?.hero_title || 'The Hotel'
   const heroSubtitle = content?.hero_subtitle || ''
 
   useSEO({
-    title: 'The Hotel',
-    description:
-      'Discover Seagonia Hotel — 58 rooms, 4 pools, rooftop dining, Technogym fitness, and a 500m beach just 80 metres away. A peaceful retreat on the Ionian coast.',
+    title: extra.seo_title || 'The Hotel',
+    description: extra.seo_description || 'Discover Seagonia Hotel — 58 rooms, 4 pools, rooftop dining, Technogym fitness, and a 500m beach just 80 metres away. A peaceful retreat on the Ionian coast.',
+    ogImage: extra.seo_og_image,
   })
 
   return (

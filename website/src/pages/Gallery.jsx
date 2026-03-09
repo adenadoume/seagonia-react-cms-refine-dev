@@ -13,15 +13,16 @@ export default function Gallery() {
   const { data: categories } = useGalleryCategories()
   const { data: allImages, isLoading, isError } = useGalleryImages()
   const { data: content } = usePageContent('gallery')
+  const extra = content?.extra_content || {}
 
   const heroImage = content?.hero_image_url || HOTEL_IMAGES.littleIonian
   const heroTitle = content?.hero_title || 'Gallery'
   const heroSubtitle = content?.hero_subtitle || ''
 
   useSEO({
-    title: 'Gallery',
-    description:
-      'Browse photos of Seagonia Hotel — rooms, pool, dining, beach and experiences on the Ionian coast of Greece.',
+    title: extra.seo_title || 'Gallery',
+    description: extra.seo_description || 'Browse photos of Seagonia Hotel — rooms, pool, dining, beach and experiences on the Ionian coast of Greece.',
+    ogImage: extra.seo_og_image,
   })
 
   const filtered =

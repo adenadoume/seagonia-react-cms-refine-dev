@@ -72,14 +72,15 @@ const nearbyBeaches = [
 
 export default function Area() {
   const { data: content } = usePageContent('area')
+  const extra = content?.extra_content || {}
   const heroImage = content?.hero_image_url || HOTEL_IMAGES.palerosBay
   const heroTitle = content?.hero_title || 'The Area'
   const heroSubtitle = content?.hero_subtitle || ''
 
   useSEO({
-    title: 'The Area',
-    description:
-      'Discover the area around Seagonia Hotel in Pogonia, near Paleros. Explore the Ionian islands, nearby beaches, and how to get here.',
+    title: extra.seo_title || 'The Area',
+    description: extra.seo_description || 'Discover the area around Seagonia Hotel in Pogonia, near Paleros. Explore the Ionian islands, nearby beaches, and how to get here.',
+    ogImage: extra.seo_og_image,
   })
 
   const mapsDirectionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${HOTEL.location.coords.lat},${HOTEL.location.coords.lng}`

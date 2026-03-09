@@ -81,9 +81,9 @@ export default function Home() {
   ]
 
   useSEO({
-    title: 'Boutique Hotel in Paleros',
-    description:
-      'Seagonia Hotel — Your Corner by the Sea. A boutique 58-room hotel in Pogonia village near Paleros, on the Ionian coast of Greece.',
+    title: extra.seo_title || 'Boutique Hotel in Paleros',
+    description: extra.seo_description || 'Seagonia Hotel — Your Corner by the Sea. A boutique 58-room hotel in Pogonia village near Paleros, on the Ionian coast of Greece.',
+    ogImage: extra.seo_og_image,
   })
 
   return (

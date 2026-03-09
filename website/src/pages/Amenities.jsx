@@ -81,15 +81,16 @@ export default function Amenities() {
   const { data: amenities, isLoading: amenitiesLoading } = useAmenities()
   const { data: experiences, isLoading: experiencesLoading } = useExperiences()
   const { data: content } = usePageContent('amenities')
+  const extra = content?.extra_content || {}
 
   const heroImage = content?.hero_image_url || PLACEHOLDER_IMAGES.pool
   const heroTitle = content?.hero_title || 'Hotel Amenities & Experiences'
   const heroSubtitle = content?.hero_subtitle || ''
 
   useSEO({
-    title: 'Amenities & Experiences',
-    description:
-      'Discover the amenities and experiences at Seagonia Hotel — pool, beach, dining, wellness, boat trips, cooking classes and more on the Ionian coast.',
+    title: extra.seo_title || 'Amenities & Experiences',
+    description: extra.seo_description || 'Discover the amenities and experiences at Seagonia Hotel — pool, beach, dining, wellness, boat trips, cooking classes and more on the Ionian coast.',
+    ogImage: extra.seo_og_image,
   })
 
   return (

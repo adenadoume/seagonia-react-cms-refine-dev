@@ -1,34 +1,37 @@
 import { useEffect } from 'react'
 
-/**
- * useSEO - Sets document title and meta description for the current page.
- *
- * @param {Object} options
- * @param {string} options.title       - Page title. Appended with " | Seagonia Hotel".
- * @param {string} options.description - Meta description content.
- */
-const useSEO = ({ title, description } = {}) => {
+function setMeta(name, content, attr = 'name') {
+  if (!content) return
+  let el = document.querySelector(`meta[${attr}="${name}"]`)
+  if (!el) {
+    el = document.createElement('meta')
+    el.setAttribute(attr, name)
+    document.head.appendChild(el)
+  }
+  el.setAttribute('content', content)
+}
+
+const useSEO = ({ title, description, ogImage } = {}) => {
   useEffect(() => {
     const siteName = 'Seagonia Hotel'
+    const fullTitle = title ? `${title} | ${siteName}` : `${siteName} — Your Corner by the Sea`
 
-    // Update document title
-    if (title) {
-      document.title = `${title} | ${siteName}`
-    } else {
-      document.title = `${siteName} — Your Corner by the Sea`
-    }
+    document.title = fullTitle
 
-    // Update or create meta description
-    if (description) {
-      let metaDesc = document.querySelector('meta[name="description"]')
-      if (!metaDesc) {
-        metaDesc = document.createElement('meta')
-        metaDesc.setAttribute('name', 'description')
-        document.head.appendChild(metaDesc)
-      }
-      metaDesc.setAttribute('content', description)
-    }
-  }, [title, description])
+    setMeta('description', description)
+
+    // Open Graph
+    setMeta('og:title', fullTitle, 'property')
+    setMeta('og:description', description, 'property')
+    setMeta('og:site_name', siteName, 'property')
+    if (ogImage) setMeta('og:image', ogImage, 'property')
+
+    // Twitter card
+    setMeta('twitter:card', 'summary_large_image')
+    setMeta('twitter:title', fullTitle)
+    setMeta('twitter:description', description)
+    if (ogImage) setMeta('twitter:image', ogImage)
+  }, [title, description, ogImage])
 }
 
 export default useSEO
