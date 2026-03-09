@@ -14,8 +14,8 @@ export default {
         charcoal: { DEFAULT: '#2D2D2D' },
       },
       fontFamily: {
-        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
-        sans:  ['Outfit', 'system-ui', 'sans-serif'],
+        serif: ['var(--font-cormorant)', 'Georgia', 'serif'],
+        sans:  ['var(--font-outfit)', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         'display': ['6rem', { lineHeight: '1.05', letterSpacing: '0.04em' }],
