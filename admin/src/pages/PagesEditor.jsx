@@ -13,6 +13,110 @@ const PAGE_LABELS = {
   hotel: 'About',
 }
 
+const SECTION_TYPES = [
+  { value: 'text', label: 'Text Block' },
+  { value: 'image_text', label: 'Image + Text' },
+  { value: 'image', label: 'Image Only' },
+]
+
+// ─── Custom Sections editor ───────────────────────────────
+function CustomSections({ sections, onChange }) {
+  function addSection() {
+    const id = Date.now().toString()
+    onChange([...sections, { id, type: 'text', heading: '', body: '', image_url: '' }])
+  }
+
+  function updateSection(id, field, value) {
+    onChange(sections.map((s) => s.id === id ? { ...s, [field]: value } : s))
+  }
+
+  function removeSection(id) {
+    onChange(sections.filter((s) => s.id !== id))
+  }
+
+  function moveUp(idx) {
+    if (idx === 0) return
+    const next = [...sections]
+    ;[next[idx - 1], next[idx]] = [next[idx], next[idx - 1]]
+    onChange(next)
+  }
+
+  function moveDown(idx) {
+    if (idx === sections.length - 1) return
+    const next = [...sections]
+    ;[next[idx], next[idx + 1]] = [next[idx + 1], next[idx]]
+    onChange(next)
+  }
+
+  return (
+    <div className="space-y-4">
+      {sections.map((sec, idx) => (
+        <div key={sec.id} className="bg-slate-800 border border-slate-600 rounded-lg p-5 space-y-4">
+          {/* Section header */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <select
+                className="bg-slate-700 border border-slate-600 rounded px-2 py-1 text-xs text-slate-300 focus:outline-none focus:border-gold"
+                value={sec.type}
+                onChange={(e) => updateSection(sec.id, 'type', e.target.value)}
+              >
+                {SECTION_TYPES.map((t) => (
+                  <option key={t.value} value={t.value}>{t.label}</option>
+                ))}
+              </select>
+              <span className="text-slate-500 text-xs">Section {idx + 1}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <button type="button" onClick={() => moveUp(idx)}
+                disabled={idx === 0}
+                className="px-2 py-1 text-xs border border-slate-600 rounded text-slate-400 hover:text-white disabled:opacity-30 transition-colors">
+                ↑
+              </button>
+              <button type="button" onClick={() => moveDown(idx)}
+                disabled={idx === sections.length - 1}
+                className="px-2 py-1 text-xs border border-slate-600 rounded text-slate-400 hover:text-white disabled:opacity-30 transition-colors">
+                ↓
+              </button>
+              <button type="button" onClick={() => removeSection(sec.id)} className="btn-delete">
+                Remove
+              </button>
+            </div>
+          </div>
+
+          {/* Heading — all types except image-only */}
+          {sec.type !== 'image' && (
+            <div>
+              <label className="label">Heading</label>
+              <input className="input" value={sec.heading || ''} onChange={(e) => updateSection(sec.id, 'heading', e.target.value)} placeholder="Section heading" />
+            </div>
+          )}
+
+          {/* Body — text and image+text */}
+          {(sec.type === 'text' || sec.type === 'image_text') && (
+            <div>
+              <label className="label">Body text</label>
+              <textarea className="input" rows={4} value={sec.body || ''} onChange={(e) => updateSection(sec.id, 'body', e.target.value)} placeholder="Section content..." />
+            </div>
+          )}
+
+          {/* Image — image and image+text */}
+          {(sec.type === 'image' || sec.type === 'image_text') && (
+            <ImagePicker label="Image" value={sec.image_url || ''} onChange={(v) => updateSection(sec.id, 'image_url', v)} />
+          )}
+        </div>
+      ))}
+
+      <button
+        type="button"
+        onClick={addSection}
+        className="w-full py-3 border-2 border-dashed border-slate-600 rounded-lg text-slate-400 hover:border-gold hover:text-gold text-sm transition-colors"
+      >
+        + Add Section
+      </button>
+    </div>
+  )
+}
+
 // ─── Home page form — full section editing ───────────────
 function HomeForm({ data, onSave, saving, saved }) {
   const extra = data?.extra_content || {}
@@ -31,6 +135,7 @@ function HomeForm({ data, onSave, saving, saved }) {
     cta_heading: extra.cta_heading || 'Plan Your Stay',
     cta_subheading: extra.cta_subheading || '',
   })
+  const [customSections, setCustomSections] = useState(extra.custom_sections || [])
 
   useEffect(() => {
     if (data) {
@@ -50,6 +155,7 @@ function HomeForm({ data, onSave, saving, saved }) {
         cta_heading: ex.cta_heading || 'Plan Your Stay',
         cta_subheading: ex.cta_subheading || '',
       })
+      setCustomSections(ex.custom_sections || [])
     }
   }, [data])
 
@@ -74,6 +180,7 @@ function HomeForm({ data, onSave, saving, saved }) {
         dining_body: form.dining_body,
         cta_heading: form.cta_heading,
         cta_subheading: form.cta_subheading,
+        custom_sections: customSections,
       },
     })
   }
@@ -154,7 +261,13 @@ function HomeForm({ data, onSave, saving, saved }) {
         </div>
       </section>
 
-      <div className="flex items-center gap-3">
+      {/* Custom sections */}
+      <div>
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-4">Custom Sections</h3>
+        <CustomSections sections={customSections} onChange={setCustomSections} />
+      </div>
+
+      <div className="flex items-center gap-3 pt-2">
         <button type="submit" disabled={saving} className="btn-primary">
           {saving ? 'Saving...' : 'Save Changes'}
         </button>
@@ -164,21 +277,25 @@ function HomeForm({ data, onSave, saving, saved }) {
   )
 }
 
-// ─── Generic page form (hero only) ───────────────────────
+// ─── Generic page form (hero + custom sections) ───────────
 function GenericPageForm({ data, onSave, saving, saved }) {
+  const extra = data?.extra_content || {}
   const [form, setForm] = useState({
     hero_title: data?.hero_title || '',
     hero_subtitle: data?.hero_subtitle || '',
     hero_image_url: data?.hero_image_url || '',
   })
+  const [customSections, setCustomSections] = useState(extra.custom_sections || [])
 
   useEffect(() => {
     if (data) {
+      const ex = data.extra_content || {}
       setForm({
         hero_title: data.hero_title || '',
         hero_subtitle: data.hero_subtitle || '',
         hero_image_url: data.hero_image_url || '',
       })
+      setCustomSections(ex.custom_sections || [])
     }
   }, [data])
 
@@ -186,11 +303,18 @@ function GenericPageForm({ data, onSave, saving, saved }) {
 
   function handleSubmit(e) {
     e.preventDefault()
-    onSave({ id: data.id, ...form })
+    onSave({
+      id: data.id,
+      ...form,
+      extra_content: {
+        ...(data.extra_content || {}),
+        custom_sections: customSections,
+      },
+    })
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
         <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Hero Section</h3>
         <div>
@@ -204,7 +328,13 @@ function GenericPageForm({ data, onSave, saving, saved }) {
         <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} />
       </section>
 
-      <div className="flex items-center gap-3">
+      {/* Custom sections */}
+      <div>
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-4">Page Sections</h3>
+        <CustomSections sections={customSections} onChange={setCustomSections} />
+      </div>
+
+      <div className="flex items-center gap-3 pt-2">
         <button type="submit" disabled={saving} className="btn-primary">
           {saving ? 'Saving...' : 'Save Changes'}
         </button>
