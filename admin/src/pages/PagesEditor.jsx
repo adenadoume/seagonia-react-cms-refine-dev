@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAdminAllPageContent, useAdminPageContent, useUpdatePageContent } from '../hooks/useAdmin'
+import ImagePicker from '../components/ImagePicker'
 
 const PAGE_LABELS = {
   home: 'Home',
@@ -80,8 +81,8 @@ function HomeForm({ data, onSave, saving, saved }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Introduction */}
-      <section className="bg-white border border-gray-200 rounded-lg p-6 space-y-4">
-        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Introduction Section</h3>
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Introduction Section</h3>
         <div>
           <label className="label">Eyebrow label (small text above heading)</label>
           <input className="input" value={form.intro_eyebrow} onChange={(e) => set('intro_eyebrow', e.target.value)} />
@@ -94,15 +95,12 @@ function HomeForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.section_1_text} onChange={(e) => set('section_1_text', e.target.value)} />
         </div>
-        <div>
-          <label className="label">Image URL</label>
-          <input className="input" value={form.section_1_image_url} onChange={(e) => set('section_1_image_url', e.target.value)} placeholder="/images/hotel/img-028.jpg" />
-        </div>
+        <ImagePicker label="Image" value={form.section_1_image_url} onChange={(v) => set('section_1_image_url', v)} />
       </section>
 
       {/* Accommodation */}
-      <section className="bg-white border border-gray-200 rounded-lg p-6 space-y-4">
-        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Accommodation Section</h3>
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Accommodation Section</h3>
         <div>
           <label className="label">Eyebrow label</label>
           <input className="input" value={form.accommodation_eyebrow} onChange={(e) => set('accommodation_eyebrow', e.target.value)} />
@@ -114,8 +112,8 @@ function HomeForm({ data, onSave, saving, saved }) {
       </section>
 
       {/* Experiences */}
-      <section className="bg-white border border-gray-200 rounded-lg p-6 space-y-4">
-        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Experiences Section</h3>
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Experiences Section</h3>
         <div>
           <label className="label">Eyebrow label</label>
           <input className="input" value={form.experiences_eyebrow} onChange={(e) => set('experiences_eyebrow', e.target.value)} />
@@ -127,8 +125,8 @@ function HomeForm({ data, onSave, saving, saved }) {
       </section>
 
       {/* Dining */}
-      <section className="bg-white border border-gray-200 rounded-lg p-6 space-y-4">
-        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Dining Section</h3>
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Dining Section</h3>
         <div>
           <label className="label">Eyebrow label</label>
           <input className="input" value={form.dining_eyebrow} onChange={(e) => set('dining_eyebrow', e.target.value)} />
@@ -144,8 +142,8 @@ function HomeForm({ data, onSave, saving, saved }) {
       </section>
 
       {/* CTA */}
-      <section className="bg-white border border-gray-200 rounded-lg p-6 space-y-4">
-        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Call to Action (bottom)</h3>
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Call to Action (bottom)</h3>
         <div>
           <label className="label">Heading</label>
           <input className="input" value={form.cta_heading} onChange={(e) => set('cta_heading', e.target.value)} />
@@ -160,7 +158,7 @@ function HomeForm({ data, onSave, saving, saved }) {
         <button type="submit" disabled={saving} className="btn-primary">
           {saving ? 'Saving...' : 'Save Changes'}
         </button>
-        {saved && <span className="text-green-600 text-sm">Saved</span>}
+        {saved && <span className="text-green-400 text-sm">Saved</span>}
       </div>
     </form>
   )
@@ -193,8 +191,8 @@ function GenericPageForm({ data, onSave, saving, saved }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <section className="bg-white border border-gray-200 rounded-lg p-6 space-y-4">
-        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Hero Section</h3>
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Hero Section</h3>
         <div>
           <label className="label">Page Title</label>
           <input className="input" value={form.hero_title} onChange={(e) => set('hero_title', e.target.value)} />
@@ -203,20 +201,14 @@ function GenericPageForm({ data, onSave, saving, saved }) {
           <label className="label">Subtitle / Description</label>
           <textarea className="input" rows={2} value={form.hero_subtitle} onChange={(e) => set('hero_subtitle', e.target.value)} />
         </div>
-        <div>
-          <label className="label">Hero Image URL</label>
-          <input className="input" value={form.hero_image_url} onChange={(e) => set('hero_image_url', e.target.value)} placeholder="/images/hotel/img-XXX.jpg" />
-          {form.hero_image_url && (
-            <img src={form.hero_image_url} alt="" className="mt-2 h-24 rounded object-cover" onError={(e) => e.target.style.display = 'none'} />
-          )}
-        </div>
+        <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} />
       </section>
 
       <div className="flex items-center gap-3">
         <button type="submit" disabled={saving} className="btn-primary">
           {saving ? 'Saving...' : 'Save Changes'}
         </button>
-        {saved && <span className="text-green-600 text-sm">Saved</span>}
+        {saved && <span className="text-green-400 text-sm">Saved</span>}
       </div>
     </form>
   )
@@ -234,8 +226,8 @@ function PageDetail({ pageName }) {
     setTimeout(() => setSaved(false), 2000)
   }
 
-  if (isLoading) return <div className="p-6 text-gray-400">Loading...</div>
-  if (!data) return <div className="p-6 text-gray-400">No content found for this page. Run the seed SQL first.</div>
+  if (isLoading) return <div className="p-6 text-slate-400">Loading...</div>
+  if (!data) return <div className="p-6 text-slate-400">No content found for this page. Run the seed SQL first.</div>
 
   if (pageName === 'home') {
     return (
@@ -273,8 +265,8 @@ export default function PagesEditor() {
   return (
     <div className="flex min-h-full">
       {/* Page list sidebar */}
-      <aside className="w-44 border-r border-gray-200 bg-white flex-shrink-0 py-6">
-        <h2 className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Pages</h2>
+      <aside className="w-44 border-r border-slate-700 bg-slate-800/50 flex-shrink-0 py-6">
+        <h2 className="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Pages</h2>
         <nav className="space-y-0.5 px-2">
           {pageList.map((page) => (
             <button
@@ -283,7 +275,7 @@ export default function PagesEditor() {
               className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${
                 selected === page.page_name
                   ? 'bg-gold text-white'
-                  : 'text-gray-600 hover:bg-gray-50'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-700'
               }`}
             >
               {PAGE_LABELS[page.page_name] || page.page_name}
@@ -294,10 +286,10 @@ export default function PagesEditor() {
 
       {/* Editor area */}
       <div className="flex-1 p-8 overflow-auto">
-        <h1 className="text-xl font-semibold text-gray-800 mb-1">
+        <h1 className="text-xl font-semibold text-white mb-1">
           {PAGE_LABELS[selected] || selected} Page
         </h1>
-        <p className="text-gray-400 text-sm mb-6">
+        <p className="text-slate-400 text-sm mb-6">
           Changes are saved to Supabase and appear live on the website.
         </p>
 

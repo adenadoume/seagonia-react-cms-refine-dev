@@ -47,19 +47,19 @@ export default function TestimonialsAdmin() {
     await del.mutateAsync(id)
   }
 
-  if (isLoading) return <div className="p-8 text-gray-400">Loading...</div>
+  if (isLoading) return <div className="p-8 text-slate-400">Loading...</div>
 
   if (view !== 'list') {
     return (
       <div className="p-8 max-w-2xl">
-        <button onClick={() => setView('list')} className="text-gray-400 hover:text-gray-600 text-sm mb-6 block">
+        <button onClick={() => setView('list')} className="text-slate-400 hover:text-slate-200 text-sm mb-6 block">
           ← Back to Testimonials
         </button>
-        <h1 className="text-xl font-semibold text-gray-800 mb-6">
+        <h1 className="text-xl font-semibold text-white mb-6">
           {view === 'edit' ? 'Edit Testimonial' : 'New Testimonial'}
         </h1>
 
-        <form onSubmit={handleSave} className="bg-white border border-gray-200 rounded-lg p-6 space-y-4">
+        <form onSubmit={handleSave} className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
           <div>
             <label className="label">Quote</label>
             <textarea className="input" rows={4} value={form.quote} onChange={(e) => set('quote', e.target.value)} required />
@@ -82,7 +82,7 @@ export default function TestimonialsAdmin() {
             <div className="flex items-end pb-1">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" checked={form.is_published} onChange={(e) => set('is_published', e.target.checked)} />
-                <span className="text-sm text-gray-700">Published</span>
+                <span className="text-sm text-slate-300">Published</span>
               </label>
             </div>
           </div>
@@ -92,7 +92,7 @@ export default function TestimonialsAdmin() {
               {update.isPending || create.isPending ? 'Saving...' : 'Save'}
             </button>
             <button type="button" onClick={() => setView('list')} className="btn-secondary">Cancel</button>
-            {saved && <span className="text-green-600 text-sm">Saved</span>}
+            {saved && <span className="text-green-400 text-sm">Saved</span>}
           </div>
         </form>
       </div>
@@ -102,44 +102,44 @@ export default function TestimonialsAdmin() {
   return (
     <div className="p-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-semibold text-gray-800">Testimonials</h1>
+        <h1 className="text-xl font-semibold text-white">Testimonials</h1>
         <button onClick={startCreate} className="btn-primary">+ Add Testimonial</button>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+      <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-gray-100 text-left">
-              <th className="px-4 py-3 text-gray-500 font-medium">Quote</th>
-              <th className="px-4 py-3 text-gray-500 font-medium">Name</th>
-              <th className="px-4 py-3 text-gray-500 font-medium">Country</th>
-              <th className="px-4 py-3 text-gray-500 font-medium">Order</th>
-              <th className="px-4 py-3 text-gray-500 font-medium">Status</th>
+            <tr className="border-b border-slate-700 text-left">
+              <th className="px-4 py-3 text-slate-400 font-medium">Quote</th>
+              <th className="px-4 py-3 text-slate-400 font-medium">Name</th>
+              <th className="px-4 py-3 text-slate-400 font-medium">Country</th>
+              <th className="px-4 py-3 text-slate-400 font-medium">Order</th>
+              <th className="px-4 py-3 text-slate-400 font-medium">Status</th>
               <th className="px-4 py-3"></th>
             </tr>
           </thead>
           <tbody>
             {testimonials?.map((t) => (
-              <tr key={t.id} className="border-b border-gray-50 hover:bg-gray-50">
-                <td className="px-4 py-3 max-w-xs truncate text-gray-700">{t.quote}</td>
-                <td className="px-4 py-3">{t.name}</td>
-                <td className="px-4 py-3 text-gray-500">{t.country}</td>
-                <td className="px-4 py-3 text-gray-500">{t.display_order}</td>
+              <tr key={t.id} className="border-b border-slate-700/50 hover:bg-slate-700/30">
+                <td className="px-4 py-3 max-w-xs truncate text-slate-300">{t.quote}</td>
+                <td className="px-4 py-3 text-slate-300">{t.name}</td>
+                <td className="px-4 py-3 text-slate-400">{t.country}</td>
+                <td className="px-4 py-3 text-slate-400">{t.display_order}</td>
                 <td className="px-4 py-3">
                   <span className={t.is_published ? 'badge-published' : 'badge-draft'}>
                     {t.is_published ? 'Published' : 'Draft'}
                   </span>
                 </td>
                 <td className="px-4 py-3 text-right space-x-3">
-                  <button onClick={() => startEdit(t)} className="text-gold hover:underline text-xs">Edit</button>
-                  <button onClick={() => handleDelete(t.id)} className="text-red-500 hover:underline text-xs">Delete</button>
+                  <button onClick={() => startEdit(t)} className="btn-edit">Edit</button>
+                  <button onClick={() => handleDelete(t.id)} className="btn-delete">Delete</button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
         {testimonials?.length === 0 && (
-          <div className="text-center text-gray-400 py-12">No testimonials yet</div>
+          <div className="text-center text-slate-400 py-12">No testimonials yet</div>
         )}
       </div>
     </div>

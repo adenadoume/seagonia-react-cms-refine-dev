@@ -5,10 +5,10 @@ function StatCard({ label, value, path, accent }) {
   return (
     <Link
       to={path}
-      className="bg-white border border-gray-200 rounded-lg p-6 hover:border-gold transition-colors"
+      className="bg-slate-800 border border-slate-700 rounded-lg p-6 hover:border-gold transition-colors"
     >
-      <div className={`text-3xl font-semibold ${accent || 'text-navy'}`}>{value ?? '—'}</div>
-      <div className="text-gray-500 text-sm mt-1">{label}</div>
+      <div className={`text-3xl font-semibold ${accent || 'text-gold'}`}>{value ?? '—'}</div>
+      <div className="text-slate-400 text-sm mt-1">{label}</div>
     </Link>
   )
 }
@@ -18,8 +18,8 @@ export default function Dashboard() {
 
   return (
     <div className="p-8">
-      <h1 className="text-xl font-semibold text-gray-800 mb-1">Dashboard</h1>
-      <p className="text-gray-400 text-sm mb-8">Seagonia Hotel CMS overview</p>
+      <h1 className="text-xl font-semibold text-white mb-1">Dashboard</h1>
+      <p className="text-slate-400 text-sm mb-8">Seagonia Hotel CMS overview</p>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
         <StatCard label="Rooms" value={stats?.rooms} path="/rooms" />
@@ -29,11 +29,11 @@ export default function Dashboard() {
           label="New Messages"
           value={stats?.newMessages}
           path="/messages"
-          accent={stats?.newMessages > 0 ? 'text-blue-600' : 'text-navy'}
+          accent={stats?.newMessages > 0 ? 'text-blue-400' : 'text-gold'}
         />
       </div>
 
-      <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">
+      <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-4">
         Quick Access
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -48,7 +48,7 @@ export default function Dashboard() {
           <Link
             key={item.path}
             to={item.path}
-            className="bg-white border border-gray-200 rounded px-4 py-3 text-sm text-gray-700 hover:border-gold hover:text-gold transition-colors"
+            className="bg-slate-800 border border-slate-700 rounded px-4 py-3 text-sm text-slate-300 hover:border-gold hover:text-gold transition-colors"
           >
             {item.label}
           </Link>

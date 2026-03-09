@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import ImagePicker from '../components/ImagePicker'
 import {
   useAdminGallery,
   useAdminGalleryCategories,
@@ -49,26 +50,20 @@ export default function GalleryAdmin() {
     ? filterCat === 'all' ? images : images.filter((img) => img.category?.slug === filterCat)
     : []
 
-  if (isLoading) return <div className="p-8 text-gray-400">Loading...</div>
+  if (isLoading) return <div className="p-8 text-slate-400">Loading...</div>
 
   if (view !== 'list') {
     return (
       <div className="p-8 max-w-2xl">
-        <button onClick={() => setView('list')} className="text-gray-400 hover:text-gray-600 text-sm mb-6 block">
+        <button onClick={() => setView('list')} className="text-slate-400 hover:text-slate-200 text-sm mb-6 block">
           ← Back to Gallery
         </button>
-        <h1 className="text-xl font-semibold text-gray-800 mb-6">
+        <h1 className="text-xl font-semibold text-white mb-6">
           {view === 'edit' ? 'Edit Image' : 'Add Image'}
         </h1>
 
-        <form onSubmit={handleSave} className="bg-white border border-gray-200 rounded-lg p-6 space-y-4">
-          <div>
-            <label className="label">Image URL</label>
-            <input className="input" value={form.image_url} onChange={(e) => set('image_url', e.target.value)} required placeholder="/images/hotel/img-XXX.jpg" />
-            {form.image_url && (
-              <img src={form.image_url} alt="" className="mt-2 h-32 rounded object-cover" onError={(e) => e.target.style.display = 'none'} />
-            )}
-          </div>
+        <form onSubmit={handleSave} className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+          <ImagePicker label="Image" value={form.image_url} onChange={(v) => set('image_url', v)} />
           <div>
             <label className="label">Title / Alt text</label>
             <input className="input" value={form.title || ''} onChange={(e) => set('title', e.target.value)} />
@@ -90,7 +85,7 @@ export default function GalleryAdmin() {
             <div className="flex items-end pb-1">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" checked={form.is_published} onChange={(e) => set('is_published', e.target.checked)} />
-                <span className="text-sm text-gray-700">Published</span>
+                <span className="text-sm text-slate-300">Published</span>
               </label>
             </div>
           </div>
@@ -100,7 +95,7 @@ export default function GalleryAdmin() {
               {update.isPending || create.isPending ? 'Saving...' : 'Save'}
             </button>
             <button type="button" onClick={() => setView('list')} className="btn-secondary">Cancel</button>
-            {saved && <span className="text-green-600 text-sm">Saved</span>}
+            {saved && <span className="text-green-400 text-sm">Saved</span>}
           </div>
         </form>
       </div>
@@ -110,7 +105,7 @@ export default function GalleryAdmin() {
   return (
     <div className="p-8">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-semibold text-gray-800">Gallery</h1>
+        <h1 className="text-xl font-semibold text-white">Gallery</h1>
         <button onClick={startCreate} className="btn-primary">+ Add Image</button>
       </div>
 
@@ -118,7 +113,7 @@ export default function GalleryAdmin() {
       <div className="flex gap-2 mb-6 flex-wrap">
         <button
           onClick={() => setFilterCat('all')}
-          className={`px-3 py-1 rounded text-xs font-medium transition-colors ${filterCat === 'all' ? 'bg-gold text-white' : 'border border-gray-300 text-gray-600 hover:bg-gray-50'}`}
+          className={`px-3 py-1 rounded text-xs font-medium transition-colors ${filterCat === 'all' ? 'bg-gold text-white' : 'border border-slate-600 text-slate-400 hover:bg-slate-700'}`}
         >
           All ({images?.length ?? 0})
         </button>
@@ -126,7 +121,7 @@ export default function GalleryAdmin() {
           <button
             key={cat.slug}
             onClick={() => setFilterCat(cat.slug)}
-            className={`px-3 py-1 rounded text-xs font-medium transition-colors ${filterCat === cat.slug ? 'bg-gold text-white' : 'border border-gray-300 text-gray-600 hover:bg-gray-50'}`}
+            className={`px-3 py-1 rounded text-xs font-medium transition-colors ${filterCat === cat.slug ? 'bg-gold text-white' : 'border border-slate-600 text-slate-400 hover:bg-slate-700'}`}
           >
             {cat.name} ({images?.filter(i => i.category?.slug === cat.slug).length ?? 0})
           </button>
@@ -136,8 +131,8 @@ export default function GalleryAdmin() {
       {/* Image grid */}
       <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
         {filtered.map((img) => (
-          <div key={img.id} className="group relative bg-white border border-gray-200 rounded-lg overflow-hidden">
-            <div className="aspect-square overflow-hidden bg-gray-100">
+          <div key={img.id} className="group relative bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
+            <div className="aspect-square overflow-hidden bg-slate-700">
               <img
                 src={img.image_url}
                 alt={img.title || ''}
@@ -146,11 +141,11 @@ export default function GalleryAdmin() {
               />
             </div>
             <div className="p-2">
-              <p className="text-xs text-gray-600 truncate">{img.title || img.description || '—'}</p>
-              <p className="text-xs text-gray-400">{img.category?.name || 'Uncategorised'}</p>
-              <div className="flex gap-2 mt-1">
-                <button onClick={() => startEdit(img)} className="text-gold text-xs hover:underline">Edit</button>
-                <button onClick={() => handleDelete(img.id)} className="text-red-500 text-xs hover:underline">Delete</button>
+              <p className="text-xs text-slate-300 truncate">{img.title || img.description || '—'}</p>
+              <p className="text-xs text-slate-500">{img.category?.name || 'Uncategorised'}</p>
+              <div className="flex gap-1.5 mt-1.5">
+                <button onClick={() => startEdit(img)} className="btn-edit">Edit</button>
+                <button onClick={() => handleDelete(img.id)} className="btn-delete">Del</button>
               </div>
             </div>
           </div>
@@ -158,7 +153,7 @@ export default function GalleryAdmin() {
       </div>
 
       {filtered.length === 0 && (
-        <div className="text-center text-gray-400 py-16">No images in this category</div>
+        <div className="text-center text-slate-400 py-16">No images in this category</div>
       )}
     </div>
   )
