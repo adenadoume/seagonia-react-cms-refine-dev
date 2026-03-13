@@ -7,6 +7,60 @@
     <meta name="description" content="Seagonia Hotel — Your Corner by the Sea. A boutique 58-room hotel in Pogonia, Paleros on the Ionian coast of Greece." />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
     <title>Seagonia Hotel | Your Corner by the Sea — Paleros, Ionian Sea</title>
+
+    <!-- Open Graph (static fallback — works for Facebook, WhatsApp, LinkedIn which don't run JS) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Seagonia Hotel" />
+    <meta property="og:title" content="Seagonia Hotel | Your Corner by the Sea — Paleros, Ionian Sea" />
+    <meta property="og:description" content="A boutique 58-room hotel in Pogonia, Paleros on the Ionian coast of Greece." />
+    <meta property="og:image" content="https://seagonia.vercel.app/images/hotel/img-000.jpg" />
+    <meta property="og:url" content="https://seagonia.vercel.app/" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card (static fallback) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Seagonia Hotel | Your Corner by the Sea — Paleros, Ionian Sea" />
+    <meta name="twitter:description" content="A boutique 58-room hotel in Pogonia, Paleros on the Ionian coast of Greece." />
+    <meta name="twitter:image" content="https://seagonia.vercel.app/images/hotel/img-000.jpg" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Hotel",
+      "name": "Seagonia Hotel",
+      "description": "A boutique 58-room hotel in Pogonia, Paleros on the Ionian coast of Greece.",
+      "url": "https://seagonia.vercel.app/",
+      "image": "https://seagonia.vercel.app/images/hotel/img-000.jpg",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Pogonia",
+        "addressRegion": "Aitoloakarnania",
+        "addressCountry": "GR",
+        "postalCode": "300 51"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 38.785,
+        "longitude": 20.876
+      },
+      "numberOfRooms": 58,
+      "starRating": {
+        "@type": "Rating",
+        "ratingValue": "4"
+      },
+      "amenityFeature": [
+        { "@type": "LocationFeatureSpecification", "name": "Swimming Pool", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Beach Access", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Restaurant", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Free WiFi", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Spa", "value": true }
+      ],
+      "sameAs": [
+        "https://seagonia.vercel.app/"
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
