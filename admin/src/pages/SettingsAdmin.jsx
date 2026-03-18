@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useAdminSettings, useUpdateSettings, useAdminRooms, useAdminGallery, useAdminAmenities, useAdminExperiences, useAdminTestimonials, useAdminAllPageContent, useAdminNewsletter } from '../hooks/useAdmin'
 import { supabase } from '../lib/supabase'
 import { DeployButton } from '../components/Layout'
@@ -36,10 +36,57 @@ export default function SettingsAdmin() {
   const [form, setForm] = useState({})
   const [saved, setSaved] = useState(false)
   const [exporting, setExporting] = useState(false)
+  const [importing, setImporting] = useState(false)
+  const [importResult, setImportResult] = useState(null)
+  const importRef = useRef(null)
 
   async function handleExport() {
     setExporting(true)
     try { await exportAllData() } finally { setExporting(false) }
+  }
+
+  async function handleImport(e) {
+    const file = e.target.files[0]
+    if (!file) return
+    if (!confirm('This will overwrite existing data with the backup file. Are you sure?')) {
+      e.target.value = ''; return
+    }
+    setImporting(true)
+    setImportResult(null)
+    try {
+      const text = await file.text()
+      const backup = JSON.parse(text)
+
+      if (backup.settings) {
+        const { id, ...fields } = backup.settings
+        await supabase.from('hotel_settings').update(fields).eq('id', id)
+      }
+      if (backup.rooms?.length) {
+        await supabase.from('rooms').upsert(backup.rooms, { onConflict: 'id' })
+      }
+      if (backup.gallery?.length) {
+        const rows = backup.gallery.map(({ category, ...r }) => r)
+        await supabase.from('gallery_images').upsert(rows, { onConflict: 'id' })
+      }
+      if (backup.amenities?.length) {
+        await supabase.from('amenities').upsert(backup.amenities, { onConflict: 'id' })
+      }
+      if (backup.experiences?.length) {
+        await supabase.from('experiences').upsert(backup.experiences, { onConflict: 'id' })
+      }
+      if (backup.testimonials?.length) {
+        await supabase.from('testimonials').upsert(backup.testimonials, { onConflict: 'id' })
+      }
+      if (backup.pages?.length) {
+        await supabase.from('page_content').upsert(backup.pages, { onConflict: 'id' })
+      }
+      setImportResult('✓ Restored successfully')
+    } catch (err) {
+      setImportResult('✗ Import failed — invalid backup file')
+    } finally {
+      setImporting(false)
+      e.target.value = ''
+    }
   }
 
   useEffect(() => {
@@ -121,20 +168,24 @@ export default function SettingsAdmin() {
         </div>
       </form>
 
-      {/* Backup */}
+      {/* Backup & Deploy */}
       <section className="mt-8 bg-slate-800 border border-slate-700 rounded-lg p-6">
         <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">Backup & Deploy</h2>
-        <p className="text-slate-500 text-sm mb-4">Download all content as a JSON file. Keep a copy before making big changes.</p>
-        <div className="flex gap-3">
-          <button
-            type="button"
-            onClick={handleExport}
-            disabled={exporting}
-            className="btn-secondary"
-          >
-            {exporting ? 'Exporting…' : '↓ Export all data'}
+        <p className="text-slate-500 text-sm mb-4">Export all content to JSON. Import to restore a previous backup.</p>
+        <input ref={importRef} type="file" accept=".json" className="hidden" onChange={handleImport} />
+        <div className="flex gap-3 flex-wrap items-center">
+          <button type="button" onClick={handleExport} disabled={exporting} className="btn-secondary">
+            {exporting ? 'Exporting…' : '↓ Export'}
+          </button>
+          <button type="button" onClick={() => importRef.current?.click()} disabled={importing} className="btn-secondary">
+            {importing ? 'Restoring…' : '↑ Import'}
           </button>
           <DeployButton />
+          {importResult && (
+            <span className={importResult.startsWith('✓') ? 'text-green-400 text-sm' : 'text-red-400 text-sm'}>
+              {importResult}
+            </span>
+          )}
         </div>
       </section>
     </div>
