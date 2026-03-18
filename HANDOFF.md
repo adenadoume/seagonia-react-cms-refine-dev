@@ -10,6 +10,8 @@ Boutique hotel website (Seagonia Hotel, Pogonia near Paleros, Greece) with:
 
 ⚠️ **DO NOT migrate to Next.js** — was attempted, reverted. SEO is handled via `useSEO` hook (sets title, description, OG tags dynamically). Google crawls JS fine for a hotel site.
 
+⚠️ **DO NOT add vite-plugin-prerender** — pages fetch from Supabase at runtime; prerender would capture loading skeletons, not content. No SEO benefit, real build risk.
+
 ---
 
 ## Current State — COMPLETED ✅
@@ -21,6 +23,13 @@ Boutique hotel website (Seagonia Hotel, Pogonia near Paleros, Greece) with:
 - Stored in `page_content.extra_content` JSONB
 - Footer wired to `hotel_settings`
 - framer-motion v12, React 19, react-router-dom v7
+
+### SEO Files (added 2026-03-13 — zero build risk)
+- `website/index.html` — static OG + Twitter fallback tags (for WhatsApp/FB/LinkedIn which don't run JS) + JSON-LD Hotel schema (Google rich results)
+- `website/public/sitemap.xml` — all 11 static routes, auto-copied to `dist/` by Vite
+- `website/public/robots.txt` — allows all crawlers, points to sitemap
+- **⚠️ Update domain** in `index.html` (3 OG/Twitter/JSON-LD urls) and `sitemap.xml` (all locs) when final domain is confirmed (currently `seagonia.vercel.app`)
+- **⚠️ Update OG image** `og:image` / `twitter:image` in `index.html` — currently `img-000.jpg`, swap to best hero photo
 
 ### Admin Panel (dark theme, slate-900/800)
 - **Dashboard** — stats cards (rooms, messages, subscribers, gallery count)
@@ -120,6 +129,23 @@ VITE_HOTEL_EMAIL=welcome@seagonia.com
 VITE_HOTEL_ADDRESS=Pogonia, Paleros 300 12, Greece
 ```
 
+### Admin (`admin/.env`)
+```
+VITE_SUPABASE_URL=...
+VITE_SUPABASE_ANON_KEY=...
+VITE_CLOUDINARY_CLOUD_NAME=your-cloud-name    ← get from Cloudinary dashboard top-left
+VITE_CLOUDINARY_UPLOAD_PRESET=seagonia-admin  ← must be Unsigned
+VITE_DEPLOY_HOOK=https://api.vercel.com/...   ← Vercel → Settings → Git → Deploy Hooks
+```
+
+### Cloudinary setup (for gallery image uploads)
+1. Log in at cloudinary.com → Dashboard → copy **Cloud name**
+2. Settings → Upload → Upload presets → **Add upload preset**
+3. Name: `seagonia-admin`, Signing mode: **Unsigned** → Save
+4. Paste cloud name into `admin/.env` → `VITE_CLOUDINARY_CLOUD_NAME`
+5. No API secret needed — unsigned uploads work from the browser directly
+⚠️ If upload preset is Signed, uploads will fail with 400 error
+
 ---
 
 ## Key File Paths
@@ -138,3 +164,15 @@ VITE_HOTEL_ADDRESS=Pogonia, Paleros 300 12, Greece
   components/ImagePicker.jsx
   hooks/useAdmin.js        ← All admin React Query mutations
 ```
+# Admin panel
+The admin panel is local only — it's not deployed to Vercel (only /website is deployed).
+
+To access admin:
+
+Locally: cd admin && npm run dev → opens at http://localhost:5174
+Web (anywhere): Not deployed yet — you'd need to deploy the /admin folder separately to Vercel (as a second project) with Supabase auth protecting it
+
+# FINAL URL NOTE
+Note: When you get your real domain, update WEBSITE_BASE in admin/src/components/ImagePicker.jsx to match.
+
+QUESTIN: OTHER UPDATES WHEN HAVE FINAL URL?

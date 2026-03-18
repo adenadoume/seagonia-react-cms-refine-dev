@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import ImagePicker from '../components/ImagePicker'
 import {
   useAdminGallery,
@@ -8,7 +8,28 @@ import {
   useDeleteGalleryImage,
 } from '../hooks/useAdmin'
 
+const PAGE_SIZE = 20
+const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+const WEBSITE_BASE = 'https://seagonia.vercel.app'
+
+function resolveUrl(url) {
+  if (!url) return url
+  if (url.startsWith('http')) return url
+  return `${WEBSITE_BASE}${url}`
+}
+
 const empty = { image_url: '', title: '', description: '', category_id: '', display_order: 0, is_published: true }
+
+async function uploadToCloudinary(file) {
+  const fd = new FormData()
+  fd.append('file', file)
+  fd.append('upload_preset', UPLOAD_PRESET)
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: 'POST', body: fd })
+  if (!res.ok) throw new Error('Upload failed')
+  const data = await res.json()
+  return data.secure_url
+}
 
 export default function GalleryAdmin() {
   const { data: images, isLoading } = useAdminGallery()
@@ -21,6 +42,11 @@ export default function GalleryAdmin() {
   const [form, setForm] = useState(empty)
   const [filterCat, setFilterCat] = useState('all')
   const [saved, setSaved] = useState(false)
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
+  const [uploading, setUploading] = useState(false)
+  const [uploadError, setUploadError] = useState(null)
+  const sentinelRef = useRef(null)
+  const fileInputRef = useRef(null)
 
   function set(field, value) { setForm((f) => ({ ...f, [field]: value })) }
 
@@ -46,9 +72,52 @@ export default function GalleryAdmin() {
     await del.mutateAsync(id)
   }
 
+  async function handleUpload(e) {
+    const files = Array.from(e.target.files)
+    if (!files.length) return
+    setUploading(true)
+    setUploadError(null)
+    try {
+      for (const file of files) {
+        const url = await uploadToCloudinary(file)
+        await create.mutateAsync({
+          image_url: url,
+          title: file.name.replace(/\.[^.]+$/, ''),
+          category_id: filterCat !== 'all' ? categories?.find(c => c.slug === filterCat)?.id || null : null,
+          display_order: 0,
+          is_published: true,
+        })
+      }
+    } catch (err) {
+      setUploadError('Upload failed — check Cloudinary preset settings')
+    } finally {
+      setUploading(false)
+      e.target.value = ''
+    }
+  }
+
   const filtered = images
     ? filterCat === 'all' ? images : images.filter((img) => img.category?.slug === filterCat)
     : []
+
+  const visible = filtered.slice(0, visibleCount)
+  const hasMore = visibleCount < filtered.length
+
+  // Reset visible count when filter changes
+  useEffect(() => { setVisibleCount(PAGE_SIZE) }, [filterCat])
+
+  // Infinite scroll via IntersectionObserver
+  const observerRef = useRef(null)
+  const sentinel = useCallback((node) => {
+    if (observerRef.current) observerRef.current.disconnect()
+    if (!node) return
+    observerRef.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && hasMore) {
+        setVisibleCount((n) => n + PAGE_SIZE)
+      }
+    })
+    observerRef.current.observe(node)
+  }, [hasMore])
 
   if (isLoading) return <div className="p-8 text-slate-400">Loading...</div>
 
@@ -106,8 +175,31 @@ export default function GalleryAdmin() {
     <div className="p-8">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-xl font-semibold text-white">Gallery</h1>
-        <button onClick={startCreate} className="btn-primary">+ Add Image</button>
+        <div className="flex items-center gap-2">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            multiple
+            className="hidden"
+            onChange={handleUpload}
+          />
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+            className="btn-secondary text-sm"
+          >
+            {uploading ? 'Uploading...' : '↑ Upload'}
+          </button>
+          <button onClick={startCreate} className="btn-primary">+ Add</button>
+        </div>
       </div>
+
+      {uploadError && (
+        <div className="mb-4 px-4 py-2 bg-red-900/40 border border-red-700 rounded text-red-300 text-sm">
+          {uploadError}
+        </div>
+      )}
 
       {/* Category filter */}
       <div className="flex gap-2 mb-6 flex-wrap">
@@ -130,11 +222,11 @@ export default function GalleryAdmin() {
 
       {/* Image grid */}
       <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-        {filtered.map((img) => (
+        {visible.map((img) => (
           <div key={img.id} className="group relative bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
             <div className="aspect-square overflow-hidden bg-slate-700">
               <img
-                src={img.image_url}
+                src={resolveUrl(img.image_url)}
                 alt={img.title || ''}
                 className="w-full h-full object-cover"
                 onError={(e) => { e.target.style.display = 'none' }}
@@ -152,8 +244,21 @@ export default function GalleryAdmin() {
         ))}
       </div>
 
+      {/* Infinite scroll sentinel */}
+      {hasMore && (
+        <div ref={sentinel} className="py-8 text-center text-slate-500 text-sm">
+          Loading more…
+        </div>
+      )}
+
       {filtered.length === 0 && (
         <div className="text-center text-slate-400 py-16">No images in this category</div>
+      )}
+
+      {!hasMore && filtered.length > 0 && (
+        <p className="text-center text-slate-600 text-xs py-6">
+          Showing all {filtered.length} images
+        </p>
       )}
     </div>
   )

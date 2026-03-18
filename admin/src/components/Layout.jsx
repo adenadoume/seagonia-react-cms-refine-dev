@@ -1,5 +1,45 @@
+import { useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+
+const DEPLOY_HOOK = import.meta.env.VITE_DEPLOY_HOOK
+
+function DeployButton() {
+  const [status, setStatus] = useState('idle') // idle | loading | done | error
+
+  async function handleDeploy() {
+    if (!DEPLOY_HOOK) return
+    setStatus('loading')
+    try {
+      await fetch(DEPLOY_HOOK, { method: 'POST' })
+      setStatus('done')
+      setTimeout(() => setStatus('idle'), 4000)
+    } catch {
+      setStatus('error')
+      setTimeout(() => setStatus('idle'), 4000)
+    }
+  }
+
+  if (!DEPLOY_HOOK) return null
+
+  const labels = { idle: '↑ Deploy', loading: 'Deploying…', done: '✓ Triggered', error: '✗ Failed' }
+  const colors = {
+    idle: 'border-gold text-gold hover:bg-gold hover:text-white',
+    loading: 'border-slate-500 text-slate-400 cursor-not-allowed',
+    done: 'border-green-500 text-green-400',
+    error: 'border-red-500 text-red-400',
+  }
+
+  return (
+    <button
+      onClick={handleDeploy}
+      disabled={status === 'loading'}
+      className={`w-full text-xs px-3 py-1.5 rounded border transition-colors ${colors[status]}`}
+    >
+      {labels[status]}
+    </button>
+  )
+}
 
 const navItems = [
   { label: 'Dashboard', path: '/' },
@@ -74,9 +114,10 @@ export default function Layout() {
           </div>
         </nav>
 
-        {/* User / sign out */}
-        <div className="px-4 py-4 border-t border-white/10">
-          <div className="text-white/50 text-xs truncate mb-2">{user?.email}</div>
+        {/* Deploy + sign out */}
+        <div className="px-4 py-4 border-t border-white/10 space-y-3">
+          <DeployButton />
+          <div className="text-white/50 text-xs truncate">{user?.email}</div>
           <button
             onClick={handleSignOut}
             className="text-white/60 hover:text-white text-xs transition-colors"
