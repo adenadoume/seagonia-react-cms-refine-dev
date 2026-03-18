@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAdminSettings, useUpdateSettings, useAdminRooms, useAdminGallery, useAdminAmenities, useAdminExperiences, useAdminTestimonials, useAdminAllPageContent, useAdminNewsletter } from '../hooks/useAdmin'
 import { supabase } from '../lib/supabase'
+import { DeployButton } from '../components/Layout'
 
 async function exportAllData() {
   const [settings, rooms, gallery, amenities, experiences, testimonials, pages, newsletter, messages] = await Promise.all([
@@ -122,16 +123,19 @@ export default function SettingsAdmin() {
 
       {/* Backup */}
       <section className="mt-8 bg-slate-800 border border-slate-700 rounded-lg p-6">
-        <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">Backup</h2>
+        <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">Backup & Deploy</h2>
         <p className="text-slate-500 text-sm mb-4">Download all content as a JSON file. Keep a copy before making big changes.</p>
-        <button
-          type="button"
-          onClick={handleExport}
-          disabled={exporting}
-          className="btn-secondary"
-        >
-          {exporting ? 'Exporting…' : '↓ Export all data'}
-        </button>
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={handleExport}
+            disabled={exporting}
+            className="btn-secondary"
+          >
+            {exporting ? 'Exporting…' : '↓ Export all data'}
+          </button>
+          <DeployButton />
+        </div>
       </section>
     </div>
   )

@@ -4,7 +4,7 @@ import { useAuth } from '../hooks/useAuth'
 
 const DEPLOY_HOOK = import.meta.env.VITE_DEPLOY_HOOK
 
-function DeployButton() {
+export function DeployButton() {
   const [status, setStatus] = useState('idle') // idle | loading | done | error
 
   async function handleDeploy() {
@@ -34,7 +34,7 @@ function DeployButton() {
     <button
       onClick={handleDeploy}
       disabled={status === 'loading'}
-      className={`w-full text-xs px-3 py-1.5 rounded border transition-colors ${colors[status]}`}
+      className={`text-xs px-3 py-1.5 rounded border transition-colors ${colors[status]}`}
     >
       {labels[status]}
     </button>
@@ -114,9 +114,8 @@ export default function Layout() {
           </div>
         </nav>
 
-        {/* Deploy + sign out */}
+        {/* Sign out */}
         <div className="px-4 py-4 border-t border-white/10 space-y-3">
-          <DeployButton />
           <div className="text-white/50 text-xs truncate">{user?.email}</div>
           <button
             onClick={handleSignOut}
