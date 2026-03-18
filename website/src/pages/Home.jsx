@@ -50,6 +50,9 @@ export default function Home() {
 
   // Use page_content fields with fallbacks to static text
   const extra = pageContent?.extra_content || {}
+  const heroTitle = pageContent?.hero_title || 'SEAGONIA'
+  const heroSubtitle = pageContent?.hero_subtitle || 'Your Corner by the Sea'
+  const heroImage = pageContent?.hero_image_url || HOTEL_IMAGES.hero
   const introEyebrow = extra.intro_eyebrow || 'Welcome'
   const introHeading = pageContent?.section_1_title || 'A Peaceful Retreat by the Ionian Sea'
   const introBody = pageContent?.section_1_text || 'Seagonia Hotel is a peaceful retreat set in a serene natural environment, offering everything you need for a comfortable and rejuvenating stay. Designed with a focus on simplicity and harmony, the spaces are thoughtfully decorated using natural materials and soothing earthy tones.'
@@ -95,7 +98,7 @@ export default function Home() {
       <section className="relative h-screen w-full overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${HOTEL_IMAGES.hero})` }}
+          style={{ backgroundImage: `url(${heroImage})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
@@ -106,7 +109,7 @@ export default function Home() {
             animate="visible"
             className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-display text-white tracking-wide sm:tracking-widest"
           >
-            SEAGONIA
+            {heroTitle}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -114,7 +117,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.5 }}
             className="font-sans text-xl font-light text-white/80 mt-4"
           >
-            Your Corner by the Sea
+            {heroSubtitle}
           </motion.p>
 
           <motion.div

@@ -1,11 +1,45 @@
 import { useState, useEffect } from 'react'
-import { useAdminSettings, useUpdateSettings } from '../hooks/useAdmin'
+import { useAdminSettings, useUpdateSettings, useAdminRooms, useAdminGallery, useAdminAmenities, useAdminExperiences, useAdminTestimonials, useAdminAllPageContent, useAdminNewsletter } from '../hooks/useAdmin'
+import { supabase } from '../lib/supabase'
+
+async function exportAllData() {
+  const [settings, rooms, gallery, amenities, experiences, testimonials, pages, newsletter, messages] = await Promise.all([
+    supabase.from('hotel_settings').select('*').single().then(r => r.data),
+    supabase.from('rooms').select('*').then(r => r.data),
+    supabase.from('gallery_images').select('*, category:gallery_categories(name,slug)').then(r => r.data),
+    supabase.from('amenities').select('*').then(r => r.data),
+    supabase.from('experiences').select('*').then(r => r.data),
+    supabase.from('testimonials').select('*').then(r => r.data),
+    supabase.from('page_content').select('*').then(r => r.data),
+    supabase.from('newsletter_subscribers').select('*').then(r => r.data),
+    supabase.from('contact_messages').select('*').then(r => r.data),
+  ])
+
+  const backup = {
+    exported_at: new Date().toISOString(),
+    settings, rooms, gallery, amenities, experiences, testimonials, pages, newsletter, messages,
+  }
+
+  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `seagonia-backup-${new Date().toISOString().slice(0, 10)}.json`
+  a.click()
+  URL.revokeObjectURL(url)
+}
 
 export default function SettingsAdmin() {
   const { data, isLoading } = useAdminSettings()
   const update = useUpdateSettings()
   const [form, setForm] = useState({})
   const [saved, setSaved] = useState(false)
+  const [exporting, setExporting] = useState(false)
+
+  async function handleExport() {
+    setExporting(true)
+    try { await exportAllData() } finally { setExporting(false) }
+  }
 
   useEffect(() => {
     if (data) setForm(data)
@@ -85,6 +119,20 @@ export default function SettingsAdmin() {
           {update.isError && <span className="text-red-400 text-sm">Error saving</span>}
         </div>
       </form>
+
+      {/* Backup */}
+      <section className="mt-8 bg-slate-800 border border-slate-700 rounded-lg p-6">
+        <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">Backup</h2>
+        <p className="text-slate-500 text-sm mb-4">Download all content as a JSON file. Keep a copy before making big changes.</p>
+        <button
+          type="button"
+          onClick={handleExport}
+          disabled={exporting}
+          className="btn-secondary"
+        >
+          {exporting ? 'Exporting…' : '↓ Export all data'}
+        </button>
+      </section>
     </div>
   )
 }

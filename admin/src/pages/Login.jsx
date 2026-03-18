@@ -25,14 +25,14 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-cream flex items-center justify-center px-4">
+    <div className="min-h-screen bg-navy flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-semibold text-navy tracking-wide">SEAGONIA</h1>
-          <p className="text-gray-500 text-sm mt-1">Hotel Admin</p>
+          <h1 className="text-2xl font-semibold text-gold tracking-widest">SEAGONIA</h1>
+          <p className="text-slate-400 text-sm mt-1">Hotel Admin</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white border border-gray-200 rounded-lg p-8 space-y-4">
+        <form onSubmit={handleSubmit} className="bg-slate-800 border border-slate-700 rounded-lg p-8 space-y-4">
           <div>
             <label className="label">Email</label>
             <input
@@ -57,7 +57,7 @@ export default function Login() {
           </div>
 
           {error && (
-            <p className="text-red-600 text-sm">{error}</p>
+            <p className="text-red-400 text-sm">{error}</p>
           )}
 
           <button
