@@ -258,7 +258,7 @@ function HomeForm({ data, onSave, saving, saved }) {
           <label className="label">Subtitle / Description</label>
           <textarea className="input" rows={2} value={form.hero_subtitle} onChange={(e) => set('hero_subtitle', e.target.value)} />
         </div>
-        <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} />
+        <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-000.jpg" />
       </section>
 
       {/* Introduction */}
@@ -276,7 +276,7 @@ function HomeForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.section_1_text} onChange={(e) => set('section_1_text', e.target.value)} />
         </div>
-        <ImagePicker label="Image" value={form.section_1_image_url} onChange={(v) => set('section_1_image_url', v)} />
+        <ImagePicker label="Image" value={form.section_1_image_url} onChange={(v) => set('section_1_image_url', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-028.jpg" />
       </section>
 
       {/* Accommodation */}
@@ -304,14 +304,21 @@ function HomeForm({ data, onSave, saving, saved }) {
           <input className="input" value={form.section_3_title} onChange={(e) => set('section_3_title', e.target.value)} />
         </div>
         <p className="text-slate-500 text-xs pt-2">Experience Grid Items (6 tiles)</p>
-        {[1,2,3,4,5,6].map((n) => (
+        {[
+          { n: 1, fallback: 'img-073' },
+          { n: 2, fallback: 'img-055' },
+          { n: 3, fallback: 'img-034' },
+          { n: 4, fallback: 'img-036' },
+          { n: 5, fallback: 'img-076' },
+          { n: 6, fallback: 'img-048' },
+        ].map(({ n, fallback }) => (
           <div key={n} className="bg-slate-700/50 rounded p-4 space-y-3">
             <p className="text-slate-400 text-xs font-semibold">Item {n}</p>
             <div>
               <label className="label">Title</label>
               <input className="input" value={form[`exp_${n}_title`]} onChange={(e) => set(`exp_${n}_title`, e.target.value)} />
             </div>
-            <ImagePicker label="Image" value={form[`exp_${n}_image`]} onChange={(v) => set(`exp_${n}_image`, v)} />
+            <ImagePicker label="Image" value={form[`exp_${n}_image`]} onChange={(v) => set(`exp_${n}_image`, v)} fallbackSrc={`https://seagonia.vercel.app/images/hotel/${fallback}.jpg`} />
           </div>
         ))}
       </section>
@@ -319,7 +326,7 @@ function HomeForm({ data, onSave, saving, saved }) {
       {/* Area teaser */}
       <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
         <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Area Teaser Section</h3>
-        <ImagePicker label="Background Image" value={form.area_image} onChange={(v) => set('area_image', v)} />
+        <ImagePicker label="Background Image" value={form.area_image} onChange={(v) => set('area_image', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-001.jpg" />
       </section>
 
       {/* Dining */}
@@ -337,7 +344,7 @@ function HomeForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={3} value={form.dining_body} onChange={(e) => set('dining_body', e.target.value)} />
         </div>
-        <ImagePicker label="Background Image" value={form.dining_image} onChange={(v) => set('dining_image', v)} />
+        <ImagePicker label="Background Image" value={form.dining_image} onChange={(v) => set('dining_image', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-038.jpg" />
       </section>
 
       {/* CTA */}
@@ -367,7 +374,7 @@ function HomeForm({ data, onSave, saving, saved }) {
           <textarea className="input" rows={2} value={form.seo_description} onChange={(e) => set('seo_description', e.target.value)} placeholder="e.g. A boutique 58-room hotel in Pogonia village overlooking the Ionian Sea near Paleros, Greece." />
           {form.seo_description && <p className={`text-xs mt-1 ${form.seo_description.length > 155 ? 'text-amber-400' : 'text-slate-500'}`}>{form.seo_description.length}/155 chars</p>}
         </div>
-        <ImagePicker label="OG Share Image (shown when sharing on social / WhatsApp)" value={form.seo_og_image} onChange={(v) => set('seo_og_image', v)} />
+        <ImagePicker label="OG Share Image (shown when sharing on social / WhatsApp)" value={form.seo_og_image} onChange={(v) => set('seo_og_image', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-000.jpg" />
       </section>
 
       {/* Custom sections */}
@@ -563,7 +570,7 @@ function DiningForm({ data, onSave, saving, saved }) {
           <label className="label">Subtitle / Description</label>
           <textarea className="input" rows={2} value={form.hero_subtitle} onChange={(e) => set('hero_subtitle', e.target.value)} />
         </div>
-        <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} />
+        <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-038.jpg" />
       </section>
 
       {/* Galiá Restaurant */}
@@ -581,9 +588,9 @@ function DiningForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.galia_body} onChange={(e) => set('galia_body', e.target.value)} />
         </div>
-        <ImagePicker label="Image 1 (main large)" value={form.galia_image_1} onChange={(v) => set('galia_image_1', v)} />
-        <ImagePicker label="Image 2 (small left)" value={form.galia_image_2} onChange={(v) => set('galia_image_2', v)} />
-        <ImagePicker label="Image 3 (small right)" value={form.galia_image_3} onChange={(v) => set('galia_image_3', v)} />
+        <ImagePicker label="Image 1 (main large)" value={form.galia_image_1} onChange={(v) => set('galia_image_1', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-038.jpg" />
+        <ImagePicker label="Image 2 (small left)" value={form.galia_image_2} onChange={(v) => set('galia_image_2', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-037.jpg" />
+        <ImagePicker label="Image 3 (small right)" value={form.galia_image_3} onChange={(v) => set('galia_image_3', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-041.jpg" />
       </section>
 
       {/* Seagonia Lounge */}
@@ -601,10 +608,10 @@ function DiningForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.lounge_body} onChange={(e) => set('lounge_body', e.target.value)} />
         </div>
-        <ImagePicker label="Image 1 (top left)" value={form.lounge_image_1} onChange={(v) => set('lounge_image_1', v)} />
-        <ImagePicker label="Image 2 (top right)" value={form.lounge_image_2} onChange={(v) => set('lounge_image_2', v)} />
-        <ImagePicker label="Image 3 (bottom left)" value={form.lounge_image_3} onChange={(v) => set('lounge_image_3', v)} />
-        <ImagePicker label="Image 4 (bottom right)" value={form.lounge_image_4} onChange={(v) => set('lounge_image_4', v)} />
+        <ImagePicker label="Image 1 (top left)" value={form.lounge_image_1} onChange={(v) => set('lounge_image_1', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-017.jpg" />
+        <ImagePicker label="Image 2 (top right)" value={form.lounge_image_2} onChange={(v) => set('lounge_image_2', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-042.jpg" />
+        <ImagePicker label="Image 3 (bottom left)" value={form.lounge_image_3} onChange={(v) => set('lounge_image_3', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-041.jpg" />
+        <ImagePicker label="Image 4 (bottom right)" value={form.lounge_image_4} onChange={(v) => set('lounge_image_4', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-043.jpg" />
       </section>
 
       {/* Farm to Table */}
@@ -622,10 +629,10 @@ function DiningForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.farm_body} onChange={(e) => set('farm_body', e.target.value)} />
         </div>
-        <ImagePicker label="Image 1 (lettuce)" value={form.farm_image_1} onChange={(v) => set('farm_image_1', v)} />
-        <ImagePicker label="Image 2 (flowers)" value={form.farm_image_2} onChange={(v) => set('farm_image_2', v)} />
-        <ImagePicker label="Image 3 (tractor)" value={form.farm_image_3} onChange={(v) => set('farm_image_3', v)} />
-        <ImagePicker label="Image 4 (field)" value={form.farm_image_4} onChange={(v) => set('farm_image_4', v)} />
+        <ImagePicker label="Image 1 (lettuce)" value={form.farm_image_1} onChange={(v) => set('farm_image_1', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-044.jpg" />
+        <ImagePicker label="Image 2 (flowers)" value={form.farm_image_2} onChange={(v) => set('farm_image_2', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-046.jpg" />
+        <ImagePicker label="Image 3 (tractor)" value={form.farm_image_3} onChange={(v) => set('farm_image_3', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-045.jpg" />
+        <ImagePicker label="Image 4 (field)" value={form.farm_image_4} onChange={(v) => set('farm_image_4', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-054.jpg" />
       </section>
 
       {/* Yacht Club */}
@@ -643,12 +650,12 @@ function DiningForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.yacht_body} onChange={(e) => set('yacht_body', e.target.value)} />
         </div>
-        <ImagePicker label="Image 1 (main large)" value={form.yacht_image_1} onChange={(v) => set('yacht_image_1', v)} />
-        <ImagePicker label="Image 2 (row 2 left)" value={form.yacht_image_2} onChange={(v) => set('yacht_image_2', v)} />
-        <ImagePicker label="Image 3 (row 2 right)" value={form.yacht_image_3} onChange={(v) => set('yacht_image_3', v)} />
-        <ImagePicker label="Image 4 (row 3 left)" value={form.yacht_image_4} onChange={(v) => set('yacht_image_4', v)} />
-        <ImagePicker label="Image 5 (row 3 center)" value={form.yacht_image_5} onChange={(v) => set('yacht_image_5', v)} />
-        <ImagePicker label="Image 6 (row 3 right)" value={form.yacht_image_6} onChange={(v) => set('yacht_image_6', v)} />
+        <ImagePicker label="Image 1 (main large)" value={form.yacht_image_1} onChange={(v) => set('yacht_image_1', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-049.jpg" />
+        <ImagePicker label="Image 2 (row 2 left)" value={form.yacht_image_2} onChange={(v) => set('yacht_image_2', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-048.jpg" />
+        <ImagePicker label="Image 3 (row 2 right)" value={form.yacht_image_3} onChange={(v) => set('yacht_image_3', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-051.jpg" />
+        <ImagePicker label="Image 4 (row 3 left)" value={form.yacht_image_4} onChange={(v) => set('yacht_image_4', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-050.jpg" />
+        <ImagePicker label="Image 5 (row 3 center)" value={form.yacht_image_5} onChange={(v) => set('yacht_image_5', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-039.jpg" />
+        <ImagePicker label="Image 6 (row 3 right)" value={form.yacht_image_6} onChange={(v) => set('yacht_image_6', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-048.jpg" />
       </section>
 
       {/* Cooking Classes */}
@@ -666,8 +673,8 @@ function DiningForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.cooking_body} onChange={(e) => set('cooking_body', e.target.value)} />
         </div>
-        <ImagePicker label="Image 1 (making phyllo)" value={form.cooking_image_1} onChange={(v) => set('cooking_image_1', v)} />
-        <ImagePicker label="Image 2 (baked result)" value={form.cooking_image_2} onChange={(v) => set('cooking_image_2', v)} />
+        <ImagePicker label="Image 1 (making phyllo)" value={form.cooking_image_1} onChange={(v) => set('cooking_image_1', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-055.jpg" />
+        <ImagePicker label="Image 2 (baked result)" value={form.cooking_image_2} onChange={(v) => set('cooking_image_2', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-059.jpg" />
       </section>
 
       {/* Beekeeping */}
@@ -685,8 +692,8 @@ function DiningForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.beekeeping_body} onChange={(e) => set('beekeeping_body', e.target.value)} />
         </div>
-        <ImagePicker label="Image 1 (beekeeper)" value={form.beekeeping_image_1} onChange={(v) => set('beekeeping_image_1', v)} />
-        <ImagePicker label="Image 2 (honeycomb)" value={form.beekeeping_image_2} onChange={(v) => set('beekeeping_image_2', v)} />
+        <ImagePicker label="Image 1 (beekeeper)" value={form.beekeeping_image_1} onChange={(v) => set('beekeeping_image_1', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-060.jpg" />
+        <ImagePicker label="Image 2 (honeycomb)" value={form.beekeeping_image_2} onChange={(v) => set('beekeeping_image_2', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-061.jpg" />
       </section>
 
       {/* SEO */}
@@ -703,7 +710,7 @@ function DiningForm({ data, onSave, saving, saved }) {
           <textarea className="input" rows={2} value={form.seo_description} onChange={(e) => set('seo_description', e.target.value)} placeholder="e.g. Discover the dining experiences at Seagonia Hotel." />
           {form.seo_description && <p className={`text-xs mt-1 ${form.seo_description.length > 155 ? 'text-amber-400' : 'text-slate-500'}`}>{form.seo_description.length}/155 chars</p>}
         </div>
-        <ImagePicker label="OG Share Image (shown when shared on social / WhatsApp)" value={form.seo_og_image} onChange={(v) => set('seo_og_image', v)} />
+        <ImagePicker label="OG Share Image (shown when shared on social / WhatsApp)" value={form.seo_og_image} onChange={(v) => set('seo_og_image', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-038.jpg" />
       </section>
 
       {/* Custom sections */}
@@ -812,7 +819,7 @@ function HotelForm({ data, onSave, saving, saved }) {
           <label className="label">Subtitle / Description</label>
           <textarea className="input" rows={2} value={form.hero_subtitle} onChange={(e) => set('hero_subtitle', e.target.value)} />
         </div>
-        <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} />
+        <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-028.jpg" />
       </section>
 
       {/* Welcome Section */}
@@ -830,7 +837,7 @@ function HotelForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.welcome_body} onChange={(e) => set('welcome_body', e.target.value)} />
         </div>
-        <ImagePicker label="Image" value={form.welcome_image} onChange={(v) => set('welcome_image', v)} />
+        <ImagePicker label="Image" value={form.welcome_image} onChange={(v) => set('welcome_image', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-015.jpg" />
       </section>
 
       {/* Pool & Multipurpose Section */}
@@ -844,14 +851,14 @@ function HotelForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.pool_body} onChange={(e) => set('pool_body', e.target.value)} />
         </div>
-        <ImagePicker label="Pool Image" value={form.pool_image} onChange={(v) => set('pool_image', v)} />
+        <ImagePicker label="Pool Image" value={form.pool_image} onChange={(v) => set('pool_image', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-031.jpg" />
       </section>
 
       {/* Aerial Views Section */}
       <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
         <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Aerial Views Section</h3>
-        <ImagePicker label="Image 1 (aerial beach)" value={form.aerial_image_1} onChange={(v) => set('aerial_image_1', v)} />
-        <ImagePicker label="Image 2 (bird's eye)" value={form.aerial_image_2} onChange={(v) => set('aerial_image_2', v)} />
+        <ImagePicker label="Image 1 (aerial beach)" value={form.aerial_image_1} onChange={(v) => set('aerial_image_1', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-016.jpg" />
+        <ImagePicker label="Image 2 (bird's eye)" value={form.aerial_image_2} onChange={(v) => set('aerial_image_2', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-017.jpg" />
         <div>
           <label className="label">Caption</label>
           <input className="input" value={form.aerial_caption} onChange={(e) => set('aerial_caption', e.target.value)} />
@@ -872,7 +879,7 @@ function HotelForm({ data, onSave, saving, saved }) {
           <textarea className="input" rows={2} value={form.seo_description} onChange={(e) => set('seo_description', e.target.value)} placeholder="e.g. Discover Seagonia Hotel — 58 rooms, 4 pools, rooftop dining on the Ionian coast." />
           {form.seo_description && <p className={`text-xs mt-1 ${form.seo_description.length > 155 ? 'text-amber-400' : 'text-slate-500'}`}>{form.seo_description.length}/155 chars</p>}
         </div>
-        <ImagePicker label="OG Share Image (shown when shared on social / WhatsApp)" value={form.seo_og_image} onChange={(v) => set('seo_og_image', v)} />
+        <ImagePicker label="OG Share Image (shown when shared on social / WhatsApp)" value={form.seo_og_image} onChange={(v) => set('seo_og_image', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-028.jpg" />
       </section>
 
       {/* Custom sections */}
@@ -1008,7 +1015,7 @@ function AreaForm({ data, onSave, saving, saved }) {
           <label className="label">Subtitle / Description</label>
           <textarea className="input" rows={2} value={form.hero_subtitle} onChange={(e) => set('hero_subtitle', e.target.value)} />
         </div>
-        <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} />
+        <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-001.jpg" />
       </section>
 
       {/* Location Section */}
@@ -1026,7 +1033,7 @@ function AreaForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.location_body} onChange={(e) => set('location_body', e.target.value)} />
         </div>
-        <ImagePicker label="Image" value={form.location_image} onChange={(v) => set('location_image', v)} />
+        <ImagePicker label="Image" value={form.location_image} onChange={(v) => set('location_image', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-001.jpg" />
       </section>
 
       {/* Explore Section */}
@@ -1044,7 +1051,7 @@ function AreaForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.explore_body} onChange={(e) => set('explore_body', e.target.value)} />
         </div>
-        <ImagePicker label="Image" value={form.explore_image} onChange={(v) => set('explore_image', v)} />
+        <ImagePicker label="Image" value={form.explore_image} onChange={(v) => set('explore_image', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-003.jpg" />
       </section>
 
       {/* Village (Pogonia) Section */}
@@ -1062,9 +1069,9 @@ function AreaForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.village_body} onChange={(e) => set('village_body', e.target.value)} />
         </div>
-        <ImagePicker label="Image 1 (village from above)" value={form.village_image_1} onChange={(v) => set('village_image_1', v)} />
-        <ImagePicker label="Image 2 (beach with sunbeds)" value={form.village_image_2} onChange={(v) => set('village_image_2', v)} />
-        <ImagePicker label="Image 3 (taverna sea view)" value={form.village_image_3} onChange={(v) => set('village_image_3', v)} />
+        <ImagePicker label="Image 1 (village from above)" value={form.village_image_1} onChange={(v) => set('village_image_1', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-005.jpg" />
+        <ImagePicker label="Image 2 (beach with sunbeds)" value={form.village_image_2} onChange={(v) => set('village_image_2', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-006.jpg" />
+        <ImagePicker label="Image 3 (taverna sea view)" value={form.village_image_3} onChange={(v) => set('village_image_3', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-007.jpg" />
       </section>
 
       {/* Paleros Section */}
@@ -1082,8 +1089,8 @@ function AreaForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.paleros_body} onChange={(e) => set('paleros_body', e.target.value)} />
         </div>
-        <ImagePicker label="Image 1 (promenade)" value={form.paleros_image_1} onChange={(v) => set('paleros_image_1', v)} />
-        <ImagePicker label="Image 2 (wine & dining)" value={form.paleros_image_2} onChange={(v) => set('paleros_image_2', v)} />
+        <ImagePicker label="Image 1 (promenade)" value={form.paleros_image_1} onChange={(v) => set('paleros_image_1', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-010.jpg" />
+        <ImagePicker label="Image 2 (wine & dining)" value={form.paleros_image_2} onChange={(v) => set('paleros_image_2', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-011.jpg" />
       </section>
 
       {/* SEO */}
@@ -1100,7 +1107,7 @@ function AreaForm({ data, onSave, saving, saved }) {
           <textarea className="input" rows={2} value={form.seo_description} onChange={(e) => set('seo_description', e.target.value)} placeholder="e.g. Discover the area around Seagonia Hotel in Pogonia, near Paleros." />
           {form.seo_description && <p className={`text-xs mt-1 ${form.seo_description.length > 155 ? 'text-amber-400' : 'text-slate-500'}`}>{form.seo_description.length}/155 chars</p>}
         </div>
-        <ImagePicker label="OG Share Image (shown when shared on social / WhatsApp)" value={form.seo_og_image} onChange={(v) => set('seo_og_image', v)} />
+        <ImagePicker label="OG Share Image (shown when shared on social / WhatsApp)" value={form.seo_og_image} onChange={(v) => set('seo_og_image', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-001.jpg" />
       </section>
 
       {/* Custom sections */}
@@ -1266,7 +1273,7 @@ function ExperiencesForm({ data, onSave, saving, saved }) {
           <label className="label">Subtitle / Description</label>
           <textarea className="input" rows={2} value={form.hero_subtitle} onChange={(e) => set('hero_subtitle', e.target.value)} />
         </div>
-        <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} />
+        <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-073.jpg" />
       </section>
 
       {/* Wellness */}
@@ -1284,8 +1291,8 @@ function ExperiencesForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.wellness_body} onChange={(e) => set('wellness_body', e.target.value)} />
         </div>
-        <ImagePicker label="Image 1 (outdoor massage)" value={form.wellness_image_1} onChange={(v) => set('wellness_image_1', v)} />
-        <ImagePicker label="Image 2 (PURE Spa interior)" value={form.wellness_image_2} onChange={(v) => set('wellness_image_2', v)} />
+        <ImagePicker label="Image 1 (outdoor massage)" value={form.wellness_image_1} onChange={(v) => set('wellness_image_1', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-036.jpg" />
+        <ImagePicker label="Image 2 (PURE Spa interior)" value={form.wellness_image_2} onChange={(v) => set('wellness_image_2', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-062.jpg" />
       </section>
 
       {/* Fitness */}
@@ -1303,9 +1310,9 @@ function ExperiencesForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.fitness_body} onChange={(e) => set('fitness_body', e.target.value)} />
         </div>
-        <ImagePicker label="Image 1 (outdoor fitness pavilion)" value={form.fitness_image_1} onChange={(v) => set('fitness_image_1', v)} />
-        <ImagePicker label="Image 2 (yoga group)" value={form.fitness_image_2} onChange={(v) => set('fitness_image_2', v)} />
-        <ImagePicker label="Image 3 (indoor gym)" value={form.fitness_image_3} onChange={(v) => set('fitness_image_3', v)} />
+        <ImagePicker label="Image 1 (outdoor fitness pavilion)" value={form.fitness_image_1} onChange={(v) => set('fitness_image_1', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-071.jpg" />
+        <ImagePicker label="Image 2 (yoga group)" value={form.fitness_image_2} onChange={(v) => set('fitness_image_2', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-034.jpg" />
+        <ImagePicker label="Image 3 (indoor gym)" value={form.fitness_image_3} onChange={(v) => set('fitness_image_3', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-072.jpg" />
       </section>
 
       {/* Open Water Swimming */}
@@ -1323,7 +1330,7 @@ function ExperiencesForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.beach_body} onChange={(e) => set('beach_body', e.target.value)} />
         </div>
-        <ImagePicker label="Image" value={form.beach_image} onChange={(v) => set('beach_image', v)} />
+        <ImagePicker label="Image" value={form.beach_image} onChange={(v) => set('beach_image', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-015.jpg" />
       </section>
 
       {/* Boat Trips */}
@@ -1341,10 +1348,10 @@ function ExperiencesForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.boating_body} onChange={(e) => set('boating_body', e.target.value)} />
         </div>
-        <ImagePicker label="Image 1 (island cliff beach)" value={form.boating_image_1} onChange={(v) => set('boating_image_1', v)} />
-        <ImagePicker label="Image 2 (island village)" value={form.boating_image_2} onChange={(v) => set('boating_image_2', v)} />
-        <ImagePicker label="Image 3 (dramatic coast)" value={form.boating_image_3} onChange={(v) => set('boating_image_3', v)} />
-        <ImagePicker label="Image 4 (Vathiavali beach)" value={form.boating_image_4} onChange={(v) => set('boating_image_4', v)} />
+        <ImagePicker label="Image 1 (island cliff beach)" value={form.boating_image_1} onChange={(v) => set('boating_image_1', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-073.jpg" />
+        <ImagePicker label="Image 2 (island village)" value={form.boating_image_2} onChange={(v) => set('boating_image_2', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-074.jpg" />
+        <ImagePicker label="Image 3 (dramatic coast)" value={form.boating_image_3} onChange={(v) => set('boating_image_3', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-075.jpg" />
+        <ImagePicker label="Image 4 (Vathiavali beach)" value={form.boating_image_4} onChange={(v) => set('boating_image_4', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-012.jpg" />
       </section>
 
       {/* History & Hiking */}
@@ -1370,8 +1377,8 @@ function ExperiencesForm({ data, onSave, saving, saved }) {
           <label className="label">Bullet 2</label>
           <textarea className="input" rows={3} value={form.hiking_bullet_2} onChange={(e) => set('hiking_bullet_2', e.target.value)} />
         </div>
-        <ImagePicker label="Image 1 (hiking panoramic)" value={form.hiking_image_1} onChange={(v) => set('hiking_image_1', v)} />
-        <ImagePicker label="Image 2 (ancient ruins)" value={form.hiking_image_2} onChange={(v) => set('hiking_image_2', v)} />
+        <ImagePicker label="Image 1 (hiking panoramic)" value={form.hiking_image_1} onChange={(v) => set('hiking_image_1', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-076.jpg" />
+        <ImagePicker label="Image 2 (ancient ruins)" value={form.hiking_image_2} onChange={(v) => set('hiking_image_2', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-008.jpg" />
       </section>
 
       {/* SEO */}
@@ -1388,7 +1395,7 @@ function ExperiencesForm({ data, onSave, saving, saved }) {
           <textarea className="input" rows={2} value={form.seo_description} onChange={(e) => set('seo_description', e.target.value)} placeholder="e.g. Explore unique experiences at Seagonia Hotel — wellness, fitness, boat trips, hiking and more." />
           {form.seo_description && <p className={`text-xs mt-1 ${form.seo_description.length > 155 ? 'text-amber-400' : 'text-slate-500'}`}>{form.seo_description.length}/155 chars</p>}
         </div>
-        <ImagePicker label="OG Share Image (shown when shared on social / WhatsApp)" value={form.seo_og_image} onChange={(v) => set('seo_og_image', v)} />
+        <ImagePicker label="OG Share Image (shown when shared on social / WhatsApp)" value={form.seo_og_image} onChange={(v) => set('seo_og_image', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-073.jpg" />
       </section>
 
       {/* Custom sections */}
@@ -1466,7 +1473,7 @@ function GenericPageForm({ data, onSave, saving, saved }) {
           <label className="label">Subtitle / Description</label>
           <textarea className="input" rows={2} value={form.hero_subtitle} onChange={(e) => set('hero_subtitle', e.target.value)} />
         </div>
-        <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} />
+        <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-000.jpg" />
       </section>
 
       {/* SEO */}
@@ -1483,7 +1490,7 @@ function GenericPageForm({ data, onSave, saving, saved }) {
           <textarea className="input" rows={2} value={form.seo_description} onChange={(e) => set('seo_description', e.target.value)} placeholder="e.g. Explore our 58 rooms across 6 unique types overlooking the Ionian Sea." />
           {form.seo_description && <p className={`text-xs mt-1 ${form.seo_description.length > 155 ? 'text-amber-400' : 'text-slate-500'}`}>{form.seo_description.length}/155 chars</p>}
         </div>
-        <ImagePicker label="OG Share Image (shown when shared on social / WhatsApp)" value={form.seo_og_image} onChange={(v) => set('seo_og_image', v)} />
+        <ImagePicker label="OG Share Image (shown when shared on social / WhatsApp)" value={form.seo_og_image} onChange={(v) => set('seo_og_image', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-000.jpg" />
       </section>
 
       {/* Custom sections */}
