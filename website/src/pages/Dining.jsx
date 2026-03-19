@@ -31,6 +31,19 @@ export default function Dining() {
   const heroTitle = content?.hero_title || 'Dining'
   const heroSubtitle = content?.hero_subtitle || ''
 
+  const galiaEyebrow = extra.galia_eyebrow || 'ROOFTOP DINING'
+  const galiaHeading = extra.galia_heading || 'Galiá Restaurant'
+  const galiaBody = extra.galia_body || `Galiá is our mediterranean restaurant set on the upper floor of the hotel, open to sweeping views of the pool, Paleros bay, and the Acarnanian mountains. The space is bathed in natural light during the day and glows softly in the evening as the sun sets over the water. The menu draws inspiration from the coasts of the Mediterranean, offering fresh, seasonal dishes that highlight local produce and mediterranean flavors.`
+  const loungeEyebrow = extra.lounge_eyebrow || 'ALL-DAY DINING'
+  const loungeHeading = extra.lounge_heading || 'Seagonia Lounge'
+  const loungeBody = extra.lounge_body || `Our Seagonia Lounge is the perfect daytime retreat, offering an abundant breakfast buffet followed by a delightful Mediterranean lunch and a selection of light snacks. The Pool Bar, open all day, serves specialty coffee, nourishing smoothies made with farm-fresh fruits and vegetables, protein-rich blends, and healthy treats entirely free of gluten and refined sugar. In the afternoon and into the evening, enjoy a curated wine list, refreshing cocktails, savory snacks, and generous platters for two.`
+  const farmEyebrow = extra.farm_eyebrow || 'FROM OUR LAND'
+  const farmHeading = extra.farm_heading || 'Farm to Table'
+  const farmBody = extra.farm_body || `Food is at the heart of everything we do — it nourishes, connects, and reflects who we are. At Seagonia Hotel, we're deeply committed to offering our guests the very best, without ever losing touch with our roots. That's why we've established our own farm in the region, where we grow a variety of vegetables, herbs, fruits, and raise our own poultry and eggs. This farm-to-table approach allows us to supply our restaurants — both within the hotel and across the area — with the freshest, most authentic ingredients possible.`
+  const cookingEyebrow = extra.cooking_eyebrow || 'HANDS-ON'
+  const cookingHeading = extra.cooking_heading || 'Cooking Classes'
+  const cookingBody = extra.cooking_body || `At our farm in Paleros, we offer hands-on cooking classes that bring you closer to the land and the local traditions. You'll begin by harvesting fresh, seasonal produce straight from our fields. Then, alongside local women from Paleros, you'll learn to prepare traditional Greek recipes passed down through generations. It's a warm, authentic experience that connects you to the flavors and stories of the region. Best of all, you'll get to enjoy the meal you've cooked — and take it with you to savor later.`
+
   useSEO({
     title: extra.seo_title || 'Dining',
     description: extra.seo_description || 'Discover the dining experiences at Seagonia Hotel — from Galia rooftop restaurant to farm-to-table cuisine, cooking classes, and beekeeping on the Ionian coast.',
@@ -66,18 +79,12 @@ export default function Dining() {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <p className="eyebrow mb-4">ROOFTOP DINING</p>
+              <p className="eyebrow mb-4">{galiaEyebrow}</p>
               <h2 className="font-serif text-3xl md:text-4xl lg:text-heading font-semibold text-navy leading-tight">
-                Gali&agrave; Restaurant
+                {galiaHeading}
               </h2>
               <p className="text-charcoal/70 text-lg leading-relaxed mt-6">
-                Gali&agrave; is our mediterranean restaurant set on the upper floor of the
-                hotel, open to sweeping views of the pool, Paleros bay, and the
-                Acarnanian mountains. The space is bathed in natural light during the
-                day and glows softly in the evening as the sun sets over the water.
-                The menu draws inspiration from the coasts of the Mediterranean,
-                offering fresh, seasonal dishes that highlight local produce and
-                mediterranean flavors.
+                {galiaBody}
               </p>
             </motion.div>
 
@@ -164,19 +171,12 @@ export default function Dining() {
               viewport={{ once: true }}
               className="order-1 lg:order-2"
             >
-              <p className="eyebrow mb-4">ALL-DAY DINING</p>
+              <p className="eyebrow mb-4">{loungeEyebrow}</p>
               <h2 className="font-serif text-3xl md:text-4xl lg:text-heading font-semibold text-navy leading-tight">
-                Seagonia Lounge
+                {loungeHeading}
               </h2>
               <p className="text-charcoal/70 text-lg leading-relaxed mt-6">
-                Our Seagonia Lounge is the perfect daytime retreat, offering an
-                abundant breakfast buffet followed by a delightful Mediterranean lunch
-                and a selection of light snacks. The Pool Bar, open all day, serves
-                specialty coffee, nourishing smoothies made with farm-fresh fruits and
-                vegetables, protein-rich blends, and healthy treats entirely free of
-                gluten and refined sugar. In the afternoon and into the evening, enjoy
-                a curated wine list, refreshing cocktails, savory snacks, and generous
-                platters for two.
+                {loungeBody}
               </p>
             </motion.div>
           </div>
@@ -230,20 +230,12 @@ export default function Dining() {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <p className="eyebrow mb-4">FROM OUR LAND</p>
+              <p className="eyebrow mb-4">{farmEyebrow}</p>
               <h2 className="font-serif text-3xl md:text-4xl lg:text-heading font-semibold text-navy leading-tight">
-                Farm to Table
+                {farmHeading}
               </h2>
               <p className="text-charcoal/70 text-lg leading-relaxed mt-6">
-                Food is at the heart of everything we do &mdash; it nourishes,
-                connects, and reflects who we are. At Seagonia Hotel, we&apos;re
-                deeply committed to offering our guests the very best, without ever
-                losing touch with our roots. That&apos;s why we&apos;ve established
-                our own farm in the region, where we grow a variety of vegetables,
-                herbs, fruits, and raise our own poultry and eggs. This farm-to-table
-                approach allows us to supply our restaurants &mdash; both within the
-                hotel and across the area &mdash; with the freshest, most authentic
-                ingredients possible.
+                {farmBody}
               </p>
             </motion.div>
           </div>
@@ -341,9 +333,9 @@ export default function Dining() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <p className="eyebrow mb-4">HANDS-ON</p>
+            <p className="eyebrow mb-4">{cookingEyebrow}</p>
             <h2 className="font-serif text-3xl md:text-4xl lg:text-heading font-semibold text-navy leading-tight">
-              Cooking Classes
+              {cookingHeading}
             </h2>
           </motion.div>
 
@@ -368,14 +360,7 @@ export default function Dining() {
             viewport={{ once: true }}
             className="text-charcoal/70 text-lg leading-relaxed max-w-4xl mx-auto text-center"
           >
-            At our farm in Paleros, we offer hands-on cooking classes that bring you
-            closer to the land and the local traditions. You&apos;ll begin by
-            harvesting fresh, seasonal produce straight from our fields. Then,
-            alongside local women from Paleros, you&apos;ll learn to prepare
-            traditional Greek recipes passed down through generations. It&apos;s a
-            warm, authentic experience that connects you to the flavors and stories of
-            the region. Best of all, you&apos;ll get to enjoy the meal you&apos;ve
-            cooked &mdash; and take it with you to savor later.
+            {cookingBody}
           </motion.p>
 
           <motion.div

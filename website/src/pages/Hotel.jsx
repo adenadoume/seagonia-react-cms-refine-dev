@@ -100,6 +100,12 @@ export default function Hotel() {
   const heroTitle = content?.hero_title || 'The Hotel'
   const heroSubtitle = content?.hero_subtitle || ''
 
+  const welcomeEyebrow = extra.welcome_eyebrow || 'Welcome'
+  const welcomeHeading = extra.welcome_heading || `About ${HOTEL.name}`
+  const welcomeBody = extra.welcome_body || `Seagonia Hotel is a peaceful retreat set in a serene natural environment, offering everything you need for a comfortable and rejuvenating stay. Designed with a focus on simplicity and harmony, the spaces are thoughtfully decorated using natural materials and soothing earthy tones.`
+  const poolHeading = extra.pool_heading || 'Pool & Multipurpose Room'
+  const poolBody = extra.pool_body || `Throughout the day, you can unwind by the pool, enjoying fresh coffee, juices, drinks, and light snacks in a serene atmosphere. Just across from the pool, you'll find a versatile multipurpose room. This thoughtfully designed space can be used as a cozy sitting lounge, a private cinema room for movie nights, or a peaceful indoor studio for yoga and wellness practices.`
+
   useSEO({
     title: extra.seo_title || 'The Hotel',
     description: extra.seo_description || 'Discover Seagonia Hotel — 58 rooms, 4 pools, rooftop dining, Technogym fitness, and a 500m beach just 80 metres away. A peaceful retreat on the Ionian coast.',
@@ -137,16 +143,12 @@ export default function Hotel() {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <p className="eyebrow mb-3">Welcome</p>
+              <p className="eyebrow mb-3">{welcomeEyebrow}</p>
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-charcoal mb-6">
-                About {HOTEL.name}
+                {welcomeHeading}
               </h2>
               <p className="text-charcoal/70 leading-relaxed text-lg">
-                Seagonia Hotel is a peaceful retreat set in a serene natural
-                environment, offering everything you need for a comfortable and
-                rejuvenating stay. Designed with a focus on simplicity and
-                harmony, the spaces are thoughtfully decorated using natural
-                materials and soothing earthy tones.
+                {welcomeBody}
               </p>
             </motion.div>
             <motion.div
@@ -255,15 +257,10 @@ export default function Hotel() {
             className="max-w-3xl mx-auto text-center mt-12"
           >
             <h2 className="font-serif text-3xl md:text-4xl text-charcoal mb-6">
-              Pool & Multipurpose Room
+              {poolHeading}
             </h2>
             <p className="text-charcoal/70 leading-relaxed text-lg">
-              Throughout the day, you can unwind by the pool, enjoying fresh
-              coffee, juices, drinks, and light snacks in a serene atmosphere.
-              Just across from the pool, you&apos;ll find a versatile
-              multipurpose room. This thoughtfully designed space can be used as
-              a cozy sitting lounge, a private cinema room for movie nights, or a
-              peaceful indoor studio for yoga and wellness practices.
+              {poolBody}
             </p>
           </motion.div>
         </div>

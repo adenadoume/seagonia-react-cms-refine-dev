@@ -78,6 +78,13 @@ export default function Area() {
   const heroTitle = content?.hero_title || 'The Area'
   const heroSubtitle = content?.hero_subtitle || ''
 
+  const locationEyebrow = extra.location_eyebrow || 'Location'
+  const locationHeading = extra.location_heading || 'The Area'
+  const locationBody = extra.location_body || `Seagonia Hotel boasts a prime location in the serene village of Pogonia, surrounded by lush greenery and nestled beside the crystal-clear waters of the Ionian Sea. Just a short distance from the charming seaside town of Paleros, it offers the perfect blend of natural beauty and local charm for a peaceful and scenic getaway.`
+  const exploreEyebrow = extra.explore_eyebrow || 'Explore'
+  const exploreHeading = extra.explore_heading || 'The Little Ionian'
+  const exploreBody = extra.explore_body || `The Hotel sits beside the stunning Ionian Sea, known for its turquoise waters and stunning islands. From Lefkada and Ithaca to Meganisi, Kefalonia, Skorpios, and Kalamos, guests are perfectly positioned to explore some of the world's most famous beaches and island gems.`
+
   useSEO({
     title: extra.seo_title || 'The Area',
     description: extra.seo_description || 'Discover the area around Seagonia Hotel in Pogonia, near Paleros. Explore the Ionian islands, nearby beaches, and how to get here.',
@@ -117,17 +124,12 @@ export default function Area() {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <p className="eyebrow mb-3">Location</p>
+              <p className="eyebrow mb-3">{locationEyebrow}</p>
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-charcoal mb-6">
-                The Area
+                {locationHeading}
               </h2>
               <p className="text-charcoal/70 leading-relaxed text-lg">
-                Seagonia Hotel boasts a prime location in the serene village of
-                Pogonia, surrounded by lush greenery and nestled beside the
-                crystal-clear waters of the Ionian Sea. Just a short distance
-                from the charming seaside town of Paleros, it offers the perfect
-                blend of natural beauty and local charm for a peaceful and scenic
-                getaway.
+                {locationBody}
               </p>
             </motion.div>
             <motion.div
@@ -171,16 +173,12 @@ export default function Area() {
               viewport={{ once: true }}
               className="order-1 lg:order-2"
             >
-              <p className="eyebrow mb-3">Explore</p>
+              <p className="eyebrow mb-3">{exploreEyebrow}</p>
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-charcoal mb-6">
-                The Little Ionian
+                {exploreHeading}
               </h2>
               <p className="text-charcoal/70 leading-relaxed text-lg mb-8">
-                The Hotel sits beside the stunning Ionian Sea, known for its
-                turquoise waters and stunning islands. From Lefkada and Ithaca to
-                Meganisi, Kefalonia, Skorpios, and Kalamos, guests are perfectly
-                positioned to explore some of the world&apos;s most famous
-                beaches and island gems.
+                {exploreBody}
               </p>
               <div className="flex flex-wrap gap-3">
                 {nearbyIslands.map((island) => (
