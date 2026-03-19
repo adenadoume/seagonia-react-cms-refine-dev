@@ -85,6 +85,22 @@ export default function Area() {
   const exploreHeading = extra.explore_heading || 'The Little Ionian'
   const exploreBody = extra.explore_body || `The Hotel sits beside the stunning Ionian Sea, known for its turquoise waters and stunning islands. From Lefkada and Ithaca to Meganisi, Kefalonia, Skorpios, and Kalamos, guests are perfectly positioned to explore some of the world's most famous beaches and island gems.`
 
+  const locationImage = extra.location_image || HOTEL_IMAGES.palerosBay
+  const exploreImage = extra.explore_image || HOTEL_IMAGES.littleIonian
+
+  const villageEyebrow = extra.village_eyebrow || 'VILLAGE'
+  const villageHeading = extra.village_heading || 'Pogonia'
+  const villageBody = extra.village_body || `Pogonia, the picturesque seaside village, overlooking the beautiful bay of Paleros, with views of Lefkada and the Acarnanian mountains offers an idyllic setting for relaxing walks and tranquil summer escapes.`
+  const villageImage1 = extra.village_image_1 || HOTEL_IMAGES.pogoniaVillage
+  const villageImage2 = extra.village_image_2 || HOTEL_IMAGES.pogoniaBeach
+  const villageImage3 = extra.village_image_3 || HOTEL_IMAGES.tavernaView
+
+  const palerosEyebrow = extra.paleros_eyebrow || 'Nearby Town'
+  const palerosHeading = extra.paleros_heading || 'Paleros'
+  const palerosBody = extra.paleros_body || `Paleros is a charming coastal town nestled along the Ionian Sea in western Greece, known for its crystal-clear waters, golden beaches, and stunning views of nearby islands. With its relaxed atmosphere, traditional tavernas, and scenic harbor, Paleros offers a perfect blend of natural beauty and authentic Greek hospitality.`
+  const palerosImage1 = extra.paleros_image_1 || HOTEL_IMAGES.palerosPromenade
+  const palerosImage2 = extra.paleros_image_2 || HOTEL_IMAGES.palerosWineDining
+
   useSEO({
     title: extra.seo_title || 'The Area',
     description: extra.seo_description || 'Discover the area around Seagonia Hotel in Pogonia, near Paleros. Explore the Ionian islands, nearby beaches, and how to get here.',
@@ -140,7 +156,7 @@ export default function Area() {
               className="overflow-hidden rounded-sm"
             >
               <img
-                src={HOTEL_IMAGES.pogoniaCoast}
+                src={locationImage}
                 alt="Pogonia coastline aerial view"
                 className="w-full h-[400px] lg:h-[500px] object-cover"
               />
@@ -161,7 +177,7 @@ export default function Area() {
               className="overflow-hidden rounded-sm order-2 lg:order-1"
             >
               <img
-                src={HOTEL_IMAGES.littleIonian}
+                src={exploreImage}
                 alt="The Little Ionian islands aerial"
                 className="w-full h-[400px] lg:h-[500px] object-cover"
               />
@@ -199,30 +215,16 @@ export default function Area() {
       <section className="section-padding bg-cream">
         <div className="max-w-7xl mx-auto">
           <SectionHeader
-            eyebrow="VILLAGE"
-            title="Pogonia"
+            eyebrow={villageEyebrow}
+            title={villageHeading}
             subtitle="The picturesque seaside village, overlooking the beautiful bay of Paleros"
           />
 
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="mt-12 overflow-hidden rounded-sm"
-          >
-            <img
-              src={HOTEL_IMAGES.pogoniaPanorama}
-              alt="Pogonia bay panoramic view"
-              className="w-full h-[300px] md:h-[450px] object-cover"
-            />
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12">
             {[
-              { src: HOTEL_IMAGES.pogoniaVillage, alt: 'Pogonia village from above' },
-              { src: HOTEL_IMAGES.pogoniaBeach, alt: 'Pogonia beach with sunbeds' },
-              { src: HOTEL_IMAGES.tavernaView, alt: 'Taverna with sea view' },
+              { src: villageImage1, alt: 'Pogonia village from above' },
+              { src: villageImage2, alt: 'Pogonia beach with sunbeds' },
+              { src: villageImage3, alt: 'Taverna with sea view' },
             ].map((img, i) => (
               <motion.div
                 key={img.alt}
@@ -249,10 +251,7 @@ export default function Area() {
             viewport={{ once: true }}
             className="text-charcoal/70 leading-relaxed text-lg text-center max-w-3xl mx-auto mt-10"
           >
-            Pogonia, the picturesque seaside village, overlooking the beautiful
-            bay of Paleros, with views of Lefkada and the Acarnanian mountains
-            offers an idyllic setting for relaxing walks and tranquil summer
-            escapes.
+            {villageBody}
           </motion.p>
         </div>
       </section>
@@ -280,29 +279,24 @@ export default function Area() {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <p className="eyebrow mb-3">Nearby Town</p>
+              <p className="eyebrow mb-3">{palerosEyebrow}</p>
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-charcoal mb-6">
-                Paleros
+                {palerosHeading}
               </h2>
               <p className="text-charcoal/70 leading-relaxed text-lg mb-8">
-                Paleros is a charming coastal town nestled along the Ionian Sea
-                in western Greece, known for its crystal-clear waters, golden
-                beaches, and stunning views of nearby islands. With its relaxed
-                atmosphere, traditional tavernas, and scenic harbor, Paleros
-                offers a perfect blend of natural beauty and authentic Greek
-                hospitality.
+                {palerosBody}
               </p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="overflow-hidden rounded-sm">
                   <img
-                    src={HOTEL_IMAGES.palerosPromenade}
+                    src={palerosImage1}
                     alt="Paleros promenade with tavernas"
                     className="w-full h-[180px] object-cover"
                   />
                 </div>
                 <div className="overflow-hidden rounded-sm">
                   <img
-                    src={HOTEL_IMAGES.palerosWineDining}
+                    src={palerosImage2}
                     alt="Dining at Paleros harbor"
                     className="w-full h-[180px] object-cover"
                   />

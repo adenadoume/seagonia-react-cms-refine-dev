@@ -106,6 +106,12 @@ export default function Hotel() {
   const poolHeading = extra.pool_heading || 'Pool & Multipurpose Room'
   const poolBody = extra.pool_body || `Throughout the day, you can unwind by the pool, enjoying fresh coffee, juices, drinks, and light snacks in a serene atmosphere. Just across from the pool, you'll find a versatile multipurpose room. This thoughtfully designed space can be used as a cozy sitting lounge, a private cinema room for movie nights, or a peaceful indoor studio for yoga and wellness practices.`
 
+  const welcomeImage = extra.welcome_image || HOTEL_IMAGES.hotelInPogonia
+  const poolImage = extra.pool_image || HOTEL_IMAGES.poolArea
+  const aerialImage1 = extra.aerial_image_1 || HOTEL_IMAGES.hotelAerialBeach
+  const aerialImage2 = extra.aerial_image_2 || HOTEL_IMAGES.hotelBirdseye
+  const aerialCaption = extra.aerial_caption || '80 metres from the beach, surrounded by nature'
+
   useSEO({
     title: extra.seo_title || 'The Hotel',
     description: extra.seo_description || 'Discover Seagonia Hotel — 58 rooms, 4 pools, rooftop dining, Technogym fitness, and a 500m beach just 80 metres away. A peaceful retreat on the Ionian coast.',
@@ -159,7 +165,7 @@ export default function Hotel() {
               className="overflow-hidden rounded-sm"
             >
               <img
-                src={HOTEL_IMAGES.hotelInPogonia}
+                src={welcomeImage}
                 alt="Seagonia Hotel in Pogonia from distance"
                 className="w-full h-[400px] lg:h-[500px] object-cover"
               />
@@ -244,7 +250,7 @@ export default function Hotel() {
             className="overflow-hidden rounded-sm"
           >
             <img
-              src={HOTEL_IMAGES.poolArea}
+              src={poolImage}
               alt="Seagonia pool area with trailing plants"
               className="w-full h-[350px] md:h-[500px] object-cover"
             />
@@ -272,8 +278,8 @@ export default function Hotel() {
           <SectionHeader eyebrow="FROM ABOVE" title="Aerial Views" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-14">
             {[
-              { src: HOTEL_IMAGES.hotelAerialBeach, alt: 'Aerial view of beach area' },
-              { src: HOTEL_IMAGES.hotelBirdseye, alt: 'Bird\'s eye view of hotel' },
+              { src: aerialImage1, alt: 'Aerial view of beach area' },
+              { src: aerialImage2, alt: "Bird's eye view of hotel" },
             ].map((img, i) => (
               <motion.div
                 key={img.alt}
@@ -299,7 +305,7 @@ export default function Hotel() {
             viewport={{ once: true }}
             className="text-charcoal/60 text-center text-lg mt-8 font-serif italic"
           >
-            80 metres from the beach, surrounded by nature
+            {aerialCaption}
           </motion.p>
         </div>
       </section>

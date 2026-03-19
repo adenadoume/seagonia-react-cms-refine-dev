@@ -44,6 +44,39 @@ export default function Dining() {
   const cookingHeading = extra.cooking_heading || 'Cooking Classes'
   const cookingBody = extra.cooking_body || `At our farm in Paleros, we offer hands-on cooking classes that bring you closer to the land and the local traditions. You'll begin by harvesting fresh, seasonal produce straight from our fields. Then, alongside local women from Paleros, you'll learn to prepare traditional Greek recipes passed down through generations. It's a warm, authentic experience that connects you to the flavors and stories of the region. Best of all, you'll get to enjoy the meal you've cooked — and take it with you to savor later.`
 
+  const galiaImage1 = extra.galia_image_1 || HOTEL_IMAGES.galiaRooftop
+  const galiaImage2 = extra.galia_image_2 || HOTEL_IMAGES.galiaView
+  const galiaImage3 = extra.galia_image_3 || HOTEL_IMAGES.shrimpPasta
+
+  const loungeImage1 = extra.lounge_image_1 || HOTEL_IMAGES.loungeAerial
+  const loungeImage2 = extra.lounge_image_2 || HOTEL_IMAGES.cheesePlatter
+  const loungeImage3 = extra.lounge_image_3 || HOTEL_IMAGES.shrimpPasta
+  const loungeImage4 = extra.lounge_image_4 || HOTEL_IMAGES.cocktail
+
+  const farmImage1 = extra.farm_image_1 || HOTEL_IMAGES.farmLettuce
+  const farmImage2 = extra.farm_image_2 || HOTEL_IMAGES.farmFlowers
+  const farmImage3 = extra.farm_image_3 || HOTEL_IMAGES.farmTractor
+  const farmImage4 = extra.farm_image_4 || HOTEL_IMAGES.farmField
+
+  const yachtEyebrow = extra.yacht_eyebrow || 'PALEROS HARBOUR'
+  const yachtHeading = extra.yacht_heading || 'Yacht Club'
+  const yachtBody = extra.yacht_body || `For an authentic greek culinary experience we highly recommend Yacht Club which is located at the port of Paleros. The Yacht Club fuses organic vegetables from its farm, local ingredients and PDO products of the area, to create mouthwatering traditional dishes in a sophisticated environment.`
+  const yachtImage1 = extra.yacht_image_1 || HOTEL_IMAGES.outdoorDining
+  const yachtImage2 = extra.yacht_image_2 || HOTEL_IMAGES.sunsetDining
+  const yachtImage3 = extra.yacht_image_3 || HOTEL_IMAGES.foodSteak
+  const yachtImage4 = extra.yacht_image_4 || HOTEL_IMAGES.foodDolmades
+  const yachtImage5 = extra.yacht_image_5 || HOTEL_IMAGES.foodPide
+  const yachtImage6 = extra.yacht_image_6 || HOTEL_IMAGES.sunsetDining
+
+  const cookingImage1 = extra.cooking_image_1 || HOTEL_IMAGES.cookingClass
+  const cookingImage2 = extra.cooking_image_2 || HOTEL_IMAGES.cookingResult
+
+  const beekeepingEyebrow = extra.beekeeping_eyebrow || 'EXPERIENCE'
+  const beekeepingHeading = extra.beekeeping_heading || 'Honey Harvesting & Beekeeping'
+  const beekeepingBody = extra.beekeeping_body || `During your stay at Seagonia in Paleros, you can immerse yourself in the world of beekeeping and honey harvesting at our hives. Guided by a local beekeeper, you'll learn about the fascinating life of bees and how they produce their golden treasure. You'll suit up, visit our hives, and even taste fresh honey straight from the comb. It's a sweet, hands-on experience that connects you to nature and local tradition.`
+  const beekeepingImage1 = extra.beekeeping_image_1 || HOTEL_IMAGES.beekeeping
+  const beekeepingImage2 = extra.beekeeping_image_2 || HOTEL_IMAGES.honeycomb
+
   useSEO({
     title: extra.seo_title || 'Dining',
     description: extra.seo_description || 'Discover the dining experiences at Seagonia Hotel — from Galia rooftop restaurant to farm-to-table cuisine, cooking classes, and beekeeping on the Ionian coast.',
@@ -97,7 +130,7 @@ export default function Dining() {
             >
               <motion.div variants={fadeRight} className="overflow-hidden rounded-lg">
                 <img
-                  src={HOTEL_IMAGES.galiaRooftop}
+                  src={galiaImage1}
                   alt="Galia rooftop restaurant"
                   className="w-full h-72 lg:h-80 object-cover"
                 />
@@ -105,14 +138,14 @@ export default function Dining() {
               <div className="grid grid-cols-2 gap-4">
                 <motion.div variants={fadeUp} className="overflow-hidden rounded-lg">
                   <img
-                    src={HOTEL_IMAGES.galiaView}
+                    src={galiaImage2}
                     alt="View from Galia restaurant"
                     className="w-full h-44 object-cover"
                   />
                 </motion.div>
                 <motion.div variants={fadeUp} className="overflow-hidden rounded-lg">
                   <img
-                    src={HOTEL_IMAGES.shrimpPasta}
+                    src={galiaImage3}
                     alt="Mediterranean cuisine"
                     className="w-full h-44 object-cover"
                   />
@@ -136,28 +169,28 @@ export default function Dining() {
             >
               <motion.div variants={fadeLeft} className="overflow-hidden rounded-lg">
                 <img
-                  src={HOTEL_IMAGES.loungeAerial}
+                  src={loungeImage1}
                   alt="Seagonia Lounge aerial view"
                   className="w-full h-44 object-cover"
                 />
               </motion.div>
               <motion.div variants={fadeUp} className="overflow-hidden rounded-lg">
                 <img
-                  src={HOTEL_IMAGES.cheesePlatter}
+                  src={loungeImage2}
                   alt="Cheese and bread platter"
                   className="w-full h-44 object-cover"
                 />
               </motion.div>
               <motion.div variants={fadeUp} className="overflow-hidden rounded-lg">
                 <img
-                  src={HOTEL_IMAGES.shrimpPasta}
+                  src={loungeImage3}
                   alt="Shrimp orzo pasta"
                   className="w-full h-44 object-cover"
                 />
               </motion.div>
               <motion.div variants={fadeLeft} className="overflow-hidden rounded-lg">
                 <img
-                  src={HOTEL_IMAGES.cocktail}
+                  src={loungeImage4}
                   alt="Signature cocktail"
                   className="w-full h-44 object-cover"
                 />
@@ -196,28 +229,28 @@ export default function Dining() {
             >
               <motion.div variants={fadeLeft} className="overflow-hidden rounded-lg break-inside-avoid">
                 <img
-                  src={HOTEL_IMAGES.farmLettuce}
+                  src={farmImage1}
                   alt="Fresh lettuce from our farm"
                   className="w-full object-cover rounded-lg"
                 />
               </motion.div>
               <motion.div variants={fadeUp} className="overflow-hidden rounded-lg break-inside-avoid">
                 <img
-                  src={HOTEL_IMAGES.farmFlowers}
+                  src={farmImage2}
                   alt="Zucchini flowers harvest"
                   className="w-full object-cover rounded-lg"
                 />
               </motion.div>
               <motion.div variants={fadeLeft} className="overflow-hidden rounded-lg break-inside-avoid">
                 <img
-                  src={HOTEL_IMAGES.farmTractor}
+                  src={farmImage3}
                   alt="Farm with tractor"
                   className="w-full object-cover rounded-lg"
                 />
               </motion.div>
               <motion.div variants={fadeUp} className="overflow-hidden rounded-lg break-inside-avoid">
                 <img
-                  src={HOTEL_IMAGES.farmField}
+                  src={farmImage4}
                   alt="Farm field panoramic"
                   className="w-full object-cover rounded-lg"
                 />
@@ -252,16 +285,12 @@ export default function Dining() {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <p className="eyebrow mb-4">PALEROS HARBOUR</p>
+              <p className="eyebrow mb-4">{yachtEyebrow}</p>
               <h2 className="font-serif text-3xl md:text-4xl lg:text-heading font-semibold text-navy leading-tight">
-                Yacht Club
+                {yachtHeading}
               </h2>
               <p className="text-charcoal/70 text-lg leading-relaxed mt-6">
-                For an authentic greek culinary experience we highly recommend Yacht
-                Club which is located at the port of Paleros. The Yacht Club fuses
-                organic vegetables from its farm, local ingredients and PDO products
-                of the area, to create mouthwatering traditional dishes in a
-                sophisticated environment.
+                {yachtBody}
               </p>
             </motion.div>
 
@@ -274,7 +303,7 @@ export default function Dining() {
             >
               <motion.div variants={fadeRight} className="overflow-hidden rounded-lg">
                 <img
-                  src={HOTEL_IMAGES.outdoorDining}
+                  src={yachtImage1}
                   alt="Yacht Club outdoor dining"
                   className="w-full h-64 lg:h-72 object-cover"
                 />
@@ -282,14 +311,14 @@ export default function Dining() {
               <div className="grid grid-cols-2 gap-4">
                 <motion.div variants={fadeUp} className="overflow-hidden rounded-lg">
                   <img
-                    src={HOTEL_IMAGES.sunsetDining}
+                    src={yachtImage2}
                     alt="Sunset dining at the harbour"
                     className="w-full h-40 object-cover"
                   />
                 </motion.div>
                 <motion.div variants={fadeUp} className="overflow-hidden rounded-lg">
                   <img
-                    src={HOTEL_IMAGES.foodSteak}
+                    src={yachtImage3}
                     alt="Grilled steak"
                     className="w-full h-40 object-cover"
                   />
@@ -298,21 +327,21 @@ export default function Dining() {
               <div className="grid grid-cols-3 gap-4">
                 <motion.div variants={fadeUp} className="overflow-hidden rounded-lg">
                   <img
-                    src={HOTEL_IMAGES.foodDolmades}
+                    src={yachtImage4}
                     alt="Dolmades"
                     className="w-full h-32 object-cover"
                   />
                 </motion.div>
                 <motion.div variants={fadeUp} className="overflow-hidden rounded-lg">
                   <img
-                    src={HOTEL_IMAGES.foodPide}
+                    src={yachtImage5}
                     alt="Pide flatbread"
                     className="w-full h-32 object-cover"
                   />
                 </motion.div>
                 <motion.div variants={fadeUp} className="overflow-hidden rounded-lg">
                   <img
-                    src={HOTEL_IMAGES.sunsetDining}
+                    src={yachtImage6}
                     alt="Evening dining"
                     className="w-full h-32 object-cover"
                   />
@@ -339,20 +368,6 @@ export default function Dining() {
             </h2>
           </motion.div>
 
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="overflow-hidden rounded-lg mb-10"
-          >
-            <img
-              src={HOTEL_IMAGES.farmField}
-              alt="Farm field in Paleros"
-              className="w-full h-64 md:h-80 lg:h-96 object-cover"
-            />
-          </motion.div>
-
           <motion.p
             variants={fadeUp}
             initial="hidden"
@@ -372,14 +387,14 @@ export default function Dining() {
           >
             <motion.div variants={fadeLeft} className="overflow-hidden rounded-lg">
               <img
-                src={HOTEL_IMAGES.cookingClass}
+                src={cookingImage1}
                 alt="Making phyllo dough"
                 className="w-full h-64 md:h-72 object-cover"
               />
             </motion.div>
             <motion.div variants={fadeRight} className="overflow-hidden rounded-lg">
               <img
-                src={HOTEL_IMAGES.cookingResult}
+                src={cookingImage2}
                 alt="Baked pastry result"
                 className="w-full h-64 md:h-72 object-cover"
               />
@@ -401,14 +416,14 @@ export default function Dining() {
             >
               <motion.div variants={fadeLeft} className="overflow-hidden rounded-lg">
                 <img
-                  src={HOTEL_IMAGES.beekeeping}
+                  src={beekeepingImage1}
                   alt="Beekeeper at hives with sea view"
                   className="w-full h-64 lg:h-72 object-cover"
                 />
               </motion.div>
               <motion.div variants={fadeLeft} className="overflow-hidden rounded-lg">
                 <img
-                  src={HOTEL_IMAGES.honeycomb}
+                  src={beekeepingImage2}
                   alt="Honeycomb closeup"
                   className="w-full h-52 lg:h-60 object-cover"
                 />
@@ -421,18 +436,12 @@ export default function Dining() {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <p className="eyebrow mb-4">EXPERIENCE</p>
+              <p className="eyebrow mb-4">{beekeepingEyebrow}</p>
               <h2 className="font-serif text-3xl md:text-4xl lg:text-heading font-semibold text-navy leading-tight">
-                Honey Harvesting &amp; Beekeeping
+                {beekeepingHeading}
               </h2>
               <p className="text-charcoal/70 text-lg leading-relaxed mt-6">
-                During your stay at Seagonia in Paleros, you can immerse yourself in
-                the world of beekeeping and honey harvesting at our hives. Guided by a
-                local beekeeper, you&apos;ll learn about the fascinating life of bees
-                and how they produce their golden treasure. You&apos;ll suit up, visit
-                our hives, and even taste fresh honey straight from the comb.
-                It&apos;s a sweet, hands-on experience that connects you to nature and
-                local tradition.
+                {beekeepingBody}
               </p>
             </motion.div>
           </div>

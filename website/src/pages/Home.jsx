@@ -71,17 +71,20 @@ export default function Home() {
   const ctaHeading = extra.cta_heading || 'Plan Your Stay'
   const ctaSubheading = extra.cta_subheading || 'We would love to hear from you'
 
+  const areaImage = extra.area_image || HOTEL_IMAGES.palerosBay
+  const diningImage = extra.dining_image || HOTEL_IMAGES.galiaRooftop
+
   // Featured rooms — up to 3
   const featuredRooms = allRooms?.filter((r) => r.is_featured).slice(0, 3) || []
 
-  // Experience grid — fixed images, titles from experiences if available
+  // Experience grid — titles and images editable from admin
   const experienceGrid = [
-    { title: 'Boat Trips', image: HOTEL_IMAGES.islandBeach },
-    { title: 'Cooking Classes', image: HOTEL_IMAGES.cookingClass },
-    { title: 'Yoga & Wellness', image: HOTEL_IMAGES.yogaGroup },
-    { title: 'Spa & Massage', image: HOTEL_IMAGES.massage },
-    { title: 'Hiking & History', image: HOTEL_IMAGES.hikingView },
-    { title: 'Wine & Dining', image: HOTEL_IMAGES.sunsetDining },
+    { title: extra.exp_1_title || 'Boat Trips', image: extra.exp_1_image || HOTEL_IMAGES.islandBeach },
+    { title: extra.exp_2_title || 'Cooking Classes', image: extra.exp_2_image || HOTEL_IMAGES.cookingClass },
+    { title: extra.exp_3_title || 'Yoga & Wellness', image: extra.exp_3_image || HOTEL_IMAGES.yogaGroup },
+    { title: extra.exp_4_title || 'Spa & Massage', image: extra.exp_4_image || HOTEL_IMAGES.massage },
+    { title: extra.exp_5_title || 'Hiking & History', image: extra.exp_5_image || HOTEL_IMAGES.hikingView },
+    { title: extra.exp_6_title || 'Wine & Dining', image: extra.exp_6_image || HOTEL_IMAGES.sunsetDining },
   ]
 
   useSEO({
@@ -182,7 +185,7 @@ export default function Home() {
       <section className="relative h-[70vh] overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center bg-fixed bg-no-repeat"
-          style={{ backgroundImage: `url(${HOTEL_IMAGES.palerosBay})` }}
+          style={{ backgroundImage: `url(${areaImage})` }}
         />
         <div className="absolute inset-0 bg-black/50" />
 
@@ -356,7 +359,7 @@ export default function Home() {
       <section className="relative h-[60vh] overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${HOTEL_IMAGES.galiaRooftop})` }}
+          style={{ backgroundImage: `url(${diningImage})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20" />
 

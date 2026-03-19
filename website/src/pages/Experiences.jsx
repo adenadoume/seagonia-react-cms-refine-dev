@@ -37,6 +37,40 @@ export default function Experiences() {
   const { data: content } = usePageContent('experiences')
   const extra = content?.extra_content || {}
 
+  const wellnessEyebrow = extra.wellness_eyebrow || 'WELLNESS'
+  const wellnessHeading = extra.wellness_heading || 'Outdoor Massage & PURE Spa'
+  const wellnessBody = extra.wellness_body || `At Seagonia, relaxation is a key part of your stay. Unwind with a soothing outdoor massage in our specially designed, covered space for two, surrounded by nature. For a more complete experience, visit our nearby PURE spa, which features three dedicated rooms offering a variety of body and facial treatments, as well as personalized massages tailored to your needs.`
+  const wellnessImage1 = extra.wellness_image_1 || HOTEL_IMAGES.massage
+  const wellnessImage2 = extra.wellness_image_2 || HOTEL_IMAGES.pureSpa
+
+  const fitnessEyebrow = extra.fitness_eyebrow || 'MOVEMENT'
+  const fitnessHeading = extra.fitness_heading || 'Outdoor Shaded & Indoor Fitness'
+  const fitnessBody = extra.fitness_body || `At Seagonia, we offer a peaceful outdoor shaded area designed for yoga practice, pilates and fitness, allowing you to connect with your body and mind in a natural, calming environment. Surrounded by greenery and fresh air, it's the perfect space to start your day with gentle movement or unwind with evening stretches. For those who are interested in a more vigorous form of exercise, our indoor gym is fully equipped with high-quality Technogym machines to support your training needs.`
+  const fitnessImage1 = extra.fitness_image_1 || HOTEL_IMAGES.outdoorFitness
+  const fitnessImage2 = extra.fitness_image_2 || HOTEL_IMAGES.yogaGroup
+  const fitnessImage3 = extra.fitness_image_3 || HOTEL_IMAGES.gym
+
+  const beachEyebrow = extra.beach_eyebrow || 'THE BEACH'
+  const beachHeading = extra.beach_heading || 'Open Water Swimming'
+  const beachBody = extra.beach_body || `Just 80 meters from the hotel, a stunning 500-meter-long sandy beach invites you to swim in the open Ionian Sea. With shallow, clear waters and a relaxed atmosphere, it's the perfect spot for swimming practice or a calming day by the beach. The prevailing winds are northwestern from the shore which create lake conditions to train and monitor your swimming performance.`
+  const beachImage = extra.beach_image || HOTEL_IMAGES.openWaterSwim
+
+  const boatingEyebrow = extra.boating_eyebrow || 'EXPLORE'
+  const boatingHeading = extra.boating_heading || 'Explore the Ionian Islands by Boat'
+  const boatingBody = extra.boating_body || `Seagonia Hotel can be the perfect starting point for a once-in-a-lifetime adventure with Ionian Escape. From the beach that is located just 80m from Seagonia, you can embark on an unforgettable boat trip to the nearby magical islands of Lefkada, Meganisi, Ithaki, Kalamos, Kastos, and Atokos. Their skilled skippers and top-quality boats will guide you through the Ionian Sea to some of the most breathtaking destinations. You'll have the chance to swim in crystal-clear waters and visit world-famous beaches like Egremni.`
+  const boatingImage1 = extra.boating_image_1 || HOTEL_IMAGES.islandBeach
+  const boatingImage2 = extra.boating_image_2 || HOTEL_IMAGES.islandVillage
+  const boatingImage3 = extra.boating_image_3 || HOTEL_IMAGES.islandCoast
+  const boatingImage4 = extra.boating_image_4 || HOTEL_IMAGES.vathiavali
+
+  const hikingEyebrow = extra.hiking_eyebrow || 'ADVENTURE'
+  const hikingHeading = extra.hiking_heading || 'History & Hiking'
+  const hikingIntro = extra.hiking_intro || `Pogonia is a destination where you can fully embrace a perfect balance of culture, adventure, and relaxation. Whether you're exploring ancient sites, hiking through stunning landscapes, or indulging in rejuvenating spa treatments, there's something for everyone.`
+  const hikingBullet1 = extra.hiking_bullet_1 || `Start your day with one of the organized hiking tours. You can hike to the archaeological site of Sterna, where breathtaking views of Lefkada, the Ionian Sea, and Preveza await.`
+  const hikingBullet2 = extra.hiking_bullet_2 || `Immerse yourself in the region's rich archaeological history with a visit to Ancient Paleros. Explore the ancient ruins and learn about the area's fascinating past.`
+  const hikingImage1 = extra.hiking_image_1 || HOTEL_IMAGES.hikingView
+  const hikingImage2 = extra.hiking_image_2 || HOTEL_IMAGES.ancientRuins
+
   useSEO({
     title: extra.seo_title || 'Experiences',
     description: extra.seo_description || 'Explore unique experiences at Seagonia Hotel — wellness, fitness, open water swimming, boat trips, hiking and more on the Ionian coast of Greece.',
@@ -84,14 +118,14 @@ export default function Experiences() {
             >
               <motion.div variants={fadeLeft} className="overflow-hidden rounded-lg">
                 <img
-                  src={HOTEL_IMAGES.massage}
+                  src={wellnessImage1}
                   alt="Outdoor massage"
                   className="w-full h-64 lg:h-80 object-cover"
                 />
               </motion.div>
               <motion.div variants={fadeLeft} className="overflow-hidden rounded-lg">
                 <img
-                  src={HOTEL_IMAGES.pureSpa}
+                  src={wellnessImage2}
                   alt="PURE Spa interior"
                   className="w-full h-48 lg:h-56 object-cover"
                 />
@@ -104,17 +138,12 @@ export default function Experiences() {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <p className="eyebrow mb-4">WELLNESS</p>
+              <p className="eyebrow mb-4">{wellnessEyebrow}</p>
               <h2 className="font-serif text-3xl md:text-4xl lg:text-heading font-semibold text-navy leading-tight">
-                Outdoor Massage &amp; PURE Spa
+                {wellnessHeading}
               </h2>
               <p className="text-charcoal/70 text-lg leading-relaxed mt-6">
-                At Seagonia, relaxation is a key part of your stay. Unwind with a
-                soothing outdoor massage in our specially designed, covered space for
-                two, surrounded by nature. For a more complete experience, visit our
-                nearby PURE spa, which features three dedicated rooms offering a
-                variety of body and facial treatments, as well as personalized
-                massages tailored to your needs.
+                {wellnessBody}
               </p>
             </motion.div>
           </div>
@@ -131,19 +160,12 @@ export default function Experiences() {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <p className="eyebrow mb-4">MOVEMENT</p>
+              <p className="eyebrow mb-4">{fitnessEyebrow}</p>
               <h2 className="font-serif text-3xl md:text-4xl lg:text-heading font-semibold text-navy leading-tight">
-                Outdoor Shaded &amp; Indoor Fitness
+                {fitnessHeading}
               </h2>
               <p className="text-charcoal/70 text-lg leading-relaxed mt-6">
-                At Seagonia, we offer a peaceful outdoor shaded area designed for yoga
-                practice, pilates and fitness, allowing you to connect with your body
-                and mind in a natural, calming environment. Surrounded by greenery and
-                fresh air, it&apos;s the perfect space to start your day with gentle
-                movement or unwind with evening stretches. For those who are
-                interested in a more vigorous form of exercise, our indoor gym is
-                fully equipped with high-quality Technogym machines to support your
-                training needs.
+                {fitnessBody}
               </p>
             </motion.div>
 
@@ -156,7 +178,7 @@ export default function Experiences() {
             >
               <motion.div variants={fadeRight} className="overflow-hidden rounded-lg">
                 <img
-                  src={HOTEL_IMAGES.outdoorFitness}
+                  src={fitnessImage1}
                   alt="Outdoor shaded fitness pavilion"
                   className="w-full h-52 lg:h-60 object-cover"
                 />
@@ -164,14 +186,14 @@ export default function Experiences() {
               <div className="grid grid-cols-2 gap-4">
                 <motion.div variants={fadeUp} className="overflow-hidden rounded-lg">
                   <img
-                    src={HOTEL_IMAGES.yogaGroup}
+                    src={fitnessImage2}
                     alt="Yoga group session"
                     className="w-full h-44 object-cover"
                   />
                 </motion.div>
                 <motion.div variants={fadeUp} className="overflow-hidden rounded-lg">
                   <img
-                    src={HOTEL_IMAGES.gym}
+                    src={fitnessImage3}
                     alt="Indoor Technogym"
                     className="w-full h-44 object-cover"
                   />
@@ -192,9 +214,9 @@ export default function Experiences() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <p className="eyebrow mb-4">THE BEACH</p>
+            <p className="eyebrow mb-4">{beachEyebrow}</p>
             <h2 className="font-serif text-3xl md:text-4xl lg:text-heading font-semibold text-navy leading-tight">
-              Open Water Swimming
+              {beachHeading}
             </h2>
           </motion.div>
 
@@ -206,7 +228,7 @@ export default function Experiences() {
             className="overflow-hidden rounded-lg mb-10"
           >
             <img
-              src={HOTEL_IMAGES.openWaterSwim}
+              src={beachImage}
               alt="Open water swimming at the beach"
               className="w-full h-64 md:h-80 lg:h-[28rem] object-cover"
             />
@@ -219,12 +241,7 @@ export default function Experiences() {
             viewport={{ once: true }}
             className="text-charcoal/70 text-lg leading-relaxed max-w-4xl mx-auto text-center"
           >
-            Just 80 meters from the hotel, a stunning 500-meter-long sandy beach
-            invites you to swim in the open Ionian Sea. With shallow, clear waters and
-            a relaxed atmosphere, it&apos;s the perfect spot for swimming practice or
-            a calming day by the beach. The prevailing winds are northwestern from the
-            shore which create lake conditions to train and monitor your swimming
-            performance.
+            {beachBody}
           </motion.p>
         </div>
       </section>
@@ -239,9 +256,9 @@ export default function Experiences() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <p className="eyebrow mb-4">EXPLORE</p>
+            <p className="eyebrow mb-4">{boatingEyebrow}</p>
             <h2 className="font-serif text-3xl md:text-4xl lg:text-heading font-semibold text-navy leading-tight">
-              Explore the Ionian Islands by Boat
+              {boatingHeading}
             </h2>
           </motion.div>
 
@@ -252,14 +269,7 @@ export default function Experiences() {
             viewport={{ once: true }}
             className="text-charcoal/70 text-lg leading-relaxed max-w-4xl mx-auto text-center mb-12"
           >
-            Seagonia Hotel can be the perfect starting point for a once-in-a-lifetime
-            adventure with Ionian Escape. From the beach that is located just 80m from
-            Seagonia, you can embark on an unforgettable boat trip to the nearby
-            magical islands of Lefkada, Meganisi, Ithaki, Kalamos, Kastos, and Atokos.
-            Their skilled skippers and top-quality boats will guide you through the
-            Ionian Sea to some of the most breathtaking destinations. You&apos;ll have
-            the chance to swim in crystal-clear waters and visit world-famous beaches
-            like Egremni.
+            {boatingBody}
           </motion.p>
 
           <motion.div
@@ -270,10 +280,10 @@ export default function Experiences() {
             className="grid grid-cols-2 md:grid-cols-4 gap-4"
           >
             {[
-              { src: HOTEL_IMAGES.islandBeach, alt: 'Island cliff beach' },
-              { src: HOTEL_IMAGES.islandVillage, alt: 'Island village' },
-              { src: HOTEL_IMAGES.islandCoast, alt: 'Dramatic coast with yacht' },
-              { src: HOTEL_IMAGES.vathiavali, alt: 'Vathiavali beach' },
+              { src: boatingImage1, alt: 'Island cliff beach' },
+              { src: boatingImage2, alt: 'Island village' },
+              { src: boatingImage3, alt: 'Dramatic coast with yacht' },
+              { src: boatingImage4, alt: 'Vathiavali beach' },
             ].map((img, i) => (
               <motion.div
                 key={i}
@@ -304,14 +314,14 @@ export default function Experiences() {
             >
               <motion.div variants={fadeLeft} className="overflow-hidden rounded-lg">
                 <img
-                  src={HOTEL_IMAGES.hikingView}
+                  src={hikingImage1}
                   alt="Hiking mountain panoramic view"
                   className="w-full h-64 lg:h-72 object-cover"
                 />
               </motion.div>
               <motion.div variants={fadeLeft} className="overflow-hidden rounded-lg">
                 <img
-                  src={HOTEL_IMAGES.ancientRuins}
+                  src={hikingImage2}
                   alt="Ancient ruins archaeological site"
                   className="w-full h-48 lg:h-56 object-cover"
                 />
@@ -324,31 +334,24 @@ export default function Experiences() {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <p className="eyebrow mb-4">ADVENTURE</p>
+              <p className="eyebrow mb-4">{hikingEyebrow}</p>
               <h2 className="font-serif text-3xl md:text-4xl lg:text-heading font-semibold text-navy leading-tight">
-                History &amp; Hiking
+                {hikingHeading}
               </h2>
               <p className="text-charcoal/70 text-lg leading-relaxed mt-6">
-                Pogonia is a destination where you can fully embrace a perfect balance
-                of culture, adventure, and relaxation. Whether you&apos;re exploring
-                ancient sites, hiking through stunning landscapes, or indulging in
-                rejuvenating spa treatments, there&apos;s something for everyone.
+                {hikingIntro}
               </p>
               <ul className="mt-6 space-y-4">
                 <li className="flex items-start gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-gold mt-3 flex-shrink-0" />
                   <p className="text-charcoal/70 text-lg leading-relaxed">
-                    Start your day with one of the organized hiking tours. You can
-                    hike to the archaeological site of Sterna, where breathtaking
-                    views of Lefkada, the Ionian Sea, and Preveza await.
+                    {hikingBullet1}
                   </p>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-gold mt-3 flex-shrink-0" />
                   <p className="text-charcoal/70 text-lg leading-relaxed">
-                    Immerse yourself in the region&apos;s rich archaeological history
-                    with a visit to Ancient Paleros. Explore the ancient ruins and
-                    learn about the area&apos;s fascinating past.
+                    {hikingBullet2}
                   </p>
                 </li>
               </ul>

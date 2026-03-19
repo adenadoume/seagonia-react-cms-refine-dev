@@ -132,9 +132,23 @@ function HomeForm({ data, onSave, saving, saved }) {
     intro_eyebrow: extra.intro_eyebrow || 'Welcome',
     accommodation_eyebrow: extra.accommodation_eyebrow || 'Accommodation',
     experiences_eyebrow: extra.experiences_eyebrow || 'Experiences',
+    exp_1_title: extra.exp_1_title || 'Boat Trips',
+    exp_1_image: extra.exp_1_image || '',
+    exp_2_title: extra.exp_2_title || 'Cooking Classes',
+    exp_2_image: extra.exp_2_image || '',
+    exp_3_title: extra.exp_3_title || 'Yoga & Wellness',
+    exp_3_image: extra.exp_3_image || '',
+    exp_4_title: extra.exp_4_title || 'Spa & Massage',
+    exp_4_image: extra.exp_4_image || '',
+    exp_5_title: extra.exp_5_title || 'Hiking & History',
+    exp_5_image: extra.exp_5_image || '',
+    exp_6_title: extra.exp_6_title || 'Wine & Dining',
+    exp_6_image: extra.exp_6_image || '',
     dining_eyebrow: extra.dining_eyebrow || 'Dining',
     dining_heading: extra.dining_heading || '',
     dining_body: extra.dining_body || '',
+    dining_image: extra.dining_image || '',
+    area_image: extra.area_image || '',
     cta_heading: extra.cta_heading || 'Plan Your Stay',
     cta_subheading: extra.cta_subheading || '',
     seo_title: extra.seo_title || '',
@@ -158,9 +172,23 @@ function HomeForm({ data, onSave, saving, saved }) {
         intro_eyebrow: ex.intro_eyebrow || 'Welcome',
         accommodation_eyebrow: ex.accommodation_eyebrow || 'Accommodation',
         experiences_eyebrow: ex.experiences_eyebrow || 'Experiences',
+        exp_1_title: ex.exp_1_title || 'Boat Trips',
+        exp_1_image: ex.exp_1_image || '',
+        exp_2_title: ex.exp_2_title || 'Cooking Classes',
+        exp_2_image: ex.exp_2_image || '',
+        exp_3_title: ex.exp_3_title || 'Yoga & Wellness',
+        exp_3_image: ex.exp_3_image || '',
+        exp_4_title: ex.exp_4_title || 'Spa & Massage',
+        exp_4_image: ex.exp_4_image || '',
+        exp_5_title: ex.exp_5_title || 'Hiking & History',
+        exp_5_image: ex.exp_5_image || '',
+        exp_6_title: ex.exp_6_title || 'Wine & Dining',
+        exp_6_image: ex.exp_6_image || '',
         dining_eyebrow: ex.dining_eyebrow || 'Dining',
         dining_heading: ex.dining_heading || '',
         dining_body: ex.dining_body || '',
+        dining_image: ex.dining_image || '',
+        area_image: ex.area_image || '',
         cta_heading: ex.cta_heading || 'Plan Your Stay',
         cta_subheading: ex.cta_subheading || '',
         seo_title: ex.seo_title || '',
@@ -190,9 +218,23 @@ function HomeForm({ data, onSave, saving, saved }) {
         intro_eyebrow: form.intro_eyebrow,
         accommodation_eyebrow: form.accommodation_eyebrow,
         experiences_eyebrow: form.experiences_eyebrow,
+        exp_1_title: form.exp_1_title,
+        exp_1_image: form.exp_1_image,
+        exp_2_title: form.exp_2_title,
+        exp_2_image: form.exp_2_image,
+        exp_3_title: form.exp_3_title,
+        exp_3_image: form.exp_3_image,
+        exp_4_title: form.exp_4_title,
+        exp_4_image: form.exp_4_image,
+        exp_5_title: form.exp_5_title,
+        exp_5_image: form.exp_5_image,
+        exp_6_title: form.exp_6_title,
+        exp_6_image: form.exp_6_image,
         dining_eyebrow: form.dining_eyebrow,
         dining_heading: form.dining_heading,
         dining_body: form.dining_body,
+        dining_image: form.dining_image,
+        area_image: form.area_image,
         cta_heading: form.cta_heading,
         cta_subheading: form.cta_subheading,
         seo_title: form.seo_title,
@@ -261,6 +303,23 @@ function HomeForm({ data, onSave, saving, saved }) {
           <label className="label">Heading</label>
           <input className="input" value={form.section_3_title} onChange={(e) => set('section_3_title', e.target.value)} />
         </div>
+        <p className="text-slate-500 text-xs pt-2">Experience Grid Items (6 tiles)</p>
+        {[1,2,3,4,5,6].map((n) => (
+          <div key={n} className="bg-slate-700/50 rounded p-4 space-y-3">
+            <p className="text-slate-400 text-xs font-semibold">Item {n}</p>
+            <div>
+              <label className="label">Title</label>
+              <input className="input" value={form[`exp_${n}_title`]} onChange={(e) => set(`exp_${n}_title`, e.target.value)} />
+            </div>
+            <ImagePicker label="Image" value={form[`exp_${n}_image`]} onChange={(v) => set(`exp_${n}_image`, v)} />
+          </div>
+        ))}
+      </section>
+
+      {/* Area teaser */}
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Area Teaser Section</h3>
+        <ImagePicker label="Background Image" value={form.area_image} onChange={(v) => set('area_image', v)} />
       </section>
 
       {/* Dining */}
@@ -278,6 +337,7 @@ function HomeForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={3} value={form.dining_body} onChange={(e) => set('dining_body', e.target.value)} />
         </div>
+        <ImagePicker label="Background Image" value={form.dining_image} onChange={(v) => set('dining_image', v)} />
       </section>
 
       {/* CTA */}
@@ -336,15 +396,42 @@ function DiningForm({ data, onSave, saving, saved }) {
     galia_eyebrow: extra.galia_eyebrow || 'ROOFTOP DINING',
     galia_heading: extra.galia_heading || 'Galiá Restaurant',
     galia_body: extra.galia_body || '',
+    galia_image_1: extra.galia_image_1 || '',
+    galia_image_2: extra.galia_image_2 || '',
+    galia_image_3: extra.galia_image_3 || '',
     lounge_eyebrow: extra.lounge_eyebrow || 'ALL-DAY DINING',
     lounge_heading: extra.lounge_heading || 'Seagonia Lounge',
     lounge_body: extra.lounge_body || '',
+    lounge_image_1: extra.lounge_image_1 || '',
+    lounge_image_2: extra.lounge_image_2 || '',
+    lounge_image_3: extra.lounge_image_3 || '',
+    lounge_image_4: extra.lounge_image_4 || '',
     farm_eyebrow: extra.farm_eyebrow || 'FROM OUR LAND',
     farm_heading: extra.farm_heading || 'Farm to Table',
     farm_body: extra.farm_body || '',
+    farm_image_1: extra.farm_image_1 || '',
+    farm_image_2: extra.farm_image_2 || '',
+    farm_image_3: extra.farm_image_3 || '',
+    farm_image_4: extra.farm_image_4 || '',
+    yacht_eyebrow: extra.yacht_eyebrow || 'PALEROS HARBOUR',
+    yacht_heading: extra.yacht_heading || 'Yacht Club',
+    yacht_body: extra.yacht_body || '',
+    yacht_image_1: extra.yacht_image_1 || '',
+    yacht_image_2: extra.yacht_image_2 || '',
+    yacht_image_3: extra.yacht_image_3 || '',
+    yacht_image_4: extra.yacht_image_4 || '',
+    yacht_image_5: extra.yacht_image_5 || '',
+    yacht_image_6: extra.yacht_image_6 || '',
     cooking_eyebrow: extra.cooking_eyebrow || 'HANDS-ON',
     cooking_heading: extra.cooking_heading || 'Cooking Classes',
     cooking_body: extra.cooking_body || '',
+    cooking_image_1: extra.cooking_image_1 || '',
+    cooking_image_2: extra.cooking_image_2 || '',
+    beekeeping_eyebrow: extra.beekeeping_eyebrow || 'EXPERIENCE',
+    beekeeping_heading: extra.beekeeping_heading || 'Honey Harvesting & Beekeeping',
+    beekeeping_body: extra.beekeeping_body || '',
+    beekeeping_image_1: extra.beekeeping_image_1 || '',
+    beekeeping_image_2: extra.beekeeping_image_2 || '',
     seo_title: extra.seo_title || '',
     seo_description: extra.seo_description || '',
     seo_og_image: extra.seo_og_image || '',
@@ -361,15 +448,42 @@ function DiningForm({ data, onSave, saving, saved }) {
         galia_eyebrow: ex.galia_eyebrow || 'ROOFTOP DINING',
         galia_heading: ex.galia_heading || 'Galiá Restaurant',
         galia_body: ex.galia_body || '',
+        galia_image_1: ex.galia_image_1 || '',
+        galia_image_2: ex.galia_image_2 || '',
+        galia_image_3: ex.galia_image_3 || '',
         lounge_eyebrow: ex.lounge_eyebrow || 'ALL-DAY DINING',
         lounge_heading: ex.lounge_heading || 'Seagonia Lounge',
         lounge_body: ex.lounge_body || '',
+        lounge_image_1: ex.lounge_image_1 || '',
+        lounge_image_2: ex.lounge_image_2 || '',
+        lounge_image_3: ex.lounge_image_3 || '',
+        lounge_image_4: ex.lounge_image_4 || '',
         farm_eyebrow: ex.farm_eyebrow || 'FROM OUR LAND',
         farm_heading: ex.farm_heading || 'Farm to Table',
         farm_body: ex.farm_body || '',
+        farm_image_1: ex.farm_image_1 || '',
+        farm_image_2: ex.farm_image_2 || '',
+        farm_image_3: ex.farm_image_3 || '',
+        farm_image_4: ex.farm_image_4 || '',
+        yacht_eyebrow: ex.yacht_eyebrow || 'PALEROS HARBOUR',
+        yacht_heading: ex.yacht_heading || 'Yacht Club',
+        yacht_body: ex.yacht_body || '',
+        yacht_image_1: ex.yacht_image_1 || '',
+        yacht_image_2: ex.yacht_image_2 || '',
+        yacht_image_3: ex.yacht_image_3 || '',
+        yacht_image_4: ex.yacht_image_4 || '',
+        yacht_image_5: ex.yacht_image_5 || '',
+        yacht_image_6: ex.yacht_image_6 || '',
         cooking_eyebrow: ex.cooking_eyebrow || 'HANDS-ON',
         cooking_heading: ex.cooking_heading || 'Cooking Classes',
         cooking_body: ex.cooking_body || '',
+        cooking_image_1: ex.cooking_image_1 || '',
+        cooking_image_2: ex.cooking_image_2 || '',
+        beekeeping_eyebrow: ex.beekeeping_eyebrow || 'EXPERIENCE',
+        beekeeping_heading: ex.beekeeping_heading || 'Honey Harvesting & Beekeeping',
+        beekeeping_body: ex.beekeeping_body || '',
+        beekeeping_image_1: ex.beekeeping_image_1 || '',
+        beekeeping_image_2: ex.beekeeping_image_2 || '',
         seo_title: ex.seo_title || '',
         seo_description: ex.seo_description || '',
         seo_og_image: ex.seo_og_image || '',
@@ -392,15 +506,42 @@ function DiningForm({ data, onSave, saving, saved }) {
         galia_eyebrow: form.galia_eyebrow,
         galia_heading: form.galia_heading,
         galia_body: form.galia_body,
+        galia_image_1: form.galia_image_1,
+        galia_image_2: form.galia_image_2,
+        galia_image_3: form.galia_image_3,
         lounge_eyebrow: form.lounge_eyebrow,
         lounge_heading: form.lounge_heading,
         lounge_body: form.lounge_body,
+        lounge_image_1: form.lounge_image_1,
+        lounge_image_2: form.lounge_image_2,
+        lounge_image_3: form.lounge_image_3,
+        lounge_image_4: form.lounge_image_4,
         farm_eyebrow: form.farm_eyebrow,
         farm_heading: form.farm_heading,
         farm_body: form.farm_body,
+        farm_image_1: form.farm_image_1,
+        farm_image_2: form.farm_image_2,
+        farm_image_3: form.farm_image_3,
+        farm_image_4: form.farm_image_4,
+        yacht_eyebrow: form.yacht_eyebrow,
+        yacht_heading: form.yacht_heading,
+        yacht_body: form.yacht_body,
+        yacht_image_1: form.yacht_image_1,
+        yacht_image_2: form.yacht_image_2,
+        yacht_image_3: form.yacht_image_3,
+        yacht_image_4: form.yacht_image_4,
+        yacht_image_5: form.yacht_image_5,
+        yacht_image_6: form.yacht_image_6,
         cooking_eyebrow: form.cooking_eyebrow,
         cooking_heading: form.cooking_heading,
         cooking_body: form.cooking_body,
+        cooking_image_1: form.cooking_image_1,
+        cooking_image_2: form.cooking_image_2,
+        beekeeping_eyebrow: form.beekeeping_eyebrow,
+        beekeeping_heading: form.beekeeping_heading,
+        beekeeping_body: form.beekeeping_body,
+        beekeeping_image_1: form.beekeeping_image_1,
+        beekeeping_image_2: form.beekeeping_image_2,
         seo_title: form.seo_title,
         seo_description: form.seo_description,
         seo_og_image: form.seo_og_image,
@@ -440,6 +581,9 @@ function DiningForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.galia_body} onChange={(e) => set('galia_body', e.target.value)} />
         </div>
+        <ImagePicker label="Image 1 (main large)" value={form.galia_image_1} onChange={(v) => set('galia_image_1', v)} />
+        <ImagePicker label="Image 2 (small left)" value={form.galia_image_2} onChange={(v) => set('galia_image_2', v)} />
+        <ImagePicker label="Image 3 (small right)" value={form.galia_image_3} onChange={(v) => set('galia_image_3', v)} />
       </section>
 
       {/* Seagonia Lounge */}
@@ -457,6 +601,10 @@ function DiningForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.lounge_body} onChange={(e) => set('lounge_body', e.target.value)} />
         </div>
+        <ImagePicker label="Image 1 (top left)" value={form.lounge_image_1} onChange={(v) => set('lounge_image_1', v)} />
+        <ImagePicker label="Image 2 (top right)" value={form.lounge_image_2} onChange={(v) => set('lounge_image_2', v)} />
+        <ImagePicker label="Image 3 (bottom left)" value={form.lounge_image_3} onChange={(v) => set('lounge_image_3', v)} />
+        <ImagePicker label="Image 4 (bottom right)" value={form.lounge_image_4} onChange={(v) => set('lounge_image_4', v)} />
       </section>
 
       {/* Farm to Table */}
@@ -474,6 +622,33 @@ function DiningForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.farm_body} onChange={(e) => set('farm_body', e.target.value)} />
         </div>
+        <ImagePicker label="Image 1 (lettuce)" value={form.farm_image_1} onChange={(v) => set('farm_image_1', v)} />
+        <ImagePicker label="Image 2 (flowers)" value={form.farm_image_2} onChange={(v) => set('farm_image_2', v)} />
+        <ImagePicker label="Image 3 (tractor)" value={form.farm_image_3} onChange={(v) => set('farm_image_3', v)} />
+        <ImagePicker label="Image 4 (field)" value={form.farm_image_4} onChange={(v) => set('farm_image_4', v)} />
+      </section>
+
+      {/* Yacht Club */}
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Yacht Club</h3>
+        <div>
+          <label className="label">Eyebrow label</label>
+          <input className="input" value={form.yacht_eyebrow} onChange={(e) => set('yacht_eyebrow', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Heading</label>
+          <input className="input" value={form.yacht_heading} onChange={(e) => set('yacht_heading', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Body text</label>
+          <textarea className="input" rows={4} value={form.yacht_body} onChange={(e) => set('yacht_body', e.target.value)} />
+        </div>
+        <ImagePicker label="Image 1 (main large)" value={form.yacht_image_1} onChange={(v) => set('yacht_image_1', v)} />
+        <ImagePicker label="Image 2 (row 2 left)" value={form.yacht_image_2} onChange={(v) => set('yacht_image_2', v)} />
+        <ImagePicker label="Image 3 (row 2 right)" value={form.yacht_image_3} onChange={(v) => set('yacht_image_3', v)} />
+        <ImagePicker label="Image 4 (row 3 left)" value={form.yacht_image_4} onChange={(v) => set('yacht_image_4', v)} />
+        <ImagePicker label="Image 5 (row 3 center)" value={form.yacht_image_5} onChange={(v) => set('yacht_image_5', v)} />
+        <ImagePicker label="Image 6 (row 3 right)" value={form.yacht_image_6} onChange={(v) => set('yacht_image_6', v)} />
       </section>
 
       {/* Cooking Classes */}
@@ -491,6 +666,27 @@ function DiningForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.cooking_body} onChange={(e) => set('cooking_body', e.target.value)} />
         </div>
+        <ImagePicker label="Image 1 (making phyllo)" value={form.cooking_image_1} onChange={(v) => set('cooking_image_1', v)} />
+        <ImagePicker label="Image 2 (baked result)" value={form.cooking_image_2} onChange={(v) => set('cooking_image_2', v)} />
+      </section>
+
+      {/* Beekeeping */}
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Honey Harvesting & Beekeeping</h3>
+        <div>
+          <label className="label">Eyebrow label</label>
+          <input className="input" value={form.beekeeping_eyebrow} onChange={(e) => set('beekeeping_eyebrow', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Heading</label>
+          <input className="input" value={form.beekeeping_heading} onChange={(e) => set('beekeeping_heading', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Body text</label>
+          <textarea className="input" rows={4} value={form.beekeeping_body} onChange={(e) => set('beekeeping_body', e.target.value)} />
+        </div>
+        <ImagePicker label="Image 1 (beekeeper)" value={form.beekeeping_image_1} onChange={(v) => set('beekeeping_image_1', v)} />
+        <ImagePicker label="Image 2 (honeycomb)" value={form.beekeeping_image_2} onChange={(v) => set('beekeeping_image_2', v)} />
       </section>
 
       {/* SEO */}
@@ -536,8 +732,13 @@ function HotelForm({ data, onSave, saving, saved }) {
     welcome_eyebrow: extra.welcome_eyebrow || 'Welcome',
     welcome_heading: extra.welcome_heading || 'About Seagonia Hotel',
     welcome_body: extra.welcome_body || '',
+    welcome_image: extra.welcome_image || '',
     pool_heading: extra.pool_heading || 'Pool & Multipurpose Room',
     pool_body: extra.pool_body || '',
+    pool_image: extra.pool_image || '',
+    aerial_image_1: extra.aerial_image_1 || '',
+    aerial_image_2: extra.aerial_image_2 || '',
+    aerial_caption: extra.aerial_caption || '80 metres from the beach, surrounded by nature',
     seo_title: extra.seo_title || '',
     seo_description: extra.seo_description || '',
     seo_og_image: extra.seo_og_image || '',
@@ -554,8 +755,13 @@ function HotelForm({ data, onSave, saving, saved }) {
         welcome_eyebrow: ex.welcome_eyebrow || 'Welcome',
         welcome_heading: ex.welcome_heading || 'About Seagonia Hotel',
         welcome_body: ex.welcome_body || '',
+        welcome_image: ex.welcome_image || '',
         pool_heading: ex.pool_heading || 'Pool & Multipurpose Room',
         pool_body: ex.pool_body || '',
+        pool_image: ex.pool_image || '',
+        aerial_image_1: ex.aerial_image_1 || '',
+        aerial_image_2: ex.aerial_image_2 || '',
+        aerial_caption: ex.aerial_caption || '80 metres from the beach, surrounded by nature',
         seo_title: ex.seo_title || '',
         seo_description: ex.seo_description || '',
         seo_og_image: ex.seo_og_image || '',
@@ -578,8 +784,13 @@ function HotelForm({ data, onSave, saving, saved }) {
         welcome_eyebrow: form.welcome_eyebrow,
         welcome_heading: form.welcome_heading,
         welcome_body: form.welcome_body,
+        welcome_image: form.welcome_image,
         pool_heading: form.pool_heading,
         pool_body: form.pool_body,
+        pool_image: form.pool_image,
+        aerial_image_1: form.aerial_image_1,
+        aerial_image_2: form.aerial_image_2,
+        aerial_caption: form.aerial_caption,
         seo_title: form.seo_title,
         seo_description: form.seo_description,
         seo_og_image: form.seo_og_image,
@@ -619,6 +830,7 @@ function HotelForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.welcome_body} onChange={(e) => set('welcome_body', e.target.value)} />
         </div>
+        <ImagePicker label="Image" value={form.welcome_image} onChange={(v) => set('welcome_image', v)} />
       </section>
 
       {/* Pool & Multipurpose Section */}
@@ -631,6 +843,18 @@ function HotelForm({ data, onSave, saving, saved }) {
         <div>
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.pool_body} onChange={(e) => set('pool_body', e.target.value)} />
+        </div>
+        <ImagePicker label="Pool Image" value={form.pool_image} onChange={(v) => set('pool_image', v)} />
+      </section>
+
+      {/* Aerial Views Section */}
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Aerial Views Section</h3>
+        <ImagePicker label="Image 1 (aerial beach)" value={form.aerial_image_1} onChange={(v) => set('aerial_image_1', v)} />
+        <ImagePicker label="Image 2 (bird's eye)" value={form.aerial_image_2} onChange={(v) => set('aerial_image_2', v)} />
+        <div>
+          <label className="label">Caption</label>
+          <input className="input" value={form.aerial_caption} onChange={(e) => set('aerial_caption', e.target.value)} />
         </div>
       </section>
 
@@ -677,9 +901,22 @@ function AreaForm({ data, onSave, saving, saved }) {
     location_eyebrow: extra.location_eyebrow || 'Location',
     location_heading: extra.location_heading || 'The Area',
     location_body: extra.location_body || '',
+    location_image: extra.location_image || '',
     explore_eyebrow: extra.explore_eyebrow || 'Explore',
     explore_heading: extra.explore_heading || 'The Little Ionian',
     explore_body: extra.explore_body || '',
+    explore_image: extra.explore_image || '',
+    village_eyebrow: extra.village_eyebrow || 'VILLAGE',
+    village_heading: extra.village_heading || 'Pogonia',
+    village_body: extra.village_body || '',
+    village_image_1: extra.village_image_1 || '',
+    village_image_2: extra.village_image_2 || '',
+    village_image_3: extra.village_image_3 || '',
+    paleros_eyebrow: extra.paleros_eyebrow || 'Nearby Town',
+    paleros_heading: extra.paleros_heading || 'Paleros',
+    paleros_body: extra.paleros_body || '',
+    paleros_image_1: extra.paleros_image_1 || '',
+    paleros_image_2: extra.paleros_image_2 || '',
     seo_title: extra.seo_title || '',
     seo_description: extra.seo_description || '',
     seo_og_image: extra.seo_og_image || '',
@@ -696,9 +933,22 @@ function AreaForm({ data, onSave, saving, saved }) {
         location_eyebrow: ex.location_eyebrow || 'Location',
         location_heading: ex.location_heading || 'The Area',
         location_body: ex.location_body || '',
+        location_image: ex.location_image || '',
         explore_eyebrow: ex.explore_eyebrow || 'Explore',
         explore_heading: ex.explore_heading || 'The Little Ionian',
         explore_body: ex.explore_body || '',
+        explore_image: ex.explore_image || '',
+        village_eyebrow: ex.village_eyebrow || 'VILLAGE',
+        village_heading: ex.village_heading || 'Pogonia',
+        village_body: ex.village_body || '',
+        village_image_1: ex.village_image_1 || '',
+        village_image_2: ex.village_image_2 || '',
+        village_image_3: ex.village_image_3 || '',
+        paleros_eyebrow: ex.paleros_eyebrow || 'Nearby Town',
+        paleros_heading: ex.paleros_heading || 'Paleros',
+        paleros_body: ex.paleros_body || '',
+        paleros_image_1: ex.paleros_image_1 || '',
+        paleros_image_2: ex.paleros_image_2 || '',
         seo_title: ex.seo_title || '',
         seo_description: ex.seo_description || '',
         seo_og_image: ex.seo_og_image || '',
@@ -721,9 +971,22 @@ function AreaForm({ data, onSave, saving, saved }) {
         location_eyebrow: form.location_eyebrow,
         location_heading: form.location_heading,
         location_body: form.location_body,
+        location_image: form.location_image,
         explore_eyebrow: form.explore_eyebrow,
         explore_heading: form.explore_heading,
         explore_body: form.explore_body,
+        explore_image: form.explore_image,
+        village_eyebrow: form.village_eyebrow,
+        village_heading: form.village_heading,
+        village_body: form.village_body,
+        village_image_1: form.village_image_1,
+        village_image_2: form.village_image_2,
+        village_image_3: form.village_image_3,
+        paleros_eyebrow: form.paleros_eyebrow,
+        paleros_heading: form.paleros_heading,
+        paleros_body: form.paleros_body,
+        paleros_image_1: form.paleros_image_1,
+        paleros_image_2: form.paleros_image_2,
         seo_title: form.seo_title,
         seo_description: form.seo_description,
         seo_og_image: form.seo_og_image,
@@ -763,6 +1026,7 @@ function AreaForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.location_body} onChange={(e) => set('location_body', e.target.value)} />
         </div>
+        <ImagePicker label="Image" value={form.location_image} onChange={(v) => set('location_image', v)} />
       </section>
 
       {/* Explore Section */}
@@ -780,6 +1044,46 @@ function AreaForm({ data, onSave, saving, saved }) {
           <label className="label">Body text</label>
           <textarea className="input" rows={4} value={form.explore_body} onChange={(e) => set('explore_body', e.target.value)} />
         </div>
+        <ImagePicker label="Image" value={form.explore_image} onChange={(v) => set('explore_image', v)} />
+      </section>
+
+      {/* Village (Pogonia) Section */}
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Village (Pogonia) Section</h3>
+        <div>
+          <label className="label">Eyebrow label</label>
+          <input className="input" value={form.village_eyebrow} onChange={(e) => set('village_eyebrow', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Heading</label>
+          <input className="input" value={form.village_heading} onChange={(e) => set('village_heading', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Body text</label>
+          <textarea className="input" rows={4} value={form.village_body} onChange={(e) => set('village_body', e.target.value)} />
+        </div>
+        <ImagePicker label="Image 1 (village from above)" value={form.village_image_1} onChange={(v) => set('village_image_1', v)} />
+        <ImagePicker label="Image 2 (beach with sunbeds)" value={form.village_image_2} onChange={(v) => set('village_image_2', v)} />
+        <ImagePicker label="Image 3 (taverna sea view)" value={form.village_image_3} onChange={(v) => set('village_image_3', v)} />
+      </section>
+
+      {/* Paleros Section */}
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Paleros Section</h3>
+        <div>
+          <label className="label">Eyebrow label</label>
+          <input className="input" value={form.paleros_eyebrow} onChange={(e) => set('paleros_eyebrow', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Heading</label>
+          <input className="input" value={form.paleros_heading} onChange={(e) => set('paleros_heading', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Body text</label>
+          <textarea className="input" rows={4} value={form.paleros_body} onChange={(e) => set('paleros_body', e.target.value)} />
+        </div>
+        <ImagePicker label="Image 1 (promenade)" value={form.paleros_image_1} onChange={(v) => set('paleros_image_1', v)} />
+        <ImagePicker label="Image 2 (wine & dining)" value={form.paleros_image_2} onChange={(v) => set('paleros_image_2', v)} />
       </section>
 
       {/* SEO */}
@@ -794,6 +1098,294 @@ function AreaForm({ data, onSave, saving, saved }) {
         <div>
           <label className="label">SEO Description <span className="text-slate-600 normal-case font-normal">(~155 chars)</span></label>
           <textarea className="input" rows={2} value={form.seo_description} onChange={(e) => set('seo_description', e.target.value)} placeholder="e.g. Discover the area around Seagonia Hotel in Pogonia, near Paleros." />
+          {form.seo_description && <p className={`text-xs mt-1 ${form.seo_description.length > 155 ? 'text-amber-400' : 'text-slate-500'}`}>{form.seo_description.length}/155 chars</p>}
+        </div>
+        <ImagePicker label="OG Share Image (shown when shared on social / WhatsApp)" value={form.seo_og_image} onChange={(v) => set('seo_og_image', v)} />
+      </section>
+
+      {/* Custom sections */}
+      <div>
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-4">Custom Sections</h3>
+        <CustomSections sections={customSections} onChange={setCustomSections} />
+      </div>
+
+      <div className="flex items-center gap-3 pt-2">
+        <button type="submit" disabled={saving} className="btn-primary">
+          {saving ? 'Saving...' : 'Save Changes'}
+        </button>
+        {saved && <span className="text-green-400 text-sm">Saved</span>}
+      </div>
+    </form>
+  )
+}
+
+// ─── Experiences page form ────────────────────────────────
+function ExperiencesForm({ data, onSave, saving, saved }) {
+  const extra = data?.extra_content || {}
+  const [form, setForm] = useState({
+    hero_title: data?.hero_title || '',
+    hero_subtitle: data?.hero_subtitle || '',
+    hero_image_url: data?.hero_image_url || '',
+    wellness_eyebrow: extra.wellness_eyebrow || 'WELLNESS',
+    wellness_heading: extra.wellness_heading || 'Outdoor Massage & PURE Spa',
+    wellness_body: extra.wellness_body || '',
+    wellness_image_1: extra.wellness_image_1 || '',
+    wellness_image_2: extra.wellness_image_2 || '',
+    fitness_eyebrow: extra.fitness_eyebrow || 'MOVEMENT',
+    fitness_heading: extra.fitness_heading || 'Outdoor Shaded & Indoor Fitness',
+    fitness_body: extra.fitness_body || '',
+    fitness_image_1: extra.fitness_image_1 || '',
+    fitness_image_2: extra.fitness_image_2 || '',
+    fitness_image_3: extra.fitness_image_3 || '',
+    beach_eyebrow: extra.beach_eyebrow || 'THE BEACH',
+    beach_heading: extra.beach_heading || 'Open Water Swimming',
+    beach_body: extra.beach_body || '',
+    beach_image: extra.beach_image || '',
+    boating_eyebrow: extra.boating_eyebrow || 'EXPLORE',
+    boating_heading: extra.boating_heading || 'Explore the Ionian Islands by Boat',
+    boating_body: extra.boating_body || '',
+    boating_image_1: extra.boating_image_1 || '',
+    boating_image_2: extra.boating_image_2 || '',
+    boating_image_3: extra.boating_image_3 || '',
+    boating_image_4: extra.boating_image_4 || '',
+    hiking_eyebrow: extra.hiking_eyebrow || 'ADVENTURE',
+    hiking_heading: extra.hiking_heading || 'History & Hiking',
+    hiking_intro: extra.hiking_intro || '',
+    hiking_bullet_1: extra.hiking_bullet_1 || '',
+    hiking_bullet_2: extra.hiking_bullet_2 || '',
+    hiking_image_1: extra.hiking_image_1 || '',
+    hiking_image_2: extra.hiking_image_2 || '',
+    seo_title: extra.seo_title || '',
+    seo_description: extra.seo_description || '',
+    seo_og_image: extra.seo_og_image || '',
+  })
+  const [customSections, setCustomSections] = useState(extra.custom_sections || [])
+
+  useEffect(() => {
+    if (data) {
+      const ex = data.extra_content || {}
+      setForm({
+        hero_title: data.hero_title || '',
+        hero_subtitle: data.hero_subtitle || '',
+        hero_image_url: data.hero_image_url || '',
+        wellness_eyebrow: ex.wellness_eyebrow || 'WELLNESS',
+        wellness_heading: ex.wellness_heading || 'Outdoor Massage & PURE Spa',
+        wellness_body: ex.wellness_body || '',
+        wellness_image_1: ex.wellness_image_1 || '',
+        wellness_image_2: ex.wellness_image_2 || '',
+        fitness_eyebrow: ex.fitness_eyebrow || 'MOVEMENT',
+        fitness_heading: ex.fitness_heading || 'Outdoor Shaded & Indoor Fitness',
+        fitness_body: ex.fitness_body || '',
+        fitness_image_1: ex.fitness_image_1 || '',
+        fitness_image_2: ex.fitness_image_2 || '',
+        fitness_image_3: ex.fitness_image_3 || '',
+        beach_eyebrow: ex.beach_eyebrow || 'THE BEACH',
+        beach_heading: ex.beach_heading || 'Open Water Swimming',
+        beach_body: ex.beach_body || '',
+        beach_image: ex.beach_image || '',
+        boating_eyebrow: ex.boating_eyebrow || 'EXPLORE',
+        boating_heading: ex.boating_heading || 'Explore the Ionian Islands by Boat',
+        boating_body: ex.boating_body || '',
+        boating_image_1: ex.boating_image_1 || '',
+        boating_image_2: ex.boating_image_2 || '',
+        boating_image_3: ex.boating_image_3 || '',
+        boating_image_4: ex.boating_image_4 || '',
+        hiking_eyebrow: ex.hiking_eyebrow || 'ADVENTURE',
+        hiking_heading: ex.hiking_heading || 'History & Hiking',
+        hiking_intro: ex.hiking_intro || '',
+        hiking_bullet_1: ex.hiking_bullet_1 || '',
+        hiking_bullet_2: ex.hiking_bullet_2 || '',
+        hiking_image_1: ex.hiking_image_1 || '',
+        hiking_image_2: ex.hiking_image_2 || '',
+        seo_title: ex.seo_title || '',
+        seo_description: ex.seo_description || '',
+        seo_og_image: ex.seo_og_image || '',
+      })
+      setCustomSections(ex.custom_sections || [])
+    }
+  }, [data])
+
+  function set(field, value) { setForm((f) => ({ ...f, [field]: value })) }
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    onSave({
+      id: data.id,
+      hero_title: form.hero_title,
+      hero_subtitle: form.hero_subtitle,
+      hero_image_url: form.hero_image_url,
+      extra_content: {
+        ...(data.extra_content || {}),
+        wellness_eyebrow: form.wellness_eyebrow,
+        wellness_heading: form.wellness_heading,
+        wellness_body: form.wellness_body,
+        wellness_image_1: form.wellness_image_1,
+        wellness_image_2: form.wellness_image_2,
+        fitness_eyebrow: form.fitness_eyebrow,
+        fitness_heading: form.fitness_heading,
+        fitness_body: form.fitness_body,
+        fitness_image_1: form.fitness_image_1,
+        fitness_image_2: form.fitness_image_2,
+        fitness_image_3: form.fitness_image_3,
+        beach_eyebrow: form.beach_eyebrow,
+        beach_heading: form.beach_heading,
+        beach_body: form.beach_body,
+        beach_image: form.beach_image,
+        boating_eyebrow: form.boating_eyebrow,
+        boating_heading: form.boating_heading,
+        boating_body: form.boating_body,
+        boating_image_1: form.boating_image_1,
+        boating_image_2: form.boating_image_2,
+        boating_image_3: form.boating_image_3,
+        boating_image_4: form.boating_image_4,
+        hiking_eyebrow: form.hiking_eyebrow,
+        hiking_heading: form.hiking_heading,
+        hiking_intro: form.hiking_intro,
+        hiking_bullet_1: form.hiking_bullet_1,
+        hiking_bullet_2: form.hiking_bullet_2,
+        hiking_image_1: form.hiking_image_1,
+        hiking_image_2: form.hiking_image_2,
+        seo_title: form.seo_title,
+        seo_description: form.seo_description,
+        seo_og_image: form.seo_og_image,
+        custom_sections: customSections,
+      },
+    })
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Hero */}
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Hero Section</h3>
+        <div>
+          <label className="label">Page Title</label>
+          <input className="input" value={form.hero_title} onChange={(e) => set('hero_title', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Subtitle / Description</label>
+          <textarea className="input" rows={2} value={form.hero_subtitle} onChange={(e) => set('hero_subtitle', e.target.value)} />
+        </div>
+        <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} />
+      </section>
+
+      {/* Wellness */}
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Outdoor Massage & PURE Spa</h3>
+        <div>
+          <label className="label">Eyebrow label</label>
+          <input className="input" value={form.wellness_eyebrow} onChange={(e) => set('wellness_eyebrow', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Heading</label>
+          <input className="input" value={form.wellness_heading} onChange={(e) => set('wellness_heading', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Body text</label>
+          <textarea className="input" rows={4} value={form.wellness_body} onChange={(e) => set('wellness_body', e.target.value)} />
+        </div>
+        <ImagePicker label="Image 1 (outdoor massage)" value={form.wellness_image_1} onChange={(v) => set('wellness_image_1', v)} />
+        <ImagePicker label="Image 2 (PURE Spa interior)" value={form.wellness_image_2} onChange={(v) => set('wellness_image_2', v)} />
+      </section>
+
+      {/* Fitness */}
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Outdoor Shaded & Indoor Fitness</h3>
+        <div>
+          <label className="label">Eyebrow label</label>
+          <input className="input" value={form.fitness_eyebrow} onChange={(e) => set('fitness_eyebrow', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Heading</label>
+          <input className="input" value={form.fitness_heading} onChange={(e) => set('fitness_heading', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Body text</label>
+          <textarea className="input" rows={4} value={form.fitness_body} onChange={(e) => set('fitness_body', e.target.value)} />
+        </div>
+        <ImagePicker label="Image 1 (outdoor fitness pavilion)" value={form.fitness_image_1} onChange={(v) => set('fitness_image_1', v)} />
+        <ImagePicker label="Image 2 (yoga group)" value={form.fitness_image_2} onChange={(v) => set('fitness_image_2', v)} />
+        <ImagePicker label="Image 3 (indoor gym)" value={form.fitness_image_3} onChange={(v) => set('fitness_image_3', v)} />
+      </section>
+
+      {/* Open Water Swimming */}
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Open Water Swimming</h3>
+        <div>
+          <label className="label">Eyebrow label</label>
+          <input className="input" value={form.beach_eyebrow} onChange={(e) => set('beach_eyebrow', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Heading</label>
+          <input className="input" value={form.beach_heading} onChange={(e) => set('beach_heading', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Body text</label>
+          <textarea className="input" rows={4} value={form.beach_body} onChange={(e) => set('beach_body', e.target.value)} />
+        </div>
+        <ImagePicker label="Image" value={form.beach_image} onChange={(v) => set('beach_image', v)} />
+      </section>
+
+      {/* Boat Trips */}
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Explore by Boat</h3>
+        <div>
+          <label className="label">Eyebrow label</label>
+          <input className="input" value={form.boating_eyebrow} onChange={(e) => set('boating_eyebrow', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Heading</label>
+          <input className="input" value={form.boating_heading} onChange={(e) => set('boating_heading', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Body text</label>
+          <textarea className="input" rows={4} value={form.boating_body} onChange={(e) => set('boating_body', e.target.value)} />
+        </div>
+        <ImagePicker label="Image 1 (island cliff beach)" value={form.boating_image_1} onChange={(v) => set('boating_image_1', v)} />
+        <ImagePicker label="Image 2 (island village)" value={form.boating_image_2} onChange={(v) => set('boating_image_2', v)} />
+        <ImagePicker label="Image 3 (dramatic coast)" value={form.boating_image_3} onChange={(v) => set('boating_image_3', v)} />
+        <ImagePicker label="Image 4 (Vathiavali beach)" value={form.boating_image_4} onChange={(v) => set('boating_image_4', v)} />
+      </section>
+
+      {/* History & Hiking */}
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">History & Hiking</h3>
+        <div>
+          <label className="label">Eyebrow label</label>
+          <input className="input" value={form.hiking_eyebrow} onChange={(e) => set('hiking_eyebrow', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Heading</label>
+          <input className="input" value={form.hiking_heading} onChange={(e) => set('hiking_heading', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Intro paragraph</label>
+          <textarea className="input" rows={3} value={form.hiking_intro} onChange={(e) => set('hiking_intro', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Bullet 1</label>
+          <textarea className="input" rows={3} value={form.hiking_bullet_1} onChange={(e) => set('hiking_bullet_1', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Bullet 2</label>
+          <textarea className="input" rows={3} value={form.hiking_bullet_2} onChange={(e) => set('hiking_bullet_2', e.target.value)} />
+        </div>
+        <ImagePicker label="Image 1 (hiking panoramic)" value={form.hiking_image_1} onChange={(v) => set('hiking_image_1', v)} />
+        <ImagePicker label="Image 2 (ancient ruins)" value={form.hiking_image_2} onChange={(v) => set('hiking_image_2', v)} />
+      </section>
+
+      {/* SEO */}
+      <section className="bg-slate-800 border border-gold/30 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-gold uppercase tracking-wide">SEO — Search Engine</h3>
+        <p className="text-slate-500 text-xs">Overrides what Google shows. Leave blank to use the hero title/subtitle as fallback.</p>
+        <div>
+          <label className="label">SEO Title <span className="text-slate-600 normal-case font-normal">(~60 chars)</span></label>
+          <input className="input" value={form.seo_title} onChange={(e) => set('seo_title', e.target.value)} placeholder="e.g. Experiences at Seagonia Hotel — Ionian Coast" />
+          {form.seo_title && <p className={`text-xs mt-1 ${form.seo_title.length > 60 ? 'text-amber-400' : 'text-slate-500'}`}>{form.seo_title.length}/60 chars</p>}
+        </div>
+        <div>
+          <label className="label">SEO Description <span className="text-slate-600 normal-case font-normal">(~155 chars)</span></label>
+          <textarea className="input" rows={2} value={form.seo_description} onChange={(e) => set('seo_description', e.target.value)} placeholder="e.g. Explore unique experiences at Seagonia Hotel — wellness, fitness, boat trips, hiking and more." />
           {form.seo_description && <p className={`text-xs mt-1 ${form.seo_description.length > 155 ? 'text-amber-400' : 'text-slate-500'}`}>{form.seo_description.length}/155 chars</p>}
         </div>
         <ImagePicker label="OG Share Image (shown when shared on social / WhatsApp)" value={form.seo_og_image} onChange={(v) => set('seo_og_image', v)} />
@@ -961,6 +1553,17 @@ function PageDetail({ pageName }) {
   if (pageName === 'area') {
     return (
       <AreaForm
+        data={data}
+        onSave={handleSave}
+        saving={update.isPending}
+        saved={saved}
+      />
+    )
+  }
+
+  if (pageName === 'experiences') {
+    return (
+      <ExperiencesForm
         data={data}
         onSave={handleSave}
         saving={update.isPending}
