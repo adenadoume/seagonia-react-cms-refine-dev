@@ -1,12 +1,12 @@
-# Boutique Hotel Website + CMS — Complete Blueprint
+# Seagonia Hotel — Complete Website + CMS Blueprint
 
-> This document is a complete technical blueprint for building a boutique hotel website and admin CMS from scratch. It contains every architectural decision, pattern, schema, and configuration needed to reproduce the system identically for any property. Replace all `[PLACEHOLDER]` values with your own project details.
+> This document is a complete technical blueprint for rebuilding the Seagonia Hotel website and admin CMS from scratch. It contains every architectural decision, pattern, schema, and configuration needed to reproduce the system identically.
 
 ---
 
 ## 1. Project Overview
 
-**What this is:** A boutique hotel website for [YOUR_HOTEL_NAME] paired with a custom headless CMS admin panel.
+**What this is:** A boutique hotel website for Seagonia Hotel (Pogonia, near Paleros, Ionian Sea, Greece) paired with a custom headless CMS admin panel.
 
 **Two separate Vite React SPAs:**
 
@@ -21,15 +21,13 @@
 - Every piece of content has a hardcoded fallback so the site renders perfectly even if Supabase returns nothing.
 - The admin editor stores content to Supabase; the website reads from Supabase at runtime. No rebuild needed for content changes.
 
-**Hotel details (replace with your own):**
-- Name: [YOUR_HOTEL_NAME]
-- Tagline: [YOUR_TAGLINE]
-- Location: [YOUR_LOCATION]
-- Coordinates: [YOUR_LAT], [YOUR_LNG]
-- [ROOM_COUNT] rooms across 6 room types (A–F) — adjust as needed
-- GitHub repo: `git@github.com:YOUR_ORG/YOUR_REPO.git`
-
-> **Note on repo name:** The repo may have `-refine-dev` in its name — this is a historical artifact. The [refine.dev](https://refine.dev) framework is NOT used anywhere in this project. The name is just a leftover from an early scaffolding decision.
+**Hotel details:**
+- Name: Seagonia (Sea + Gonia = Sea Corner)
+- Tagline: "Your Corner by the Sea"
+- Location: Pogonia village, near Paleros, Aitoloakarnania, Ionian Sea, Greece
+- Coordinates: lat 38.7833, lng 20.8833
+- 58 rooms across 6 room types (A–F)
+- GitHub repo: `git@github.com:adenadoume/seagonia-react-cms-refine-dev.git`
 
 ---
 
@@ -86,7 +84,7 @@ Note: Admin uses React 18 and react-router-dom v6. Website uses React 19 and rea
 ### Backend Services
 
 - **Supabase** — auth (email/password), PostgreSQL database, no storage buckets used
-- **Cloudinary** — image uploads from admin (unsigned preset `YOUR_UPLOAD_PRESET`)
+- **Cloudinary** — image uploads from admin (unsigned preset `seagonia-admin`)
 - **Vercel** — deployment for both apps (two separate Vercel projects)
 - **Google Fonts** — Cormorant Garamond + Outfit loaded in `index.html`
 
@@ -95,7 +93,7 @@ Note: Admin uses React 18 and react-router-dom v6. Website uses React 19 and rea
 ## 3. Folder Structure
 
 ```
-your-repo-root/
+seagonia-react-cms-refine-dev/
 │
 ├── vercel.json                    # Root Vercel config (used when deploying from repo root)
 │
@@ -184,7 +182,7 @@ your-repo-root/
 
 ## 4. Supabase Database Schema
 
-Supabase project ID: `[YOUR_SUPABASE_PROJECT_ID]`
+Supabase project ID: `pnjfxostbiscwihpatjk`
 
 ### SQL CREATE TABLE Statements
 
@@ -200,7 +198,7 @@ CREATE TABLE hotel_settings (
   address       TEXT,
   instagram_url TEXT,
   facebook_url  TEXT,
-  total_rooms   INTEGER DEFAULT 0,
+  total_rooms   INTEGER DEFAULT 58,
   is_published  BOOLEAN DEFAULT true,
   created_at    TIMESTAMPTZ DEFAULT now(),
   updated_at    TIMESTAMPTZ DEFAULT now()
@@ -352,28 +350,28 @@ The `extra_content` column is a JSONB object. Every page uses it for fields beyo
   "accommodation_eyebrow": "Accommodation",
   "experiences_eyebrow": "Experiences",
   "dining_eyebrow": "Dining",
-  "dining_heading": "[RESTAURANT_1]",
-  "dining_body": "[SECTION_BODY]",
+  "dining_heading": "Galià Rooftop Restaurant",
+  "dining_body": "Our Mediterranean restaurant...",
   "dining_image": "/images/hotel/img-038.jpg",
-  "cta_heading": "[SECTION_HEADING]",
-  "cta_subheading": "[SECTION_BODY]",
+  "cta_heading": "Plan Your Stay",
+  "cta_subheading": "We would love to hear from you",
   "area_image": "/images/hotel/img-001.jpg",
-  "exp_1_title": "[EXPERIENCE_TITLE_1]", "exp_1_image": "/images/hotel/img-073.jpg",
-  "exp_2_title": "[EXPERIENCE_TITLE_2]", "exp_2_image": "/images/hotel/img-055.jpg",
-  "exp_3_title": "[EXPERIENCE_TITLE_3]", "exp_3_image": "/images/hotel/img-034.jpg",
-  "exp_4_title": "[EXPERIENCE_TITLE_4]", "exp_4_image": "/images/hotel/img-036.jpg",
-  "exp_5_title": "[EXPERIENCE_TITLE_5]", "exp_5_image": "/images/hotel/img-076.jpg",
-  "exp_6_title": "[EXPERIENCE_TITLE_6]", "exp_6_image": "/images/hotel/img-048.jpg",
-  "seo_title": "[SEO_PAGE_TITLE]",
-  "seo_description": "[SEO_PAGE_DESCRIPTION]",
+  "exp_1_title": "Boat Trips",   "exp_1_image": "/images/hotel/img-073.jpg",
+  "exp_2_title": "Cooking Classes", "exp_2_image": "/images/hotel/img-055.jpg",
+  "exp_3_title": "Yoga & Wellness", "exp_3_image": "/images/hotel/img-034.jpg",
+  "exp_4_title": "Spa & Massage",   "exp_4_image": "/images/hotel/img-036.jpg",
+  "exp_5_title": "Hiking & History","exp_5_image": "/images/hotel/img-076.jpg",
+  "exp_6_title": "Wine & Dining",   "exp_6_image": "/images/hotel/img-048.jpg",
+  "seo_title": "Boutique Hotel in Paleros",
+  "seo_description": "Seagonia Hotel — Your Corner by the Sea...",
   "seo_og_image": "",
   "custom_sections": []
 }
 ```
 
 Also uses top-level `page_content` columns:
-- `hero_title` — "[BRAND_NAME]"
-- `hero_subtitle` — "[YOUR_TAGLINE]"
+- `hero_title` — "SEAGONIA"
+- `hero_subtitle` — "Your Corner by the Sea"
 - `hero_image_url` — hero background
 - `section_1_title` — intro heading
 - `section_1_text` — intro body paragraph
@@ -385,38 +383,38 @@ Also uses top-level `page_content` columns:
 
 ```json
 {
-  "galia_eyebrow": "[SECTION_EYEBROW]",
-  "galia_heading": "[RESTAURANT_1]",
-  "galia_body": "[SECTION_BODY]",
+  "galia_eyebrow": "ROOFTOP DINING",
+  "galia_heading": "Galiá Restaurant",
+  "galia_body": "...",
   "galia_image_1": "/images/hotel/img-038.jpg",
   "galia_image_2": "/images/hotel/img-037.jpg",
   "galia_image_3": "/images/hotel/img-041.jpg",
 
-  "lounge_eyebrow": "[SECTION_EYEBROW]",
-  "lounge_heading": "[RESTAURANT_2]",
-  "lounge_body": "[SECTION_BODY]",
+  "lounge_eyebrow": "ALL-DAY DINING",
+  "lounge_heading": "Seagonia Lounge",
+  "lounge_body": "...",
   "lounge_image_1": "/images/hotel/img-017.jpg",
   "lounge_image_2": "/images/hotel/img-042.jpg",
   "lounge_image_3": "/images/hotel/img-041.jpg",
   "lounge_image_4": "/images/hotel/img-043.jpg",
 
-  "farm_eyebrow": "[SECTION_EYEBROW]",
-  "farm_heading": "[SECTION_HEADING]",
-  "farm_body": "[SECTION_BODY]",
+  "farm_eyebrow": "FROM OUR LAND",
+  "farm_heading": "Farm to Table",
+  "farm_body": "...",
   "farm_image_1": "/images/hotel/img-044.jpg",
   "farm_image_2": "/images/hotel/img-046.jpg",
   "farm_image_3": "/images/hotel/img-045.jpg",
   "farm_image_4": "/images/hotel/img-054.jpg",
 
-  "cooking_eyebrow": "[SECTION_EYEBROW]",
-  "cooking_heading": "[SECTION_HEADING]",
-  "cooking_body": "[SECTION_BODY]",
+  "cooking_eyebrow": "HANDS-ON",
+  "cooking_heading": "Cooking Classes",
+  "cooking_body": "...",
   "cooking_image_1": "/images/hotel/img-055.jpg",
   "cooking_image_2": "/images/hotel/img-059.jpg",
 
-  "yacht_eyebrow": "[SECTION_EYEBROW]",
-  "yacht_heading": "[SECTION_HEADING]",
-  "yacht_body": "[SECTION_BODY]",
+  "yacht_eyebrow": "PALEROS HARBOUR",
+  "yacht_heading": "Yacht Club",
+  "yacht_body": "...",
   "yacht_image_1": "/images/hotel/img-049.jpg",
   "yacht_image_2": "/images/hotel/img-048.jpg",
   "yacht_image_3": "/images/hotel/img-051.jpg",
@@ -424,14 +422,14 @@ Also uses top-level `page_content` columns:
   "yacht_image_5": "/images/hotel/img-039.jpg",
   "yacht_image_6": "/images/hotel/img-048.jpg",
 
-  "beekeeping_eyebrow": "[SECTION_EYEBROW]",
-  "beekeeping_heading": "[EXPERIENCE_1]",
-  "beekeeping_body": "[SECTION_BODY]",
+  "beekeeping_eyebrow": "EXPERIENCE",
+  "beekeeping_heading": "Honey Harvesting & Beekeeping",
+  "beekeeping_body": "...",
   "beekeeping_image_1": "/images/hotel/img-060.jpg",
   "beekeeping_image_2": "/images/hotel/img-061.jpg",
 
-  "seo_title": "[SEO_PAGE_TITLE]",
-  "seo_description": "[SEO_PAGE_DESCRIPTION]",
+  "seo_title": "Dining",
+  "seo_description": "...",
   "seo_og_image": "",
   "custom_sections": []
 }
@@ -441,42 +439,42 @@ Also uses top-level `page_content` columns:
 
 ```json
 {
-  "wellness_eyebrow": "[SECTION_EYEBROW]",
-  "wellness_heading": "[SECTION_HEADING]",
-  "wellness_body": "[SECTION_BODY]",
+  "wellness_eyebrow": "WELLNESS",
+  "wellness_heading": "Outdoor Massage & PURE Spa",
+  "wellness_body": "...",
   "wellness_image_1": "/images/hotel/img-036.jpg",
   "wellness_image_2": "/images/hotel/img-062.jpg",
 
-  "fitness_eyebrow": "[SECTION_EYEBROW]",
-  "fitness_heading": "[SECTION_HEADING]",
-  "fitness_body": "[SECTION_BODY]",
+  "fitness_eyebrow": "MOVEMENT",
+  "fitness_heading": "Outdoor Shaded & Indoor Fitness",
+  "fitness_body": "...",
   "fitness_image_1": "/images/hotel/img-071.jpg",
   "fitness_image_2": "/images/hotel/img-034.jpg",
   "fitness_image_3": "/images/hotel/img-072.jpg",
 
-  "beach_eyebrow": "[SECTION_EYEBROW]",
-  "beach_heading": "[SECTION_HEADING]",
-  "beach_body": "[SECTION_BODY]",
+  "beach_eyebrow": "THE BEACH",
+  "beach_heading": "Open Water Swimming",
+  "beach_body": "...",
   "beach_image": "/images/hotel/img-015.jpg",
 
-  "boating_eyebrow": "[SECTION_EYEBROW]",
-  "boating_heading": "[SECTION_HEADING]",
-  "boating_body": "[SECTION_BODY]",
+  "boating_eyebrow": "EXPLORE",
+  "boating_heading": "Explore the Ionian Islands by Boat",
+  "boating_body": "...",
   "boating_image_1": "/images/hotel/img-073.jpg",
   "boating_image_2": "/images/hotel/img-074.jpg",
   "boating_image_3": "/images/hotel/img-075.jpg",
   "boating_image_4": "/images/hotel/img-012.jpg",
 
-  "hiking_eyebrow": "[SECTION_EYEBROW]",
-  "hiking_heading": "[SECTION_HEADING]",
-  "hiking_intro": "[SECTION_BODY]",
-  "hiking_bullet_1": "[BULLET_POINT_1]",
-  "hiking_bullet_2": "[BULLET_POINT_2]",
+  "hiking_eyebrow": "ADVENTURE",
+  "hiking_heading": "History & Hiking",
+  "hiking_intro": "...",
+  "hiking_bullet_1": "Start your day with one of the organized hiking tours...",
+  "hiking_bullet_2": "Immerse yourself in the region's rich archaeological history...",
   "hiking_image_1": "/images/hotel/img-076.jpg",
   "hiking_image_2": "/images/hotel/img-008.jpg",
 
-  "seo_title": "[SEO_PAGE_TITLE]",
-  "seo_description": "[SEO_PAGE_DESCRIPTION]",
+  "seo_title": "Experiences",
+  "seo_description": "...",
   "seo_og_image": "",
   "custom_sections": []
 }
@@ -487,20 +485,20 @@ Also uses top-level `page_content` columns:
 ```json
 {
   "welcome_eyebrow": "Welcome",
-  "welcome_heading": "[SECTION_HEADING]",
-  "welcome_body": "[SECTION_BODY]",
+  "welcome_heading": "About Seagonia",
+  "welcome_body": "...",
   "welcome_image": "/images/hotel/img-015.jpg",
 
-  "pool_heading": "[SECTION_HEADING]",
-  "pool_body": "[SECTION_BODY]",
+  "pool_heading": "Pool & Multipurpose Room",
+  "pool_body": "...",
   "pool_image": "/images/hotel/img-031.jpg",
 
   "aerial_image_1": "/images/hotel/img-016.jpg",
   "aerial_image_2": "/images/hotel/img-017.jpg",
-  "aerial_caption": "[IMAGE_CAPTION]",
+  "aerial_caption": "80 metres from the beach, surrounded by nature",
 
-  "seo_title": "[SEO_PAGE_TITLE]",
-  "seo_description": "[SEO_PAGE_DESCRIPTION]",
+  "seo_title": "The Hotel",
+  "seo_description": "...",
   "seo_og_image": "",
   "custom_sections": []
 }
@@ -511,30 +509,30 @@ Also uses top-level `page_content` columns:
 ```json
 {
   "location_eyebrow": "Location",
-  "location_heading": "[SECTION_HEADING]",
-  "location_body": "[SECTION_BODY]",
+  "location_heading": "The Area",
+  "location_body": "...",
   "location_image": "/images/hotel/img-001.jpg",
 
   "explore_eyebrow": "Explore",
-  "explore_heading": "[SECTION_HEADING]",
-  "explore_body": "[SECTION_BODY]",
+  "explore_heading": "The Little Ionian",
+  "explore_body": "...",
   "explore_image": "/images/hotel/img-003.jpg",
 
-  "village_eyebrow": "[SECTION_EYEBROW]",
-  "village_heading": "[LOCATION_1]",
-  "village_body": "[SECTION_BODY]",
+  "village_eyebrow": "VILLAGE",
+  "village_heading": "Pogonia",
+  "village_body": "...",
   "village_image_1": "/images/hotel/img-005.jpg",
   "village_image_2": "/images/hotel/img-006.jpg",
   "village_image_3": "/images/hotel/img-007.jpg",
 
-  "paleros_eyebrow": "[SECTION_EYEBROW]",
-  "paleros_heading": "[LOCATION_2]",
-  "paleros_body": "[SECTION_BODY]",
+  "paleros_eyebrow": "Nearby Town",
+  "paleros_heading": "Paleros",
+  "paleros_body": "...",
   "paleros_image_1": "/images/hotel/img-010.jpg",
   "paleros_image_2": "/images/hotel/img-011.jpg",
 
-  "seo_title": "[SEO_PAGE_TITLE]",
-  "seo_description": "[SEO_PAGE_DESCRIPTION]",
+  "seo_title": "The Area",
+  "seo_description": "...",
   "seo_og_image": "",
   "custom_sections": []
 }
@@ -546,8 +544,8 @@ These pages only use the top-level `page_content` columns + the SEO fields in `e
 
 ```json
 {
-  "seo_title": "[SEO_PAGE_TITLE]",
-  "seo_description": "[SEO_PAGE_DESCRIPTION]",
+  "seo_title": "Our Rooms",
+  "seo_description": "...",
   "seo_og_image": "",
   "custom_sections": []
 }
@@ -661,7 +659,7 @@ useSEO({
 ```
 
 The hook runs a `useEffect` that:
-1. Sets `document.title` to `"${title} | [YOUR_HOTEL_NAME]"` (or the full site tagline if no title)
+1. Sets `document.title` to `"${title} | Seagonia Hotel"` (or the full site tagline if no title)
 2. Sets `<meta name="description">` content
 3. Sets `<meta property="og:title">`, `og:description`, `og:site_name`
 4. Sets `<meta property="og:image">` only if `ogImage` is truthy
@@ -891,9 +889,9 @@ letterSpacing: {
 Data: `usePageContent('home')`, `useRooms()` (featured only), `useTestimonials()`
 
 Sections:
-1. **Full-screen hero** — hero_image_url background, hero_title ([BRAND_NAME]), hero_subtitle, bouncing ChevronDown
+1. **Full-screen hero** — hero_image_url background, hero_title (SEAGONIA), hero_subtitle, bouncing ChevronDown
 2. **Introduction** — 5/5-col grid: text (eyebrow + section_1_title + section_1_text) left, section_1_image_url right
-3. **Location teaser** — parallax bg (area_image), stats ([STAT_1] / [STAT_2] / [STAT_3]), link to /area
+3. **Location teaser** — parallax bg (area_image), stats (80m beach / 3km Paleros / 7 islands), link to /area
 4. **Rooms preview** — section_2_title heading, grid of up to 3 featured rooms (is_featured=true), "View All Rooms" button
 5. **Experiences grid** — section_3_title heading, 6-image mosaic (exp_1 through exp_6), hover reveals title
 6. **Dining teaser** — dining_image background, dining_eyebrow + dining_heading + dining_body
@@ -934,12 +932,12 @@ Data: `usePageContent('dining')`
 
 Sections (all content from extra_content):
 1. **Page hero** — 50vh
-2. **[RESTAURANT_1]** — text left, image mosaic right (galia_image_1/2/3)
-3. **[RESTAURANT_2]** — 4-image grid left, text right (lounge_image_1/2/3/4)
+2. **Galiá Restaurant** — text left, image mosaic right (galia_image_1/2/3)
+3. **Seagonia Lounge** — 4-image grid left, text right (lounge_image_1/2/3/4)
 4. **Farm to Table** — masonry 2-col left, text right (farm_image_1/2/3/4)
 5. **Yacht Club** — text left, multi-image right (yacht_image_1 through yacht_image_6)
 6. **Cooking Classes** — centered heading, 2-col image grid (cooking_image_1/2)
-7. **[EXPERIENCE_1]** — 2 images left, text right (beekeeping_image_1/2)
+7. **Beekeeping** — 2 images left, text right (beekeeping_image_1/2)
 8. **CustomSections**
 
 ### Experiences (`/experiences`)
@@ -975,13 +973,13 @@ Data: `usePageContent('area')`
 Sections:
 1. **Page hero** — 50vh
 2. **The Area** — text + image (location_eyebrow/heading/body/image)
-3. **[SECTION_HEADING]** — image + text with location pills (explore_eyebrow/heading/body/image)
-4. **[LOCATION_1]** — SectionHeader + 3-col image grid + body text (village_image_1/2/3)
-5. **[LOCATION_2]** — large image + text + 2 inline images (paleros_image_1/2)
-6. **Nearby Beaches** — 3-card grid (replace with your local beaches) — static data
+3. **The Little Ionian** — image + text with island pills (explore_eyebrow/heading/body/image)
+4. **Pogonia** — SectionHeader + 3-col image grid + body text (village_image_1/2/3)
+5. **Paleros** — large harbor image + text + 2 inline images (paleros_image_1/2)
+6. **Nearby Beaches** — 3-card grid (Vathiavali, Varko Bay, Gerakas) — static data
 7. **Getting Here** — 3 travel mode cards (Car/Ferry/Plane) — static data
-8. **Get Directions** — button linking to Google Maps with hotel coords ([YOUR_LAT], [YOUR_LNG])
-9. **Distances table** — static km values (update with your distances)
+8. **Get Directions** — button linking to Google Maps with hotel coords
+9. **Distances table** — static km values
 10. **CustomSections**
 
 ### Hotel/About (`/hotel`)
@@ -991,7 +989,7 @@ Data: `usePageContent('hotel')`
 Sections:
 1. **Page hero** — 50vh
 2. **About** — text + image (welcome_eyebrow/heading/body/image)
-3. **At a Glance** — 4 AnimatedCounter stats ([STAT_1], [STAT_2], [STAT_3], [STAT_4])
+3. **At a Glance** — 4 AnimatedCounter stats (58 rooms, 4 pools, 3 dining, 500m beach)
 4. **Facilities** — 4 cards with Lucide icons (Accommodation/Pools/F&B/Activities)
 5. **Pool & Multipurpose Room** — full-width image (pool_image) + centered text
 6. **Aerial Views** — 2-col image grid (aerial_image_1/2) + aerial_caption italic
@@ -1016,7 +1014,7 @@ Booking page — typically a redirect or booking widget embed.
 ┌────────────────────────────────────────────────────┐
 │ Sidebar (w-48, bg-navy)  │ Main content (flex-1)   │
 │                          │ bg-slate-900             │
-│ [BRAND_NAME] (gold text) │                          │
+│ SEAGONIA (gold text)     │                          │
 │ Admin (white/40)         │                          │
 │                          │                          │
 │ Primary nav:             │                          │
@@ -1109,11 +1107,11 @@ function ProtectedRoute() {
 
 ```jsx
 // admin/src/pages/Login.jsx
-// Full-screen navy background, gold brand title, slate-800 card
+// Full-screen navy background, gold SEAGONIA title, slate-800 card
 <div className="min-h-screen bg-navy flex items-center justify-center px-4">
   <div className="w-full max-w-sm">
     <div className="text-center mb-8">
-      <h1 className="text-2xl font-semibold text-gold tracking-widest">[BRAND_NAME]</h1>
+      <h1 className="text-2xl font-semibold text-gold tracking-widest">SEAGONIA</h1>
       <p className="text-slate-400 text-sm mt-1">Hotel Admin</p>
     </div>
     <form className="bg-slate-800 border border-slate-700 rounded-lg p-8 space-y-4">
@@ -1194,7 +1192,7 @@ Standard list + create/edit form pattern. ImagePicker on Experiences. Amenities 
 Form for hotel_settings: name, tagline, description, total_rooms, phone, email, address, instagram_url, facebook_url.
 
 **Backup section:**
-- Export button: fetches all tables, creates JSON blob, triggers download as `hotel-backup-YYYY-MM-DD.json`
+- Export button: fetches all tables, creates JSON blob, triggers download as `seagonia-backup-YYYY-MM-DD.json`
 - Import button: reads JSON file, uses `supabase.upsert()` on each table with `{ onConflict: 'id' }`
 - Deploy button (`DeployButton` component from Layout.jsx): POST to `VITE_DEPLOY_HOOK` URL
 
@@ -1223,7 +1221,7 @@ Props:
 - **Gallery** — all images from `useAdminGallery()`, URLs resolved via `resolveUrl()`
 
 ```js
-const WEBSITE_BASE = 'https://YOUR_WEBSITE.vercel.app'
+const WEBSITE_BASE = 'https://seagonia.vercel.app'
 
 // Generates array of 77 URLs
 const LOCAL_IMAGES = Array.from({ length: 77 }, (_, i) => {
@@ -1347,10 +1345,10 @@ Pattern: every mutation invalidates its query key on success. Saving feedback vi
 Every single content variable in every page component has a hardcoded fallback. The site renders fully without Supabase:
 
 ```js
-const heroTitle   = content?.hero_title     || '[BRAND_NAME]'
+const heroTitle   = content?.hero_title     || 'SEAGONIA'
 const heroImage   = content?.hero_image_url || HOTEL_IMAGES.hero
 const eyebrow     = extra.intro_eyebrow     || 'Welcome'
-const heading     = pageContent?.section_1_title || 'A Peaceful Retreat by the Sea'
+const heading     = pageContent?.section_1_title || 'A Peaceful Retreat by the Ionian Sea'
 ```
 
 This means:
@@ -1363,7 +1361,7 @@ This means:
 **Three types of image URLs exist in the system:**
 
 1. **Local/relative** — `/images/hotel/img-001.jpg` (used as fallback defaults in constants/hotel.js, stored this way in Supabase)
-2. **Absolute local** — `https://YOUR_WEBSITE.vercel.app/images/hotel/img-001.jpg` (how ImagePicker stores picks from Hotel Photos tab)
+2. **Absolute local** — `https://seagonia.vercel.app/images/hotel/img-001.jpg` (how ImagePicker stores picks from Hotel Photos tab)
 3. **Cloudinary** — `https://res.cloudinary.com/CLOUD_NAME/image/upload/...` (uploads from Gallery admin)
 
 The website renders all three correctly because `<img src>` handles both relative and absolute URLs.
@@ -1424,11 +1422,11 @@ POSTs to `VITE_DEPLOY_HOOK`. Shown in sidebar area and also in SettingsAdmin Bac
 ### Website (`website/.env.local`)
 
 ```
-VITE_SUPABASE_URL=https://[YOUR_SUPABASE_PROJECT_ID].supabase.co
-VITE_SUPABASE_ANON_KEY=[YOUR_SUPABASE_ANON_KEY]
-VITE_HOTEL_PHONE=[YOUR_PHONE]
-VITE_HOTEL_EMAIL=[YOUR_EMAIL]
-VITE_HOTEL_ADDRESS=[YOUR_ADDRESS]
+VITE_SUPABASE_URL=https://pnjfxostbiscwihpatjk.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+VITE_HOTEL_PHONE=+302643041736
+VITE_HOTEL_EMAIL=welcome@seagonia.com
+VITE_HOTEL_ADDRESS=Pogonia, Paleros 300 12, Greece
 ```
 
 These are also set in Vercel project environment variables for production builds.
@@ -1436,10 +1434,10 @@ These are also set in Vercel project environment variables for production builds
 ### Admin (`admin/.env`)
 
 ```
-VITE_SUPABASE_URL=https://[YOUR_SUPABASE_PROJECT_ID].supabase.co
-VITE_SUPABASE_ANON_KEY=[YOUR_SUPABASE_ANON_KEY]
+VITE_SUPABASE_URL=https://pnjfxostbiscwihpatjk.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 VITE_CLOUDINARY_CLOUD_NAME=your-cloud-name
-VITE_CLOUDINARY_UPLOAD_PRESET=YOUR_UPLOAD_PRESET
+VITE_CLOUDINARY_UPLOAD_PRESET=seagonia-admin
 VITE_DEPLOY_HOOK=https://api.vercel.com/v1/integrations/deploy/...
 ```
 
@@ -1453,191 +1451,17 @@ Note: Admin Supabase client uses `persistSession: true` (unlike website which us
 2. Dashboard → top-left shows your **Cloud name** — copy it
 3. Settings → Upload → Upload presets tab → **Add upload preset**
 4. Set:
-   - Preset name: `YOUR_UPLOAD_PRESET`
+   - Preset name: `seagonia-admin`
    - Signing mode: **Unsigned** (critical — signed presets require server-side signing)
 5. Save
 6. Add `VITE_CLOUDINARY_CLOUD_NAME=your-cloud-name` to `admin/.env`
-7. Add `VITE_CLOUDINARY_UPLOAD_PRESET=YOUR_UPLOAD_PRESET` to `admin/.env`
+7. Add `VITE_CLOUDINARY_UPLOAD_PRESET=seagonia-admin` to `admin/.env`
 
 If upload preset is Signed, the upload will return HTTP 400. No API secret is needed for unsigned uploads from the browser.
 
 ---
 
-## 12. SEO Implementation
-
-### Static SEO (index.html)
-
-`website/index.html` contains static fallbacks for social sharing platforms (Facebook, WhatsApp, LinkedIn) that don't execute JavaScript. Copy this exactly into your `website/index.html` `<head>`, updating the domain/content for your property:
-
-```html
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="[YOUR_HOTEL_NAME] — [YOUR_TAGLINE]. A boutique [ROOM_COUNT]-room hotel in [YOUR_LOCATION]." />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
-    <title>[YOUR_HOTEL_NAME] | [YOUR_TAGLINE] — [YOUR_LOCATION]</title>
-
-    <!-- Open Graph (static fallback — works for Facebook, WhatsApp, LinkedIn which don't run JS) -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="[YOUR_HOTEL_NAME]" />
-    <meta property="og:title" content="[YOUR_HOTEL_NAME] | [YOUR_TAGLINE] — [YOUR_LOCATION]" />
-    <meta property="og:description" content="A boutique [ROOM_COUNT]-room hotel in [YOUR_LOCATION]." />
-    <meta property="og:image" content="https://YOUR-DOMAIN.com/images/hotel/img-000.jpg" />
-    <meta property="og:url" content="https://YOUR-DOMAIN.com/" />
-    <meta property="og:locale" content="en_US" />
-
-    <!-- Twitter Card (static fallback) -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="[YOUR_HOTEL_NAME] | [YOUR_TAGLINE] — [YOUR_LOCATION]" />
-    <meta name="twitter:description" content="A boutique [ROOM_COUNT]-room hotel in [YOUR_LOCATION]." />
-    <meta name="twitter:image" content="https://YOUR-DOMAIN.com/images/hotel/img-000.jpg" />
-
-    <!-- JSON-LD Structured Data — Hotel schema for Google Rich Results -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Hotel",
-      "name": "[YOUR_HOTEL_NAME]",
-      "description": "A boutique [ROOM_COUNT]-room hotel in [YOUR_LOCATION].",
-      "url": "https://YOUR-DOMAIN.com/",
-      "image": "https://YOUR-DOMAIN.com/images/hotel/img-000.jpg",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "[YOUR_LOCATION]",
-        "addressRegion": "[YOUR_LOCATION]",
-        "addressCountry": "[YOUR_COUNTRY_CODE]",
-        "postalCode": "[YOUR_POSTAL_CODE]"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": "[YOUR_LAT]",
-        "longitude": "[YOUR_LNG]"
-      },
-      "numberOfRooms": "[ROOM_COUNT]",
-      "starRating": {
-        "@type": "Rating",
-        "ratingValue": "4"
-      },
-      "amenityFeature": [
-        { "@type": "LocationFeatureSpecification", "name": "Swimming Pool", "value": true },
-        { "@type": "LocationFeatureSpecification", "name": "Beach Access", "value": true },
-        { "@type": "LocationFeatureSpecification", "name": "Restaurant", "value": true },
-        { "@type": "LocationFeatureSpecification", "name": "Free WiFi", "value": true },
-        { "@type": "LocationFeatureSpecification", "name": "Spa", "value": true }
-      ]
-    }
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
-```
-
-> **Note:** Replace `YOUR-DOMAIN.com` with the actual domain. Also update `website/public/sitemap.xml` and `admin/src/components/ImagePicker.jsx` (`WEBSITE_BASE` constant).
-
-### Dynamic SEO (useSEO hook)
-
-Create `website/src/hooks/useSEO.js` — this hook runs on every page to set `document.title` and all meta tags dynamically. Called once per page, updates whenever title/description/ogImage change:
-
-```js
-// website/src/hooks/useSEO.js
-import { useEffect } from 'react'
-
-function setMeta(name, content, attr = 'name') {
-  if (!content) return
-  let el = document.querySelector(`meta[${attr}="${name}"]`)
-  if (!el) {
-    el = document.createElement('meta')
-    el.setAttribute(attr, name)
-    document.head.appendChild(el)
-  }
-  el.setAttribute('content', content)
-}
-
-const useSEO = ({ title, description, ogImage } = {}) => {
-  useEffect(() => {
-    const siteName = '[YOUR_HOTEL_NAME]'
-    const fullTitle = title
-      ? `${title} | ${siteName}`
-      : `${siteName} — [YOUR_TAGLINE]`
-
-    document.title = fullTitle
-
-    setMeta('description', description)
-
-    // Open Graph
-    setMeta('og:title', fullTitle, 'property')
-    setMeta('og:description', description, 'property')
-    setMeta('og:site_name', siteName, 'property')
-    if (ogImage) setMeta('og:image', ogImage, 'property')
-
-    // Twitter Card
-    setMeta('twitter:card', 'summary_large_image')
-    setMeta('twitter:title', fullTitle)
-    setMeta('twitter:description', description)
-    if (ogImage) setMeta('twitter:image', ogImage)
-  }, [title, description, ogImage])
-}
-
-export default useSEO
-```
-
-**Usage in every page:**
-```js
-useSEO({
-  title: extra.seo_title || 'Page Title',           // shown in browser tab + Google
-  description: extra.seo_description || 'Default.', // shown in Google snippet
-  ogImage: extra.seo_og_image,                      // shown in WhatsApp/FB/Twitter previews
-})
-```
-
-The `og:image` and `twitter:image` in `index.html` are static fallbacks for the home page. The `useSEO` hook overrides them per-page dynamically (for platforms that run JavaScript).
-
-### Sitemap and Robots
-
-`website/public/sitemap.xml` — 11 routes with priorities. Auto-copied to `dist/` by Vite (files in `public/` are copied verbatim).
-
-`website/public/robots.txt` — `Allow: /` for all crawlers, `Sitemap: https://YOUR_WEBSITE.vercel.app/sitemap.xml`.
-
-**When final domain is known, update:**
-1. `website/index.html` — 3 URLs (og:image, og:url, JSON-LD url + image)
-2. `website/public/sitemap.xml` — all 11 `<loc>` entries
-3. `admin/src/components/ImagePicker.jsx` — `WEBSITE_BASE` constant
-4. `admin/src/pages/GalleryAdmin.jsx` — `WEBSITE_BASE` constant
-
-### Image Performance Best Practices (not yet implemented — add for production)
-
-**Lazy loading:** Add `loading="lazy" decoding="async"` to all `<img>` tags that are below the fold.
-Hero images (above the fold) should use `loading="eager" fetchpriority="high"` instead.
-
-Example:
-```jsx
-// Hero image — above the fold
-<img src={heroImage} loading="eager" fetchpriority="high" alt="Hotel hero" className="..." />
-
-// All other images — below the fold
-<img src={sectionImage} loading="lazy" decoding="async" alt="..." className="..." />
-```
-
-**WebP format:** For static assets in `public/images/`, convert JPGs to WebP for ~30% smaller file size.
-For Cloudinary-hosted images, append `/f_auto,q_auto` to the URL to auto-serve WebP:
-```js
-function optimizeCloudinaryUrl(url) {
-  if (!url || !url.includes('cloudinary.com')) return url
-  return url.replace('/upload/', '/upload/f_auto,q_auto/')
-}
-```
-
-**H1-H2-H3 hierarchy:** Each page must have exactly one `<h1>` (the hero/page title). Section headings use `<h2>`. Card/item titles use `<h3>`. The h1 should be keyword-rich (not just the brand name) for Google Ads Quality Score — e.g. "Boutique Hotel in [Location]" rather than just the hotel name.
-
----
-
-## 13. Supabase Setup
+## 12. Supabase Setup
 
 ### Creating the Project
 
@@ -1689,15 +1513,15 @@ Insert one row into `hotel_settings`:
 ```sql
 INSERT INTO hotel_settings (name, tagline, description, phone, email, address, instagram_url, facebook_url, total_rooms)
 VALUES (
-  '[YOUR_HOTEL_NAME]',
-  '[YOUR_TAGLINE]',
-  '[YOUR_HOTEL_DESCRIPTION]',
-  '[YOUR_PHONE]',
-  '[YOUR_EMAIL]',
-  '[YOUR_ADDRESS]',
-  '[YOUR_INSTAGRAM_URL]',
-  '[YOUR_FACEBOOK_URL]',
-  [ROOM_COUNT]
+  'Seagonia Hotel',
+  'Your Corner by the Sea',
+  'A boutique hotel nestled in the serene village of Pogonia...',
+  '+302643041736',
+  'welcome@seagonia.com',
+  'Pogonia, Paleros 300 12, Greece',
+  'https://www.instagram.com/seagoniahotel',
+  'https://www.facebook.com/seagoniahotel',
+  58
 );
 ```
 
@@ -1728,7 +1552,7 @@ INSERT INTO page_content (page_name, is_published) VALUES
 
 ---
 
-## 14. Deployment
+## 13. Deployment
 
 ### Website (Vercel Project 1)
 
@@ -1744,13 +1568,13 @@ OR use the root-level `vercel.json` if deploying from repo root:
 ```json
 {
   "buildCommand": "cd website && npm install && npm run build",
-  "outputDirectory": "website/dist",
+  "outputDirectory": "website/.next",
   "installCommand": "echo skip",
   "framework": null
 }
 ```
 
-Note: If you find `outputDirectory` set to `"website/.next"` in an existing `vercel.json`, correct it to `"website/dist"` — the `.next` path is a leftover from a reverted Next.js migration attempt.
+Note: The root `vercel.json` has `outputDirectory: "website/.next"` which is a leftover from a reverted Next.js migration — this should be corrected to `"website/dist"` for a proper Vite build.
 
 **Environment variables** (set in Vercel dashboard):
 - `VITE_SUPABASE_URL`
@@ -1796,38 +1620,160 @@ The `rewrites` rule is critical — without it, direct navigation to `/pages`, `
 
 ```bash
 # Always use SSH remote to avoid credential prompts
-git remote set-url origin git@github.com:YOUR_ORG/YOUR_REPO.git
+git remote set-url origin git@github.com:adenadoume/seagonia-react-cms-refine-dev.git
 
 # Push to main triggers both Vercel projects to rebuild
 git push origin main
 ```
 
-### AI-Assisted Development Convention
+---
 
-**Every time the AI makes code changes, it must commit them immediately.** This keeps the git history as a reliable log of what was built and when.
+## 14. SEO Implementation
 
-Rules for AI commits in this project:
-1. After any file change (code, config, docs), stage and commit before moving on
-2. Use descriptive commit messages explaining *what* and *why*, not just *what*
-3. Always use SSH remote (never HTTPS — GitHub no longer accepts password auth)
-4. Push to `main` after committing so Vercel rebuilds automatically
-5. **Never skip a commit** — even for "small" changes. Each commit is a safe restore point
+### Static SEO (index.html)
 
-If the AI makes a mistake, the user can roll back to any previous commit instantly:
-```bash
-git log --oneline          # see all commits
-git checkout <commit-hash> -- path/to/file   # restore one file
-git reset --hard <commit-hash>               # roll back everything (destructive)
+`website/index.html` contains static fallbacks for social sharing platforms (Facebook, WhatsApp, LinkedIn) that don't execute JavaScript. Copy this exactly into your `website/index.html` `<head>`, updating the domain/content for your property:
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Seagonia Hotel — Your Corner by the Sea. A boutique 58-room hotel in Pogonia, Paleros on the Ionian coast of Greece." />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <title>Seagonia Hotel | Your Corner by the Sea — Paleros, Ionian Sea</title>
+
+    <!-- Open Graph (static fallback — works for Facebook, WhatsApp, LinkedIn which don't run JS) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Seagonia Hotel" />
+    <meta property="og:title" content="Seagonia Hotel | Your Corner by the Sea — Paleros, Ionian Sea" />
+    <meta property="og:description" content="A boutique 58-room hotel in Pogonia, Paleros on the Ionian coast of Greece." />
+    <meta property="og:image" content="https://YOUR-DOMAIN.com/images/hotel/img-000.jpg" />
+    <meta property="og:url" content="https://YOUR-DOMAIN.com/" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card (static fallback) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Seagonia Hotel | Your Corner by the Sea — Paleros, Ionian Sea" />
+    <meta name="twitter:description" content="A boutique 58-room hotel in Pogonia, Paleros on the Ionian coast of Greece." />
+    <meta name="twitter:image" content="https://YOUR-DOMAIN.com/images/hotel/img-000.jpg" />
+
+    <!-- JSON-LD Structured Data — Hotel schema for Google Rich Results -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Hotel",
+      "name": "Seagonia Hotel",
+      "description": "A boutique 58-room hotel in Pogonia, Paleros on the Ionian coast of Greece.",
+      "url": "https://YOUR-DOMAIN.com/",
+      "image": "https://YOUR-DOMAIN.com/images/hotel/img-000.jpg",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Pogonia",
+        "addressRegion": "Aitoloakarnania",
+        "addressCountry": "GR",
+        "postalCode": "300 51"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 38.785,
+        "longitude": 20.876
+      },
+      "numberOfRooms": 58,
+      "starRating": {
+        "@type": "Rating",
+        "ratingValue": "4"
+      },
+      "amenityFeature": [
+        { "@type": "LocationFeatureSpecification", "name": "Swimming Pool", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Beach Access", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Restaurant", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Free WiFi", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Spa", "value": true }
+      ]
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
 ```
 
-### Documentation Convention (this file)
+> **Note:** Replace `YOUR-DOMAIN.com` with the actual domain. Also update `website/public/sitemap.xml` and `admin/src/components/ImagePicker.jsx` (`WEBSITE_BASE` constant).
 
-`website-cms-handoff.md` is the living record of this project. It must be kept up to date with:
-- **Everything requested** — features asked for, design decisions, constraints
-- **Everything done** — what was built, how it was implemented, what patterns were used
-- **Everything planned** — upcoming work, known gaps, deferred features
+### Dynamic SEO (useSEO hook)
 
-When the AI builds something new, it updates this file in the same commit. This file is the source of truth for replicating the system on any other property.
+Create `website/src/hooks/useSEO.js` — this hook runs on every page to set `document.title` and all meta tags dynamically. Called once per page, updates whenever title/description/ogImage change:
+
+```js
+// website/src/hooks/useSEO.js
+import { useEffect } from 'react'
+
+function setMeta(name, content, attr = 'name') {
+  if (!content) return
+  let el = document.querySelector(`meta[${attr}="${name}"]`)
+  if (!el) {
+    el = document.createElement('meta')
+    el.setAttribute(attr, name)
+    document.head.appendChild(el)
+  }
+  el.setAttribute('content', content)
+}
+
+const useSEO = ({ title, description, ogImage } = {}) => {
+  useEffect(() => {
+    const siteName = 'Seagonia Hotel'
+    const fullTitle = title
+      ? `${title} | ${siteName}`
+      : `${siteName} — Your Corner by the Sea`
+
+    document.title = fullTitle
+
+    setMeta('description', description)
+
+    // Open Graph
+    setMeta('og:title', fullTitle, 'property')
+    setMeta('og:description', description, 'property')
+    setMeta('og:site_name', siteName, 'property')
+    if (ogImage) setMeta('og:image', ogImage, 'property')
+
+    // Twitter Card
+    setMeta('twitter:card', 'summary_large_image')
+    setMeta('twitter:title', fullTitle)
+    setMeta('twitter:description', description)
+    if (ogImage) setMeta('twitter:image', ogImage)
+  }, [title, description, ogImage])
+}
+
+export default useSEO
+```
+
+**Usage in every page:**
+```js
+useSEO({
+  title: extra.seo_title || 'Page Title',           // shown in browser tab + Google
+  description: extra.seo_description || 'Default.', // shown in Google snippet
+  ogImage: extra.seo_og_image,                      // shown in WhatsApp/FB/Twitter previews
+})
+```
+
+The `og:image` and `twitter:image` in `index.html` are static fallbacks for the home page. The `useSEO` hook overrides them per-page dynamically (for platforms that run JavaScript).
+
+### Sitemap and Robots
+
+`website/public/sitemap.xml` — 11 routes with priorities. Auto-copied to `dist/` by Vite (files in `public/` are copied verbatim).
+
+`website/public/robots.txt` — `Allow: /` for all crawlers, `Sitemap: https://seagonia.vercel.app/sitemap.xml`.
+
+**When final domain is known, update:**
+1. `website/index.html` — 3 URLs (og:image, og:url, JSON-LD url + image)
+2. `website/public/sitemap.xml` — all 11 `<loc>` entries
+3. `admin/src/components/ImagePicker.jsx` — `WEBSITE_BASE` constant
+4. `admin/src/pages/GalleryAdmin.jsx` — `WEBSITE_BASE` constant
 
 ---
 
@@ -1835,7 +1781,7 @@ When the AI builds something new, it updates this file in the same commit. This 
 
 ### DO NOT migrate to Next.js
 
-This project was migrated to Next.js and reverted. The issues:
+The project was migrated to Next.js and reverted (commit `7e9fdb3`). The issues:
 - React Router doesn't work in Next.js App Router
 - Framer Motion requires `'use client'` on every animated component
 - Supabase SSR auth complexity
@@ -1849,10 +1795,10 @@ Pages fetch content from Supabase at runtime. Pre-rendering captures the loading
 
 ```bash
 # Not this:
-git remote set-url origin https://github.com/YOUR_ORG/YOUR_REPO.git
+git remote set-url origin https://github.com/adenadoume/seagonia-react-cms-refine-dev.git
 
 # This:
-git remote set-url origin git@github.com:YOUR_ORG/YOUR_REPO.git
+git remote set-url origin git@github.com:adenadoume/seagonia-react-cms-refine-dev.git
 ```
 
 ---
@@ -1887,14 +1833,14 @@ Inject in website root `App.jsx` or `main.jsx` via `useEffect`. Supports:
 
 1. Go to supabase.com → New Project
 2. SQL Editor → run all CREATE TABLE statements from Section 4
-3. Insert seed data (hotel_settings row + 8 page_content rows) from Section 13
+3. Insert seed data (hotel_settings row + 8 page_content rows) from Section 12
 4. Create admin user in Authentication → Users
 5. Note Project URL and anon key
 
 ### Step 2: Create Two Vite React Apps
 
 ```bash
-mkdir your-hotel && cd your-hotel
+mkdir seagonia && cd seagonia
 npm create vite@latest website -- --template react
 npm create vite@latest admin -- --template react
 ```
@@ -1936,106 +1882,107 @@ Put 77+ hotel images in `website/public/images/hotel/`:
 - `img-000.jpg` — OG fallback image
 - `img-001.jpg` through `img-077.jpg` — hotel images
 
-The `HOTEL_IMAGES` object in `constants/hotel.js` maps semantic names to these paths. Below is an example mapping — **update all key names and img-XXX numbers to match your actual images and what they depict**:
+The `HOTEL_IMAGES` object in `constants/hotel.js` maps semantic names to these paths:
 
 ```js
-// src/constants/hotel.js — HOTEL_IMAGES mapping (Example mapping — update to match your actual images)
+// src/constants/hotel.js — HOTEL_IMAGES mapping (img-000 through img-077)
 const IMG = '/images/hotel'
 
 export const HOTEL_IMAGES = {
   // Hero & Hotel Exterior
-  hero:                  `${IMG}/img-000.jpg`,  // Main hero image (pool/facade/entrance)
-  heroAlt:               `${IMG}/img-038.jpg`,  // Alternate hero angle
-  entrance:              `${IMG}/img-028.jpg`,  // Hotel entrance
-  poolArea:              `${IMG}/img-031.jpg`,  // Pool area view
+  hero:                  `${IMG}/img-000.jpg`,  // Pool facade with sunbeds — main hero
+  heroAlt:               `${IMG}/img-038.jpg`,  // Pool facade alternate angle
+  entrance:              `${IMG}/img-028.jpg`,  // Hotel entrance with SEAGONIA sign
+  poolArea:              `${IMG}/img-031.jpg`,  // Pool area multipurpose view
   poolDeck:              `${IMG}/img-000.jpg`,  // Pool with deck and umbrellas
 
   // Aerial & Location
-  bayAerial:             `${IMG}/img-001.jpg`,  // Bay aerial with labels
-  coastAerial:           `${IMG}/img-002.jpg`,  // Coast aerial with labels
-  regionAerial:          `${IMG}/img-003.jpg`,  // Regional aerial
-  bayPanorama:           `${IMG}/img-004.jpg`,  // Bay panoramic
-  villageAbove:          `${IMG}/img-005.jpg`,  // Village from above
-  beach:                 `${IMG}/img-006.jpg`,  // Beach with sunbeds
-  tavernaView:           `${IMG}/img-007.jpg`,  // Restaurant terrace
-  harborAerial:          `${IMG}/img-009.jpg`,  // Harbor aerial
-  harborPromenade:       `${IMG}/img-010.jpg`,  // Harbor promenade
-  harborDining:          `${IMG}/img-011.jpg`,  // Dining at harbor
-  hotelFromDistance:     `${IMG}/img-015.jpg`,  // Hotel from distance
+  palerosBay:            `${IMG}/img-001.jpg`,  // Paleros Bay aerial with labels
+  pogoniaCoast:          `${IMG}/img-002.jpg`,  // Pogonia coast aerial with labels
+  littleIonian:          `${IMG}/img-003.jpg`,  // Little Ionian islands aerial
+  pogoniaPanorama:       `${IMG}/img-004.jpg`,  // Pogonia bay panoramic
+  pogoniaVillage:        `${IMG}/img-005.jpg`,  // Pogonia village from above
+  pogoniaBeach:          `${IMG}/img-006.jpg`,  // Pogonia beach with sunbeds
+  tavernaView:           `${IMG}/img-007.jpg`,  // Restaurant terrace/taverna
+  palerosHarbor:         `${IMG}/img-009.jpg`,  // Paleros harbor aerial
+  palerosPromenade:      `${IMG}/img-010.jpg`,  // Paleros taverna promenade
+  palerosWineDining:     `${IMG}/img-011.jpg`,  // Women dining at harbor
+  hotelInPogonia:        `${IMG}/img-015.jpg`,  // Hotel in Pogonia from distance
   hotelAerialBeach:      `${IMG}/img-016.jpg`,  // Aerial top-down of beach area
   hotelBirdseye:         `${IMG}/img-017.jpg`,  // Top-down aerial of hotel building
 
   // Nearby Beaches
-  beach1:                `${IMG}/img-012.jpg`,  // Nearby beach 1 aerial
-  beach2:                `${IMG}/img-013.jpg`,  // Nearby beach 2 aerial
-  beach3:                `${IMG}/img-014.jpg`,  // Nearby beach 3
+  vathiavali:            `${IMG}/img-012.jpg`,  // Vathiavali beach aerial — turquoise
+  varkoBay:              `${IMG}/img-013.jpg`,  // Varko Bay aerial
+  gerakas:               `${IMG}/img-014.jpg`,  // Gerakas beach
 
   // Room Interiors & Renders
-  roomBalcony:           `${IMG}/img-028.jpg`,  // Room with balcony
-  roomSwimUp:            `${IMG}/img-029.jpg`,  // Swim-up room
-  roomSwimUpExterior:    `${IMG}/img-030.jpg`,  // Swim-up pool corridor
-  roomGarden:            `${IMG}/img-027.jpg`,  // Room with garden
-  roomExterior:          `${IMG}/img-031.jpg`,  // Building exterior
+  roomBalcony:           `${IMG}/img-028.jpg`,  // Type D room interior with balcony
+  roomSwimUp:            `${IMG}/img-029.jpg`,  // Type B swim-up room with pool and daybed
+  roomSwimUpExterior:    `${IMG}/img-030.jpg`,  // Swim-up pool corridor exterior
+  roomGarden:            `${IMG}/img-027.jpg`,  // Room exterior with garden patios
+  roomExteriorBalconies: `${IMG}/img-031.jpg`,  // Building exterior with balconies
+  roomSuite:             `${IMG}/img-028.jpg`,  // Suite entrance render
 
   // Floor Plans
   floorplanGround:       `${IMG}/img-019.jpg`,  // Ground floor plan
   floorplan1st:          `${IMG}/img-018.jpg`,  // 1st floor plan
 
-  // F&B — Restaurant 1
-  restaurant1Main:       `${IMG}/img-038.jpg`,  // Main restaurant render
-  restaurant1View:       `${IMG}/img-037.jpg`,  // View from restaurant
+  // F&B — Galià Rooftop
+  galiaRooftop:          `${IMG}/img-038.jpg`,  // Galià rooftop render
+  galiaView:             `${IMG}/img-037.jpg`,  // View from Galià over bay
 
-  // F&B — Restaurant 2 / Lounge
-  loungeAerial:          `${IMG}/img-017.jpg`,  // Lounge aerial
-  cheesePlatter:         `${IMG}/img-042.jpg`,  // Food item 1
-  pasta:                 `${IMG}/img-041.jpg`,  // Food item 2
-  cocktail:              `${IMG}/img-043.jpg`,  // Drinks
+  // F&B — Seagonia Lounge
+  loungeAerial:          `${IMG}/img-017.jpg`,  // Lounge aerial view
+  cheesePlatter:         `${IMG}/img-042.jpg`,  // Cheese & bread platter
+  shrimpPasta:           `${IMG}/img-041.jpg`,  // Shrimp orzo pasta
+  cocktail:              `${IMG}/img-043.jpg`,  // Cocktail
 
   // F&B — Food
-  food1:                 `${IMG}/img-039.jpg`,  // Food item 3
-  food2:                 `${IMG}/img-035.jpg`,  // Food item 4
-  food3:                 `${IMG}/img-050.jpg`,  // Food item 5
-  food4:                 `${IMG}/img-051.jpg`,  // Food item 6
+  foodPide:              `${IMG}/img-039.jpg`,  // Pide/flatbread with prosciutto
+  foodBurrata:           `${IMG}/img-035.jpg`,  // Burrata tomato salad
+  foodDolmades:          `${IMG}/img-050.jpg`,  // Dolmades with yogurt
+  foodSteak:             `${IMG}/img-051.jpg`,  // Grilled steak
 
-  // Farm / Local Produce
-  farm1:                 `${IMG}/img-044.jpg`,  // Farm image 1
-  farm2:                 `${IMG}/img-046.jpg`,  // Farm image 2
-  farm3:                 `${IMG}/img-054.jpg`,  // Farm image 3
-  farm4:                 `${IMG}/img-045.jpg`,  // Farm image 4
+  // Farm to Table
+  farmLettuce:           `${IMG}/img-044.jpg`,  // Fresh lettuce in field
+  farmFlowers:           `${IMG}/img-046.jpg`,  // Zucchini flowers harvest
+  farmField:             `${IMG}/img-054.jpg`,  // Farm field panoramic
+  farmTractor:           `${IMG}/img-045.jpg`,  // Farm with tractor
 
-  // Dining scenes
-  outdoorDining:         `${IMG}/img-049.jpg`,  // Outdoor dining table
-  sunsetDining:          `${IMG}/img-048.jpg`,  // Sunset dining
+  // Dining
+  outdoorDining:         `${IMG}/img-049.jpg`,  // Yacht Club outdoor dining table
+  sunsetDining:          `${IMG}/img-048.jpg`,  // Sunset harbor dining
 
   // Cooking Classes
-  cookingClass:          `${IMG}/img-055.jpg`,  // Cooking class activity
-  cookingResult:         `${IMG}/img-059.jpg`,  // Cooking class result
+  cookingClass:          `${IMG}/img-055.jpg`,  // Woman making phyllo dough
+  cookingResult:         `${IMG}/img-059.jpg`,  // Baked pastry result
 
-  // Local Experience 1 (e.g. beekeeping, foraging, olive harvest)
-  experience1a:          `${IMG}/img-060.jpg`,  // Experience image 1
-  experience1b:          `${IMG}/img-061.jpg`,  // Experience image 2
+  // Beekeeping
+  beekeeping:            `${IMG}/img-060.jpg`,  // Beekeeper at hives with sea view
+  honeycomb:             `${IMG}/img-061.jpg`,  // Honeycomb closeup
 
   // Spa & Wellness
   massage:               `${IMG}/img-036.jpg`,  // Massage therapy
-  spaInterior:           `${IMG}/img-062.jpg`,  // Spa interior
+  pureSpa:               `${IMG}/img-062.jpg`,  // PURE Spa interior
   facialTreatment:       `${IMG}/img-065.jpg`,  // Facial treatment
 
   // Fitness
-  outdoorFitness:        `${IMG}/img-071.jpg`,  // Outdoor fitness area
-  yoga:                  `${IMG}/img-034.jpg`,  // Yoga session
-  gym:                   `${IMG}/img-072.jpg`,  // Indoor gym
+  outdoorFitness:        `${IMG}/img-071.jpg`,  // Outdoor shaded fitness pavilion
+  yogaGroup:             `${IMG}/img-034.jpg`,  // Yoga group session on deck
+  gym:                   `${IMG}/img-072.jpg`,  // Indoor Technogym
 
-  // Open Water / Beach Swimming
-  openWaterSwim:         `${IMG}/img-015.jpg`,  // Beach with swimming area
+  // Open Water Swimming
+  openWaterSwim:         `${IMG}/img-015.jpg`,  // Beach with swimming markers
 
   // Boat Trips & Islands
-  islandBeach:           `${IMG}/img-073.jpg`,  // Island beach
-  islandVillage:         `${IMG}/img-074.jpg`,  // Island village
-  islandCoast:           `${IMG}/img-075.jpg`,  // Dramatic coast
+  islandBeach:           `${IMG}/img-073.jpg`,  // Island cliff beach
+  islandVillage:         `${IMG}/img-074.jpg`,  // Island village/taverna
+  islandCoast:           `${IMG}/img-075.jpg`,  // Dramatic coast with yacht
 
-  // Hiking / Adventure
-  hikingView:            `${IMG}/img-076.jpg`,  // Hiking panoramic view
-  historicalSite:        `${IMG}/img-008.jpg`,  // Archaeological / historical site
+  // Hiking
+  hikingView:            `${IMG}/img-076.jpg`,  // Hiking mountain panoramic view
+  ancientRuins:          `${IMG}/img-008.jpg`,  // Archaeological site
 }
 ```
 
@@ -2086,17 +2033,17 @@ Follow Section 11.
 
 | Thing | Value |
 |---|---|
-| Supabase project ID | `[YOUR_SUPABASE_PROJECT_ID]` |
-| GitHub repo | `git@github.com:YOUR_ORG/YOUR_REPO.git` |
-| Website URL | `https://YOUR_WEBSITE.vercel.app` |
+| Supabase project ID | `pnjfxostbiscwihpatjk` |
+| GitHub repo | `git@github.com:adenadoume/seagonia-react-cms-refine-dev.git` |
+| Website URL | `https://seagonia.vercel.app` |
 | Admin dev port | `5174` |
 | Website dev port | `3000` (default Vite) |
 | Image count | 77 (img-001 to img-077) + img-000 for OG |
-| ImagePicker WEBSITE_BASE | `https://YOUR_WEBSITE.vercel.app` — update when domain changes |
+| ImagePicker WEBSITE_BASE | `https://seagonia.vercel.app` — update when domain changes |
 | GalleryAdmin WEBSITE_BASE | Same — update when domain changes |
-| index.html OG URLs | 3 occurrences of your domain — update when domain changes |
+| index.html OG URLs | 3 occurrences of `seagonia.vercel.app` — update when domain changes |
 | sitemap.xml | 11 `<loc>` entries — update when domain changes |
-| Cloudinary preset name | `YOUR_UPLOAD_PRESET` (must be Unsigned) |
+| Cloudinary preset name | `seagonia-admin` (must be Unsigned) |
 | Admin sidebar width | `w-48` (192px) |
 | Gold color | `#C9A96E` |
 | Navy color | `#1A1F3D` (website) / `#1a2744` (admin) |
