@@ -1056,6 +1056,76 @@ Active nav item: `bg-gold text-white`. Inactive: `text-white/70 hover:text-white
 
 Route protection: `useAuth()` hook checks Supabase session. If no user, redirect to `/login`.
 
+#### `useAuth.js` — full source
+
+```js
+// admin/src/hooks/useAuth.js
+import { useEffect, useState } from 'react'
+import { supabase } from '../lib/supabase'
+
+export function useAuth() {
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null)
+      setLoading(false)
+    })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  async function signIn(email, password) {
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) throw error
+  }
+
+  async function signOut() {
+    await supabase.auth.signOut()
+  }
+
+  return { user, loading, signIn, signOut }
+}
+```
+
+Usage in `App.jsx`:
+```jsx
+function ProtectedRoute() {
+  const { user, loading } = useAuth()
+  if (loading) return <div className="min-h-screen bg-navy" />
+  if (!user) return <Navigate to="/login" replace />
+  return <Outlet />
+}
+```
+
+#### Login page — dark theme
+
+```jsx
+// admin/src/pages/Login.jsx
+// Full-screen navy background, gold SEAGONIA title, slate-800 card
+<div className="min-h-screen bg-navy flex items-center justify-center px-4">
+  <div className="w-full max-w-sm">
+    <div className="text-center mb-8">
+      <h1 className="text-2xl font-semibold text-gold tracking-widest">SEAGONIA</h1>
+      <p className="text-slate-400 text-sm mt-1">Hotel Admin</p>
+    </div>
+    <form className="bg-slate-800 border border-slate-700 rounded-lg p-8 space-y-4">
+      {/* email input with className="input" */}
+      {/* password input with className="input" */}
+      {/* error message: text-red-400 */}
+      <button className="btn-primary w-full mt-2 disabled:opacity-50">Sign In</button>
+    </form>
+  </div>
+</div>
+```
+
+Key classes: `bg-navy` (dark navy `#0a1628`), `text-gold` (`#c9a96e`), `bg-slate-800` card, `input` and `btn-primary` from global CSS.
+
 ### Admin Pages
 
 #### Dashboard
@@ -1455,6 +1525,17 @@ VALUES (
 );
 ```
 
+Insert the 5 gallery categories:
+
+```sql
+INSERT INTO gallery_categories (name, slug) VALUES
+  ('Rooms',       'rooms'),
+  ('Pool',        'pool'),
+  ('Dining',      'dining'),
+  ('Experiences', 'experiences'),
+  ('Location',    'location');
+```
+
 Insert one row per page into `page_content`:
 
 ```sql
@@ -1801,7 +1882,109 @@ Put 77+ hotel images in `website/public/images/hotel/`:
 - `img-000.jpg` — OG fallback image
 - `img-001.jpg` through `img-077.jpg` — hotel images
 
-The `HOTEL_IMAGES` object in `constants/hotel.js` maps semantic names to these paths.
+The `HOTEL_IMAGES` object in `constants/hotel.js` maps semantic names to these paths:
+
+```js
+// src/constants/hotel.js — HOTEL_IMAGES mapping (img-000 through img-077)
+const IMG = '/images/hotel'
+
+export const HOTEL_IMAGES = {
+  // Hero & Hotel Exterior
+  hero:                  `${IMG}/img-000.jpg`,  // Pool facade with sunbeds — main hero
+  heroAlt:               `${IMG}/img-038.jpg`,  // Pool facade alternate angle
+  entrance:              `${IMG}/img-028.jpg`,  // Hotel entrance with SEAGONIA sign
+  poolArea:              `${IMG}/img-031.jpg`,  // Pool area multipurpose view
+  poolDeck:              `${IMG}/img-000.jpg`,  // Pool with deck and umbrellas
+
+  // Aerial & Location
+  palerosBay:            `${IMG}/img-001.jpg`,  // Paleros Bay aerial with labels
+  pogoniaCoast:          `${IMG}/img-002.jpg`,  // Pogonia coast aerial with labels
+  littleIonian:          `${IMG}/img-003.jpg`,  // Little Ionian islands aerial
+  pogoniaPanorama:       `${IMG}/img-004.jpg`,  // Pogonia bay panoramic
+  pogoniaVillage:        `${IMG}/img-005.jpg`,  // Pogonia village from above
+  pogoniaBeach:          `${IMG}/img-006.jpg`,  // Pogonia beach with sunbeds
+  tavernaView:           `${IMG}/img-007.jpg`,  // Restaurant terrace/taverna
+  palerosHarbor:         `${IMG}/img-009.jpg`,  // Paleros harbor aerial
+  palerosPromenade:      `${IMG}/img-010.jpg`,  // Paleros taverna promenade
+  palerosWineDining:     `${IMG}/img-011.jpg`,  // Women dining at harbor
+  hotelInPogonia:        `${IMG}/img-015.jpg`,  // Hotel in Pogonia from distance
+  hotelAerialBeach:      `${IMG}/img-016.jpg`,  // Aerial top-down of beach area
+  hotelBirdseye:         `${IMG}/img-017.jpg`,  // Top-down aerial of hotel building
+
+  // Nearby Beaches
+  vathiavali:            `${IMG}/img-012.jpg`,  // Vathiavali beach aerial — turquoise
+  varkoBay:              `${IMG}/img-013.jpg`,  // Varko Bay aerial
+  gerakas:               `${IMG}/img-014.jpg`,  // Gerakas beach
+
+  // Room Interiors & Renders
+  roomBalcony:           `${IMG}/img-028.jpg`,  // Type D room interior with balcony
+  roomSwimUp:            `${IMG}/img-029.jpg`,  // Type B swim-up room with pool and daybed
+  roomSwimUpExterior:    `${IMG}/img-030.jpg`,  // Swim-up pool corridor exterior
+  roomGarden:            `${IMG}/img-027.jpg`,  // Room exterior with garden patios
+  roomExteriorBalconies: `${IMG}/img-031.jpg`,  // Building exterior with balconies
+  roomSuite:             `${IMG}/img-028.jpg`,  // Suite entrance render
+
+  // Floor Plans
+  floorplanGround:       `${IMG}/img-019.jpg`,  // Ground floor plan
+  floorplan1st:          `${IMG}/img-018.jpg`,  // 1st floor plan
+
+  // F&B — Galià Rooftop
+  galiaRooftop:          `${IMG}/img-038.jpg`,  // Galià rooftop render
+  galiaView:             `${IMG}/img-037.jpg`,  // View from Galià over bay
+
+  // F&B — Seagonia Lounge
+  loungeAerial:          `${IMG}/img-017.jpg`,  // Lounge aerial view
+  cheesePlatter:         `${IMG}/img-042.jpg`,  // Cheese & bread platter
+  shrimpPasta:           `${IMG}/img-041.jpg`,  // Shrimp orzo pasta
+  cocktail:              `${IMG}/img-043.jpg`,  // Cocktail
+
+  // F&B — Food
+  foodPide:              `${IMG}/img-039.jpg`,  // Pide/flatbread with prosciutto
+  foodBurrata:           `${IMG}/img-035.jpg`,  // Burrata tomato salad
+  foodDolmades:          `${IMG}/img-050.jpg`,  // Dolmades with yogurt
+  foodSteak:             `${IMG}/img-051.jpg`,  // Grilled steak
+
+  // Farm to Table
+  farmLettuce:           `${IMG}/img-044.jpg`,  // Fresh lettuce in field
+  farmFlowers:           `${IMG}/img-046.jpg`,  // Zucchini flowers harvest
+  farmField:             `${IMG}/img-054.jpg`,  // Farm field panoramic
+  farmTractor:           `${IMG}/img-045.jpg`,  // Farm with tractor
+
+  // Dining
+  outdoorDining:         `${IMG}/img-049.jpg`,  // Yacht Club outdoor dining table
+  sunsetDining:          `${IMG}/img-048.jpg`,  // Sunset harbor dining
+
+  // Cooking Classes
+  cookingClass:          `${IMG}/img-055.jpg`,  // Woman making phyllo dough
+  cookingResult:         `${IMG}/img-059.jpg`,  // Baked pastry result
+
+  // Beekeeping
+  beekeeping:            `${IMG}/img-060.jpg`,  // Beekeeper at hives with sea view
+  honeycomb:             `${IMG}/img-061.jpg`,  // Honeycomb closeup
+
+  // Spa & Wellness
+  massage:               `${IMG}/img-036.jpg`,  // Massage therapy
+  pureSpa:               `${IMG}/img-062.jpg`,  // PURE Spa interior
+  facialTreatment:       `${IMG}/img-065.jpg`,  // Facial treatment
+
+  // Fitness
+  outdoorFitness:        `${IMG}/img-071.jpg`,  // Outdoor shaded fitness pavilion
+  yogaGroup:             `${IMG}/img-034.jpg`,  // Yoga group session on deck
+  gym:                   `${IMG}/img-072.jpg`,  // Indoor Technogym
+
+  // Open Water Swimming
+  openWaterSwim:         `${IMG}/img-015.jpg`,  // Beach with swimming markers
+
+  // Boat Trips & Islands
+  islandBeach:           `${IMG}/img-073.jpg`,  // Island cliff beach
+  islandVillage:         `${IMG}/img-074.jpg`,  // Island village/taverna
+  islandCoast:           `${IMG}/img-075.jpg`,  // Dramatic coast with yacht
+
+  // Hiking
+  hikingView:            `${IMG}/img-076.jpg`,  // Hiking mountain panoramic view
+  ancientRuins:          `${IMG}/img-008.jpg`,  // Archaeological site
+}
+```
 
 ### Step 6: Build the Website
 
