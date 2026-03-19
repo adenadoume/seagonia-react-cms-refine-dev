@@ -1551,21 +1551,136 @@ git push origin main
 
 ### Static SEO (index.html)
 
-`website/index.html` contains static fallbacks for social sharing platforms (Facebook, WhatsApp, LinkedIn) that don't execute JavaScript:
+`website/index.html` contains static fallbacks for social sharing platforms (Facebook, WhatsApp, LinkedIn) that don't execute JavaScript. Copy this exactly into your `website/index.html` `<head>`, updating the domain/content for your property:
 
-- Open Graph tags: `og:type`, `og:site_name`, `og:title`, `og:description`, `og:image`, `og:url`, `og:locale`
-- Twitter Card tags: `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`
-- **JSON-LD Hotel schema** for Google Rich Results:
-  - `@type: "Hotel"` with name, description, url, image
-  - `address` with PostalAddress, addressLocality (Pogonia), addressRegion, addressCountry (GR)
-  - `geo` GeoCoordinates (lat 38.785, lng 20.876)
-  - `numberOfRooms: 58`
-  - `starRating: 4`
-  - `amenityFeature` array (pool, beach, restaurant, wifi, spa)
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Seagonia Hotel — Your Corner by the Sea. A boutique 58-room hotel in Pogonia, Paleros on the Ionian coast of Greece." />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <title>Seagonia Hotel | Your Corner by the Sea — Paleros, Ionian Sea</title>
+
+    <!-- Open Graph (static fallback — works for Facebook, WhatsApp, LinkedIn which don't run JS) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Seagonia Hotel" />
+    <meta property="og:title" content="Seagonia Hotel | Your Corner by the Sea — Paleros, Ionian Sea" />
+    <meta property="og:description" content="A boutique 58-room hotel in Pogonia, Paleros on the Ionian coast of Greece." />
+    <meta property="og:image" content="https://YOUR-DOMAIN.com/images/hotel/img-000.jpg" />
+    <meta property="og:url" content="https://YOUR-DOMAIN.com/" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card (static fallback) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Seagonia Hotel | Your Corner by the Sea — Paleros, Ionian Sea" />
+    <meta name="twitter:description" content="A boutique 58-room hotel in Pogonia, Paleros on the Ionian coast of Greece." />
+    <meta name="twitter:image" content="https://YOUR-DOMAIN.com/images/hotel/img-000.jpg" />
+
+    <!-- JSON-LD Structured Data — Hotel schema for Google Rich Results -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Hotel",
+      "name": "Seagonia Hotel",
+      "description": "A boutique 58-room hotel in Pogonia, Paleros on the Ionian coast of Greece.",
+      "url": "https://YOUR-DOMAIN.com/",
+      "image": "https://YOUR-DOMAIN.com/images/hotel/img-000.jpg",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Pogonia",
+        "addressRegion": "Aitoloakarnania",
+        "addressCountry": "GR",
+        "postalCode": "300 51"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 38.785,
+        "longitude": 20.876
+      },
+      "numberOfRooms": 58,
+      "starRating": {
+        "@type": "Rating",
+        "ratingValue": "4"
+      },
+      "amenityFeature": [
+        { "@type": "LocationFeatureSpecification", "name": "Swimming Pool", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Beach Access", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Restaurant", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Free WiFi", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Spa", "value": true }
+      ]
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+```
+
+> **Note:** Replace `YOUR-DOMAIN.com` with the actual domain. Also update `website/public/sitemap.xml` and `admin/src/components/ImagePicker.jsx` (`WEBSITE_BASE` constant).
 
 ### Dynamic SEO (useSEO hook)
 
-Each page updates `document.title` and meta tags on mount. See Section 6 for full implementation.
+Create `website/src/hooks/useSEO.js` — this hook runs on every page to set `document.title` and all meta tags dynamically. Called once per page, updates whenever title/description/ogImage change:
+
+```js
+// website/src/hooks/useSEO.js
+import { useEffect } from 'react'
+
+function setMeta(name, content, attr = 'name') {
+  if (!content) return
+  let el = document.querySelector(`meta[${attr}="${name}"]`)
+  if (!el) {
+    el = document.createElement('meta')
+    el.setAttribute(attr, name)
+    document.head.appendChild(el)
+  }
+  el.setAttribute('content', content)
+}
+
+const useSEO = ({ title, description, ogImage } = {}) => {
+  useEffect(() => {
+    const siteName = 'Seagonia Hotel'
+    const fullTitle = title
+      ? `${title} | ${siteName}`
+      : `${siteName} — Your Corner by the Sea`
+
+    document.title = fullTitle
+
+    setMeta('description', description)
+
+    // Open Graph
+    setMeta('og:title', fullTitle, 'property')
+    setMeta('og:description', description, 'property')
+    setMeta('og:site_name', siteName, 'property')
+    if (ogImage) setMeta('og:image', ogImage, 'property')
+
+    // Twitter Card
+    setMeta('twitter:card', 'summary_large_image')
+    setMeta('twitter:title', fullTitle)
+    setMeta('twitter:description', description)
+    if (ogImage) setMeta('twitter:image', ogImage)
+  }, [title, description, ogImage])
+}
+
+export default useSEO
+```
+
+**Usage in every page:**
+```js
+useSEO({
+  title: extra.seo_title || 'Page Title',           // shown in browser tab + Google
+  description: extra.seo_description || 'Default.', // shown in Google snippet
+  ogImage: extra.seo_og_image,                      // shown in WhatsApp/FB/Twitter previews
+})
+```
+
+The `og:image` and `twitter:image` in `index.html` are static fallbacks for the home page. The `useSEO` hook overrides them per-page dynamically (for platforms that run JavaScript).
 
 ### Sitemap and Robots
 
