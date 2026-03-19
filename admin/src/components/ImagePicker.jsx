@@ -15,7 +15,7 @@ function resolveUrl(url) {
   return `${WEBSITE_BASE}${url}`
 }
 
-export default function ImagePicker({ value, onChange, label = 'Image' }) {
+export default function ImagePicker({ value, onChange, label = 'Image', fallbackSrc }) {
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [tab, setTab] = useState('local')
@@ -32,6 +32,8 @@ export default function ImagePicker({ value, onChange, label = 'Image' }) {
   const hasMore = visibleCount < filtered.length
 
   const resolvedValue = resolveUrl(value)
+  const effectiveSrc = resolvedValue || resolveUrl(fallbackSrc)
+  const isUsingFallback = !value && !!fallbackSrc
 
   // Reset count when tab or search changes
   useEffect(() => { setVisibleCount(PAGE_SIZE) }, [tab, search])
@@ -82,13 +84,20 @@ export default function ImagePicker({ value, onChange, label = 'Image' }) {
       </div>
 
       {/* Preview */}
-      {value && (
-        <img
-          src={resolvedValue}
-          alt=""
-          className="mt-2 h-28 rounded object-cover border border-slate-700"
-          onError={(e) => { e.target.style.display = 'none' }}
-        />
+      {effectiveSrc && (
+        <div className="mt-2 relative inline-block">
+          <img
+            src={effectiveSrc}
+            alt=""
+            className="h-28 rounded object-cover border border-slate-700"
+            onError={(e) => { e.target.parentElement.style.display = 'none' }}
+          />
+          {isUsingFallback && (
+            <span className="absolute bottom-1 left-1 bg-black/60 text-white/70 text-[9px] px-1.5 py-0.5 rounded">
+              default
+            </span>
+          )}
+        </div>
       )}
 
       {/* Modal */}
@@ -143,7 +152,7 @@ export default function ImagePicker({ value, onChange, label = 'Image' }) {
             <div className="overflow-y-auto p-4">
               <div className="grid grid-cols-6 gap-2">
                 {visible.map((url) => {
-                  const isSelected = resolvedValue === url
+                  const isSelected = effectiveSrc === url
                   return (
                     <button
                       key={url}
