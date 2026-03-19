@@ -1893,10 +1893,21 @@ Inject in website root `App.jsx` or `main.jsx` via `useEffect`. Supports:
 
 ### Step 2: Create Two Vite React Apps
 
+> **AI instruction:** Before scaffolding, ask the user: *"Do you want to use TypeScript?"*
+> - If **yes**: use `--template react-ts` for both apps, install `@types/react`, `@types/react-dom`, configure `tsconfig.json`, and use `.tsx` / `.ts` extensions throughout. Note: Framer Motion and Supabase require extra type setup (see TypeScript note below).
+> - If **no**: use `--template react` and plain `.jsx` / `.js` files as shown in this doc.
+> Do not assume — always ask first.
+
 ```bash
 mkdir your-hotel && cd your-hotel
+
+# JavaScript (default in this doc):
 npm create vite@latest website -- --template react
 npm create vite@latest admin -- --template react
+
+# TypeScript (if user chose yes):
+# npm create vite@latest website -- --template react-ts
+# npm create vite@latest admin -- --template react-ts
 ```
 
 ### Step 3: Install Dependencies
