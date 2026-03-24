@@ -8,10 +8,11 @@ import { useHotelSettings } from '../../hooks/useSupabase'
 const QUICK_LINKS = [
   { label: 'The Area', to: '/area' },
   { label: 'The Hotel', to: '/hotel' },
-  { label: 'Rooms', to: '/rooms' },
+  { label: 'Accommodation', to: '/rooms' },
   { label: 'Dining', to: '/dining' },
-  { label: 'Experiences', to: '/experiences' },
-  { label: 'Gallery', to: '/gallery' },
+  { label: 'Activities', to: '/activities' },
+  { label: 'Ionian Escape', to: '/ionian-escape' },
+  { label: 'Wellness', to: '/wellness' },
   { label: 'Contact', to: '/contact' },
   { label: 'Book Now', to: '/book' },
 ]

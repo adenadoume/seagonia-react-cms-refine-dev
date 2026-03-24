@@ -71,15 +71,15 @@ export default function Dining() {
   const cookingImage1 = extra.cooking_image_1 || HOTEL_IMAGES.cookingClass
   const cookingImage2 = extra.cooking_image_2 || HOTEL_IMAGES.cookingResult
 
-  const beekeepingEyebrow = extra.beekeeping_eyebrow || 'EXPERIENCE'
-  const beekeepingHeading = extra.beekeeping_heading || 'Honey Harvesting & Beekeeping'
-  const beekeepingBody = extra.beekeeping_body || `During your stay at Seagonia in Paleros, you can immerse yourself in the world of beekeeping and honey harvesting at our hives. Guided by a local beekeeper, you'll learn about the fascinating life of bees and how they produce their golden treasure. You'll suit up, visit our hives, and even taste fresh honey straight from the comb. It's a sweet, hands-on experience that connects you to nature and local tradition.`
-  const beekeepingImage1 = extra.beekeeping_image_1 || HOTEL_IMAGES.beekeeping
-  const beekeepingImage2 = extra.beekeeping_image_2 || HOTEL_IMAGES.honeycomb
+  const naturalBitesEyebrow = extra.natural_bites_eyebrow || 'POOL BAR'
+  const naturalBitesHeading = extra.natural_bites_heading || 'Natural Bites'
+  const naturalBitesBody = extra.natural_bites_body || `Our Pool Bar serves specialty coffee, nourishing smoothies made with farm-fresh fruits and vegetables, protein-rich blends, and healthy treats entirely free of gluten and refined sugar. Open all day, it is the ideal spot to recharge between swims or unwind as the afternoon light softens over the pool.`
+  const naturalBitesImage1 = extra.natural_bites_image_1 || HOTEL_IMAGES.cocktail
+  const naturalBitesImage2 = extra.natural_bites_image_2 || HOTEL_IMAGES.foodBurrata
 
   useSEO({
     title: extra.seo_title || 'Dining',
-    description: extra.seo_description || 'Discover the dining experiences at Seagonia Hotel — from Galia rooftop restaurant to farm-to-table cuisine, cooking classes, and beekeeping on the Ionian coast.',
+    description: extra.seo_description || 'Discover the dining experiences at Seagonia Hotel — from Galia rooftop restaurant to farm-to-table cuisine, cooking classes, and the Natural Bites pool bar on the Ionian coast.',
     ogImage: extra.seo_og_image,
   })
 
@@ -100,6 +100,42 @@ export default function Dining() {
           <h1 className="font-serif text-4xl md:text-5xl lg:text-hero font-semibold">{heroTitle}</h1>
           {heroSubtitle && <p className="text-white/80 text-lg mt-4 max-w-2xl mx-auto">{heroSubtitle}</p>}
         </motion.div>
+      </section>
+
+      {/* Natural Bites — Pool Bar */}
+      <section className="section-padding bg-ivory">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <motion.div
+              variants={fadeLeft}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              <p className="eyebrow mb-4">{naturalBitesEyebrow}</p>
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-heading font-semibold text-navy leading-tight">
+                {naturalBitesHeading}
+              </h2>
+              <p className="text-charcoal/70 text-lg leading-relaxed mt-6">
+                {naturalBitesBody}
+              </p>
+            </motion.div>
+            <motion.div
+              variants={stagger}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid grid-cols-2 gap-4"
+            >
+              <motion.div variants={fadeRight} className="overflow-hidden rounded-lg">
+                <img src={naturalBitesImage1} alt="Natural Bites pool bar" className="w-full h-64 object-cover" />
+              </motion.div>
+              <motion.div variants={fadeRight} className="overflow-hidden rounded-lg">
+                <img src={naturalBitesImage2} alt="Healthy bites" className="w-full h-64 object-cover" />
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
       </section>
 
       {/* Galia Rooftop Restaurant */}
@@ -403,50 +439,6 @@ export default function Dining() {
         </div>
       </section>
 
-      {/* Beekeeping */}
-      <section className="section-padding bg-ivory">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-            <motion.div
-              variants={stagger}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="space-y-4"
-            >
-              <motion.div variants={fadeLeft} className="overflow-hidden rounded-lg">
-                <img
-                  src={beekeepingImage1}
-                  alt="Beekeeper at hives with sea view"
-                  className="w-full h-64 lg:h-72 object-cover"
-                />
-              </motion.div>
-              <motion.div variants={fadeLeft} className="overflow-hidden rounded-lg">
-                <img
-                  src={beekeepingImage2}
-                  alt="Honeycomb closeup"
-                  className="w-full h-52 lg:h-60 object-cover"
-                />
-              </motion.div>
-            </motion.div>
-
-            <motion.div
-              variants={fadeRight}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-            >
-              <p className="eyebrow mb-4">{beekeepingEyebrow}</p>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-heading font-semibold text-navy leading-tight">
-                {beekeepingHeading}
-              </h2>
-              <p className="text-charcoal/70 text-lg leading-relaxed mt-6">
-                {beekeepingBody}
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
       <CustomSections sections={extra.custom_sections} />
     </>
   )

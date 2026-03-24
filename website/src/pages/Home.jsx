@@ -388,9 +388,9 @@ export default function Home() {
       </section>
 
       {/* ────────────────────────────────────────────
-          SECTION 7 — Testimonials
+          SECTION 7 — Testimonials (hidden, to be added later)
           ──────────────────────────────────────────── */}
-      <section className="bg-navy py-24 lg:py-36">
+      {false && <section className="bg-navy py-24 lg:py-36">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <motion.div
             variants={fadeUp}
@@ -429,7 +429,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* ────────────────────────────────────────────
           SECTION 8 — Contact CTA

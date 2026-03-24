@@ -10,7 +10,7 @@ export default function Rooms() {
   const extra = content?.extra_content || {}
 
   const heroImage = content?.hero_image_url || HOTEL_IMAGES.pogoniaPanorama
-  const heroTitle = content?.hero_title || 'Our Rooms'
+  const heroTitle = content?.hero_title || 'Accommodation'
   const heroSubtitle = content?.hero_subtitle || '58 rooms across 6 unique types, each thoughtfully designed for comfort and tranquility by the Ionian Sea.'
 
   useSEO({

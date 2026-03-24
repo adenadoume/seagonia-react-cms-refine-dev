@@ -100,7 +100,7 @@ export default function Experiences() {
           className="relative z-10 h-full flex items-center justify-center text-center px-4"
         >
           <h1 className="font-serif text-4xl md:text-5xl lg:text-hero font-semibold text-white">
-            Experiences
+            Activities
           </h1>
         </motion.div>
       </section>

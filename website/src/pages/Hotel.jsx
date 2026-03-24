@@ -1,6 +1,6 @@
 import CustomSections from '../components/shared/CustomSections'
 import { useEffect, useRef, useState } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, AnimatePresence } from 'framer-motion'
 import {
   Bed,
   Waves,
@@ -14,7 +14,8 @@ import {
 import useSEO from '../hooks/useSEO'
 import { HOTEL, HOTEL_IMAGES } from '../constants/hotel'
 import SectionHeader from '../components/shared/SectionHeader'
-import { usePageContent } from '../hooks/useSupabase'
+import ImageLightbox from '../components/shared/ImageLightbox'
+import { usePageContent, useGalleryImages, useGalleryCategories } from '../hooks/useSupabase'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -96,6 +97,19 @@ function AnimatedCounter({ target, suffix = '' }) {
 export default function Hotel() {
   const { data: content } = usePageContent('hotel')
   const extra = content?.extra_content || {}
+
+  const [galleryFilter, setGalleryFilter] = useState('all')
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState(0)
+  const { data: galleryCategories } = useGalleryCategories()
+  const { data: allGalleryImages } = useGalleryImages()
+
+  const filteredImages = !allGalleryImages
+    ? []
+    : galleryFilter === 'all'
+    ? allGalleryImages
+    : allGalleryImages.filter((img) => img.category?.slug === galleryFilter)
+  const filteredUrls = filteredImages.map((img) => img.image_url)
   const heroImage = content?.hero_image_url || HOTEL_IMAGES.entrance
   const heroTitle = content?.hero_title || 'The Hotel'
   const heroSubtitle = content?.hero_subtitle || ''
@@ -309,6 +323,73 @@ export default function Hotel() {
           </motion.p>
         </div>
       </section>
+      {/* Gallery */}
+      <section className="section-padding bg-cream">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center mb-10"
+          >
+            <h2 className="font-serif text-3xl md:text-4xl lg:text-heading font-semibold text-navy">Gallery</h2>
+          </motion.div>
+
+          {/* Category filters */}
+          <div className="flex flex-wrap justify-center gap-2 mb-8">
+            <button
+              onClick={() => setGalleryFilter('all')}
+              className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${galleryFilter === 'all' ? 'bg-gold text-white' : 'bg-stone/20 text-charcoal hover:bg-stone/40'}`}
+            >
+              All
+            </button>
+            {galleryCategories?.map((cat) => (
+              <button
+                key={cat.slug}
+                onClick={() => setGalleryFilter(cat.slug)}
+                className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${galleryFilter === cat.slug ? 'bg-gold text-white' : 'bg-stone/20 text-charcoal hover:bg-stone/40'}`}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </div>
+
+          {/* Grid */}
+          <motion.div layout className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            <AnimatePresence mode="popLayout">
+              {filteredImages.map((img, i) => (
+                <motion.div
+                  key={img.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                  className="aspect-square overflow-hidden rounded-lg cursor-pointer"
+                  onClick={() => { setLightboxIndex(i); setLightboxOpen(true) }}
+                >
+                  <img
+                    src={img.image_url}
+                    alt={img.title || 'Seagonia Hotel'}
+                    className="w-full h-full object-cover hover:opacity-90 transition-opacity"
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        </div>
+      </section>
+
+      <ImageLightbox
+        images={filteredUrls}
+        currentIndex={lightboxIndex}
+        isOpen={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+        onNext={() => setLightboxIndex((prev) => (prev + 1) % filteredUrls.length)}
+        onPrev={() => setLightboxIndex((prev) => (prev - 1 + filteredUrls.length) % filteredUrls.length)}
+      />
+
       <CustomSections sections={extra.custom_sections} />
     </>
   )

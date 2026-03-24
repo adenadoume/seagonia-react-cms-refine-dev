@@ -6,11 +6,11 @@ import { HOTEL } from '../../constants/hotel'
 const NAV_LINKS = [
   { label: 'The Area', to: '/area' },
   { label: 'The Hotel', to: '/hotel' },
-  { label: 'Rooms', to: '/rooms' },
+  { label: 'Accommodation', to: '/rooms' },
   { label: 'Dining', to: '/dining' },
-  { label: 'Experiences', to: '/experiences' },
-  { label: 'Gallery', to: '/gallery' },
-  { label: 'Contact', to: '/contact' },
+  { label: 'Activities', to: '/activities' },
+  { label: 'Ionian Escape', to: '/ionian-escape' },
+  { label: 'Wellness', to: '/wellness' },
 ]
 
 export default function MobileMenu({ isOpen, onClose }) {
