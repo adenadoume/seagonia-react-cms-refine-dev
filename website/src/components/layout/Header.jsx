@@ -52,7 +52,7 @@ export default function Header() {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`text-[13px] font-sans font-medium uppercase tracking-[0.08em] transition-colors duration-300 ${
+                  className={`cursor-pointer text-[13px] font-sans font-medium uppercase tracking-[0.08em] transition-colors duration-300 ${
                     scrolled
                       ? 'text-charcoal hover:text-gold'
                       : 'text-white/90 hover:text-gold-light'

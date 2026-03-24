@@ -48,7 +48,7 @@ export default function MobileMenu({ isOpen, onClose }) {
                 <Link
                   to={link.to}
                   onClick={onClose}
-                  className="font-serif text-3xl sm:text-4xl font-semibold text-white hover:text-gold transition-colors duration-200 tracking-wide"
+                  className="cursor-pointer font-serif text-3xl sm:text-4xl font-semibold text-white hover:text-gold transition-colors duration-200 tracking-wide"
                 >
                   {link.label}
                 </Link>
