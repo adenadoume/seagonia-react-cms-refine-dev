@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion'
 import useSEO from '../hooks/useSEO'
-import { HOTEL_IMAGES } from '../constants/hotel'
 import { usePageContent } from '../hooks/useSupabase'
 import CustomSections from '../components/shared/CustomSections'
+
+const WL = '/images/wellness'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -27,7 +28,7 @@ export default function Wellness() {
   const { data: content } = usePageContent('wellness')
   const extra = content?.extra_content || {}
 
-  const heroImage = content?.hero_image_url || HOTEL_IMAGES.massage
+  const heroImage = content?.hero_image_url || `${WL}/w-candle-massage.jpg`
   const heroTitle = content?.hero_title || 'Wellness'
   const heroSubtitle = content?.hero_subtitle || 'Restore Body & Mind'
 
@@ -35,37 +36,37 @@ export default function Wellness() {
   const introEyebrow = extra.intro_eyebrow || 'WELLNESS'
   const introHeading = extra.intro_heading || 'A Place to Restore'
   const introBody = extra.intro_body || `At Seagonia, relaxation and wellness are at the heart of the experience, with an outdoor spa area, a fully equipped indoor gym, and a peaceful yoga dome for rejuvenation. For an extra indulgence, a luxurious off-site spa just minutes from the hotel offers treatments that soothe the body and mind.`
-  const introImage1 = extra.intro_image_1 || HOTEL_IMAGES.pureSpa
-  const introImage2 = extra.intro_image_2 || HOTEL_IMAGES.massage
-  const introImage3 = extra.intro_image_3 || HOTEL_IMAGES.facialTreatment
+  const introImage1 = extra.intro_image_1 || `${WL}/w-candle-massage.jpg`
+  const introImage2 = extra.intro_image_2 || `${WL}/w-stones.jpg`
+  const introImage3 = extra.intro_image_3 || `${WL}/w-couple-massage.jpg`
 
   // Massage
   const massageEyebrow = extra.massage_eyebrow || 'OUTDOOR SPA'
   const massageHeading = extra.massage_heading || 'Massage'
   const massageBody = extra.massage_body || `Experience ultimate relaxation with outdoor massages and treatments in a secluded space surrounded by nature at Seagonia Hotel. Gentle breezes and the peaceful natural setting create the perfect atmosphere to unwind and rejuvenate body and mind.`
-  const massageImage1 = extra.massage_image_1 || HOTEL_IMAGES.massage
-  const massageImage2 = extra.massage_image_2 || HOTEL_IMAGES.facialTreatment
+  const massageImage1 = extra.massage_image_1 || `${WL}/w-hot-towel.jpg`
+  const massageImage2 = extra.massage_image_2 || `${WL}/w-massage-1.jpg`
 
   // Gym
   const gymEyebrow = extra.gym_eyebrow || 'FITNESS'
   const gymHeading = extra.gym_heading || 'Gym'
   const gymBody = extra.gym_body || `The hotel's indoor gym is fully equipped with Technogym equipment and weights, providing everything needed for a complete workout. Guests can maintain their fitness routine while enjoying the convenience of being right on the premises.`
-  const gymImage1 = extra.gym_image_1 || HOTEL_IMAGES.gym
-  const gymImage2 = extra.gym_image_2 || HOTEL_IMAGES.outdoorFitness
+  const gymImage1 = extra.gym_image_1 || `${WL}/w-gym-1.jpg`
+  const gymImage2 = extra.gym_image_2 || `${WL}/w-gym-2.jpg`
 
   // Yoga Dome
   const yogaEyebrow = extra.yoga_eyebrow || 'MINDFULNESS'
   const yogaHeading = extra.yoga_heading || 'Yoga Dome'
   const yogaBody = extra.yoga_body || `The serene yoga dome at Seagonia is available all day, offering a tranquil space for stretching, meditation, and mindful practice. It's an ideal spot to reconnect with yourself and embrace calmness during your stay.`
-  const yogaImage = extra.yoga_image || HOTEL_IMAGES.yogaGroup
+  const yogaImage = extra.yoga_image || `${WL}/w-yoga-dome.jpg`
 
   // Pure Paleros Bay Spa
   const spaEyebrow = extra.spa_eyebrow || 'OFF-SITE'
   const spaHeading = extra.spa_heading || 'Pure Paleros Bay Spa'
   const spaBody = extra.spa_body || `For a truly indulgent experience, the offsite spa, just minutes from the hotel, offers a full range of treatments and wellness therapies. Guests can immerse themselves in luxury and leave feeling completely refreshed and revitalized.`
-  const spaImage1 = extra.spa_image_1 || HOTEL_IMAGES.pureSpa
-  const spaImage2 = extra.spa_image_2 || HOTEL_IMAGES.facialTreatment
-  const spaImage3 = extra.spa_image_3 || HOTEL_IMAGES.massage
+  const spaImage1 = extra.spa_image_1 || `${WL}/w-spa-lounge.jpg`
+  const spaImage2 = extra.spa_image_2 || `${WL}/w-facial.jpg`
+  const spaImage3 = extra.spa_image_3 || `${WL}/w-spa-massage.jpg`
 
   useSEO({
     title: extra.seo_title || 'Wellness',

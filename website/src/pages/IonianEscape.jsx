@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion'
 import useSEO from '../hooks/useSEO'
-import { HOTEL_IMAGES } from '../constants/hotel'
 import { usePageContent } from '../hooks/useSupabase'
 import CustomSections from '../components/shared/CustomSections'
+
+const IE = '/images/ionian'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -27,48 +28,48 @@ export default function IonianEscape() {
   const { data: content } = usePageContent('ionian-escape')
   const extra = content?.extra_content || {}
 
-  const heroImage = content?.hero_image_url || HOTEL_IMAGES.islandBeach
+  const heroImage = content?.hero_image_url || `${IE}/ie-coast-aerial.jpg`
   const heroTitle = content?.hero_title || 'Ionian Escape'
   const heroSubtitle = content?.hero_subtitle || 'Explore the Ionian Sea by Boat'
 
   // Intro section
   const introBody = extra.intro_body || `Seagonia Hotel can be the perfect starting point for a once-in-a-lifetime adventure with Ionian Escape. From the beach that is located just 80m from Seagonia, you can embark on an unforgettable boat trip to the nearby magical islands of Lefkada, Meganisi, Ithaki, Kalamos, Kastos, and Atokos. Their skilled skippers and the three top-quality boats will guide you through the Ionian Sea to some of the most breathtaking destinations. You'll have the chance to swim in crystal-clear waters and visit world-famous beaches. Apart from refreshing swims and scenic landscapes, you will indulge in fresh, local cuisine at seaside restaurants, where you can enjoy a delicious lunch while overlooking the pristine waters.`
-  const introImage1 = extra.intro_image_1 || HOTEL_IMAGES.islandCoast
-  const introImage2 = extra.intro_image_2 || HOTEL_IMAGES.vathiavali
-  const introImage3 = extra.intro_image_3 || HOTEL_IMAGES.gerakas
+  const introImage1 = extra.intro_image_1 || `${IE}/ie-coast-aerial.jpg`
+  const introImage2 = extra.intro_image_2 || `${IE}/ie-beach-1.jpg`
+  const introImage3 = extra.intro_image_3 || `${IE}/ie-crystal-water.jpg`
 
   // Tulio Abbate
   const tulioEyebrow = extra.tulio_eyebrow || 'OUR FLEET'
   const tulioHeading = extra.tulio_heading || 'Tulio Abbate'
   const tulioBody = extra.tulio_body || `A very spacious boat with a good sized wrap around sofa provides the perfect setting for seeing the amazing and colourful small Ionian Islands. The Tullio Abbate 42 offers a large big teak swimming platform for sunbathing, and a large bimini sunshade for shade from the midday sun.`
-  const tulioImage1 = extra.tulio_image_1 || HOTEL_IMAGES.islandCoast
-  const tulioImage2 = extra.tulio_image_2 || HOTEL_IMAGES.islandBeach
-  const tulioImage3 = extra.tulio_image_3 || HOTEL_IMAGES.islandVillage
+  const tulioImage1 = extra.tulio_image_1 || `${IE}/ie-tulio-above.jpg`
+  const tulioImage2 = extra.tulio_image_2 || `${IE}/ie-tulio-speeding.jpg`
+  const tulioImage3 = extra.tulio_image_3 || `${IE}/ie-tulio-cliff.jpg`
 
   // The Ribco
   const ribcoEyebrow = extra.ribco_eyebrow || 'OUR FLEET'
   const ribcoHeading = extra.ribco_heading || 'The Ribco'
   const ribcoBody = extra.ribco_body || `The RIBCO boat is the perfect choice for a comfortable and stylish day at sea, accommodating up to 8 people with ease. Equipped with amenities such as a toilet, shower, and spacious seating, it offers both convenience and luxury for exploring the Ionian waters.`
-  const ribcoImage1 = extra.ribco_image_1 || HOTEL_IMAGES.islandBeach
-  const ribcoImage2 = extra.ribco_image_2 || HOTEL_IMAGES.vathiavali
+  const ribcoImage1 = extra.ribco_image_1 || `${IE}/ie-ribco-front.jpg`
+  const ribcoImage2 = extra.ribco_image_2 || `${IE}/ie-ribco-above.jpg`
 
   // Scorpion Rib
   const scorpionEyebrow = extra.scorpion_eyebrow || 'OUR FLEET'
   const scorpionHeading = extra.scorpion_heading || 'The Scorpion Rib'
   const scorpionBody = extra.scorpion_body || `Scorpion has refined the RIB into the perfect blend of form and function; its elegant look and luxurious comfort, combined with their rugged, all-weather capabilities and safety, makes it the undisputed first choice of all boating enthusiasts around the world.`
-  const scorpionImage1 = extra.scorpion_image_1 || HOTEL_IMAGES.islandCoast
-  const scorpionImage2 = extra.scorpion_image_2 || HOTEL_IMAGES.pogoniaCoast
+  const scorpionImage1 = extra.scorpion_image_1 || `${IE}/ie-scorpion-speed.jpg`
+  const scorpionImage2 = extra.scorpion_image_2 || `${IE}/ie-scorpion-side.jpg`
 
   // Destinations
   const destEyebrow = extra.destinations_eyebrow || 'EXPLORE'
   const destHeading = extra.destinations_heading || 'The Destinations'
   const destBody = extra.destinations_body || `With Ionian Escape boats, you can explore the most magical spots of the Ionian Sea, from Lefkada and the world-famous beaches of Egremni and Porto Katsiki to the mythical Ithaca, Astos, the island of the tycoon Onasis, Atokos, Meganissi, Kalamos, and countless charming small islands. Discover crystal-clear waters, picturesque harbors, and beautiful beaches, perfect for swimming, sightseeing, and enjoying a leisurely lunch by the sea.`
-  const destImage1 = extra.destinations_image_1 || HOTEL_IMAGES.vathiavali
-  const destImage2 = extra.destinations_image_2 || HOTEL_IMAGES.islandVillage
-  const destImage3 = extra.destinations_image_3 || HOTEL_IMAGES.gerakas
-  const destImage4 = extra.destinations_image_4 || HOTEL_IMAGES.littleIonian
-  const destImage5 = extra.destinations_image_5 || HOTEL_IMAGES.varkoBay
-  const destImage6 = extra.destinations_image_6 || HOTEL_IMAGES.islandBeach
+  const destImage1 = extra.destinations_image_1 || `${IE}/ie-dest-egremni.jpg`
+  const destImage2 = extra.destinations_image_2 || `${IE}/ie-dest-taverna.jpg`
+  const destImage3 = extra.destinations_image_3 || `${IE}/ie-dest-village.jpg`
+  const destImage4 = extra.destinations_image_4 || `${IE}/ie-dest-bay-aerial.jpg`
+  const destImage5 = extra.destinations_image_5 || `${IE}/ie-dest-beach-aerial.jpg`
+  const destImage6 = extra.destinations_image_6 || `${IE}/ie-boat-wake.jpg`
 
   useSEO({
     title: extra.seo_title || 'Ionian Escape',

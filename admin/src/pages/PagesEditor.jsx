@@ -4,13 +4,15 @@ import ImagePicker from '../components/ImagePicker'
 
 const PAGE_LABELS = {
   home: 'Home',
-  rooms: 'Rooms',
+  rooms: 'Accommodation',
   gallery: 'Gallery',
   amenities: 'Amenities',
-  experiences: 'Experiences',
+  experiences: 'Activities',
   dining: 'Dining',
   area: 'Area',
-  hotel: 'About',
+  hotel: 'The Hotel',
+  'ionian-escape': 'Ionian Escape',
+  wellness: 'Wellness',
 }
 
 const SECTION_TYPES = [
@@ -1509,6 +1511,225 @@ function GenericPageForm({ data, onSave, saving, saved }) {
   )
 }
 
+// ─── Ionian Escape page form ──────────────────────────────
+function IonianEscapeForm({ data, onSave, saving, saved }) {
+  const extra = data?.extra_content || {}
+  const makeState = (ex) => ({
+    hero_title: data?.hero_title || '',
+    hero_subtitle: data?.hero_subtitle || '',
+    hero_image_url: data?.hero_image_url || '',
+    intro_body: ex.intro_body || '',
+    intro_image_1: ex.intro_image_1 || '',
+    intro_image_2: ex.intro_image_2 || '',
+    intro_image_3: ex.intro_image_3 || '',
+    tulio_eyebrow: ex.tulio_eyebrow || 'OUR FLEET',
+    tulio_heading: ex.tulio_heading || 'Tulio Abbate',
+    tulio_body: ex.tulio_body || '',
+    tulio_image_1: ex.tulio_image_1 || '',
+    tulio_image_2: ex.tulio_image_2 || '',
+    tulio_image_3: ex.tulio_image_3 || '',
+    ribco_eyebrow: ex.ribco_eyebrow || 'OUR FLEET',
+    ribco_heading: ex.ribco_heading || 'The Ribco',
+    ribco_body: ex.ribco_body || '',
+    ribco_image_1: ex.ribco_image_1 || '',
+    ribco_image_2: ex.ribco_image_2 || '',
+    scorpion_eyebrow: ex.scorpion_eyebrow || 'OUR FLEET',
+    scorpion_heading: ex.scorpion_heading || 'The Scorpion Rib',
+    scorpion_body: ex.scorpion_body || '',
+    scorpion_image_1: ex.scorpion_image_1 || '',
+    scorpion_image_2: ex.scorpion_image_2 || '',
+    destinations_eyebrow: ex.destinations_eyebrow || 'EXPLORE',
+    destinations_heading: ex.destinations_heading || 'The Destinations',
+    destinations_body: ex.destinations_body || '',
+    destinations_image_1: ex.destinations_image_1 || '',
+    destinations_image_2: ex.destinations_image_2 || '',
+    destinations_image_3: ex.destinations_image_3 || '',
+    destinations_image_4: ex.destinations_image_4 || '',
+    destinations_image_5: ex.destinations_image_5 || '',
+    destinations_image_6: ex.destinations_image_6 || '',
+    seo_title: ex.seo_title || '',
+    seo_description: ex.seo_description || '',
+    seo_og_image: ex.seo_og_image || '',
+  })
+  const [form, setForm] = useState(() => makeState(extra))
+  const [customSections, setCustomSections] = useState(extra.custom_sections || [])
+  useEffect(() => { if (data) { setForm(makeState(data.extra_content || {})); setCustomSections((data.extra_content || {}).custom_sections || []) } }, [data])
+  function set(field, value) { setForm((f) => ({ ...f, [field]: value })) }
+  function handleSubmit(e) {
+    e.preventDefault()
+    const { hero_title, hero_subtitle, hero_image_url, seo_title, seo_description, seo_og_image, ...rest } = form
+    onSave({ id: data.id, hero_title, hero_subtitle, hero_image_url, extra_content: { ...(data.extra_content || {}), ...rest, seo_title, seo_description, seo_og_image, custom_sections: customSections } })
+  }
+
+  const FB = 'https://seagonia.vercel.app/images/ionian'
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Hero Section</h3>
+        <div><label className="label">Page Title</label><input className="input" value={form.hero_title} onChange={(e) => set('hero_title', e.target.value)} /></div>
+        <div><label className="label">Subtitle</label><textarea className="input" rows={2} value={form.hero_subtitle} onChange={(e) => set('hero_subtitle', e.target.value)} /></div>
+        <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} fallbackSrc={`${FB}/ie-coast-aerial.jpg`} />
+      </section>
+
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Introduction</h3>
+        <div><label className="label">Body Text</label><textarea className="input" rows={5} value={form.intro_body} onChange={(e) => set('intro_body', e.target.value)} /></div>
+        <ImagePicker label="Image 1" value={form.intro_image_1} onChange={(v) => set('intro_image_1', v)} fallbackSrc={`${FB}/ie-coast-aerial.jpg`} />
+        <ImagePicker label="Image 2" value={form.intro_image_2} onChange={(v) => set('intro_image_2', v)} fallbackSrc={`${FB}/ie-beach-1.jpg`} />
+        <ImagePicker label="Image 3" value={form.intro_image_3} onChange={(v) => set('intro_image_3', v)} fallbackSrc={`${FB}/ie-crystal-water.jpg`} />
+      </section>
+
+      {[
+        { key: 'tulio', label: 'Tulio Abbate', imgs: ['tulio_image_1','tulio_image_2','tulio_image_3'], fbs: ['ie-tulio-above','ie-tulio-speeding','ie-tulio-cliff'] },
+        { key: 'ribco', label: 'The Ribco', imgs: ['ribco_image_1','ribco_image_2'], fbs: ['ie-ribco-front','ie-ribco-above'] },
+        { key: 'scorpion', label: 'The Scorpion Rib', imgs: ['scorpion_image_1','scorpion_image_2'], fbs: ['ie-scorpion-speed','ie-scorpion-side'] },
+      ].map(({ key, label, imgs, fbs }) => (
+        <section key={key} className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">{label}</h3>
+          <div><label className="label">Eyebrow</label><input className="input" value={form[`${key}_eyebrow`]} onChange={(e) => set(`${key}_eyebrow`, e.target.value)} /></div>
+          <div><label className="label">Heading</label><input className="input" value={form[`${key}_heading`]} onChange={(e) => set(`${key}_heading`, e.target.value)} /></div>
+          <div><label className="label">Body Text</label><textarea className="input" rows={4} value={form[`${key}_body`]} onChange={(e) => set(`${key}_body`, e.target.value)} /></div>
+          {imgs.map((imgKey, i) => (
+            <ImagePicker key={imgKey} label={`Image ${i+1}`} value={form[imgKey]} onChange={(v) => set(imgKey, v)} fallbackSrc={`${FB}/${fbs[i]}.jpg`} />
+          ))}
+        </section>
+      ))}
+
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">The Destinations</h3>
+        <div><label className="label">Eyebrow</label><input className="input" value={form.destinations_eyebrow} onChange={(e) => set('destinations_eyebrow', e.target.value)} /></div>
+        <div><label className="label">Heading</label><input className="input" value={form.destinations_heading} onChange={(e) => set('destinations_heading', e.target.value)} /></div>
+        <div><label className="label">Body Text</label><textarea className="input" rows={4} value={form.destinations_body} onChange={(e) => set('destinations_body', e.target.value)} /></div>
+        {['ie-dest-egremni','ie-dest-taverna','ie-dest-village','ie-dest-bay-aerial','ie-dest-beach-aerial','ie-boat-wake'].map((fb, i) => (
+          <ImagePicker key={i} label={`Image ${i+1}`} value={form[`destinations_image_${i+1}`]} onChange={(v) => set(`destinations_image_${i+1}`, v)} fallbackSrc={`${FB}/${fb}.jpg`} />
+        ))}
+      </section>
+
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">SEO</h3>
+        <div><label className="label">SEO Title</label><input className="input" value={form.seo_title} onChange={(e) => set('seo_title', e.target.value)} /></div>
+        <div><label className="label">SEO Description</label><textarea className="input" rows={2} value={form.seo_description} onChange={(e) => set('seo_description', e.target.value)} /></div>
+        <ImagePicker label="OG Image" value={form.seo_og_image} onChange={(v) => set('seo_og_image', v)} />
+      </section>
+
+      <div className="flex items-center gap-4">
+        <button type="submit" disabled={saving} className="bg-gold hover:bg-gold/90 text-white px-6 py-2 rounded text-sm font-medium disabled:opacity-50">
+          {saving ? 'Saving…' : 'Save Changes'}
+        </button>
+        {saved && <span className="text-emerald-400 text-sm">✓ Saved</span>}
+      </div>
+    </form>
+  )
+}
+
+// ─── Wellness page form ───────────────────────────────────
+function WellnessForm({ data, onSave, saving, saved }) {
+  const extra = data?.extra_content || {}
+  const makeState = (ex) => ({
+    hero_title: data?.hero_title || '',
+    hero_subtitle: data?.hero_subtitle || '',
+    hero_image_url: data?.hero_image_url || '',
+    intro_eyebrow: ex.intro_eyebrow || 'WELLNESS',
+    intro_heading: ex.intro_heading || 'A Place to Restore',
+    intro_body: ex.intro_body || '',
+    intro_image_1: ex.intro_image_1 || '',
+    intro_image_2: ex.intro_image_2 || '',
+    intro_image_3: ex.intro_image_3 || '',
+    massage_eyebrow: ex.massage_eyebrow || 'OUTDOOR SPA',
+    massage_heading: ex.massage_heading || 'Massage',
+    massage_body: ex.massage_body || '',
+    massage_image_1: ex.massage_image_1 || '',
+    massage_image_2: ex.massage_image_2 || '',
+    gym_eyebrow: ex.gym_eyebrow || 'FITNESS',
+    gym_heading: ex.gym_heading || 'Gym',
+    gym_body: ex.gym_body || '',
+    gym_image_1: ex.gym_image_1 || '',
+    gym_image_2: ex.gym_image_2 || '',
+    yoga_eyebrow: ex.yoga_eyebrow || 'MINDFULNESS',
+    yoga_heading: ex.yoga_heading || 'Yoga Dome',
+    yoga_body: ex.yoga_body || '',
+    yoga_image: ex.yoga_image || '',
+    spa_eyebrow: ex.spa_eyebrow || 'OFF-SITE',
+    spa_heading: ex.spa_heading || 'Pure Paleros Bay Spa',
+    spa_body: ex.spa_body || '',
+    spa_image_1: ex.spa_image_1 || '',
+    spa_image_2: ex.spa_image_2 || '',
+    spa_image_3: ex.spa_image_3 || '',
+    seo_title: ex.seo_title || '',
+    seo_description: ex.seo_description || '',
+    seo_og_image: ex.seo_og_image || '',
+  })
+  const [form, setForm] = useState(() => makeState(extra))
+  const [customSections, setCustomSections] = useState(extra.custom_sections || [])
+  useEffect(() => { if (data) { setForm(makeState(data.extra_content || {})); setCustomSections((data.extra_content || {}).custom_sections || []) } }, [data])
+  function set(field, value) { setForm((f) => ({ ...f, [field]: value })) }
+  function handleSubmit(e) {
+    e.preventDefault()
+    const { hero_title, hero_subtitle, hero_image_url, seo_title, seo_description, seo_og_image, ...rest } = form
+    onSave({ id: data.id, hero_title, hero_subtitle, hero_image_url, extra_content: { ...(data.extra_content || {}), ...rest, seo_title, seo_description, seo_og_image, custom_sections: customSections } })
+  }
+
+  const FB = 'https://seagonia.vercel.app/images/wellness'
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Hero Section</h3>
+        <div><label className="label">Page Title</label><input className="input" value={form.hero_title} onChange={(e) => set('hero_title', e.target.value)} /></div>
+        <div><label className="label">Subtitle</label><textarea className="input" rows={2} value={form.hero_subtitle} onChange={(e) => set('hero_subtitle', e.target.value)} /></div>
+        <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} fallbackSrc={`${FB}/w-candle-massage.jpg`} />
+      </section>
+
+      {[
+        { key: 'intro', label: 'Introduction', imgs: ['intro_image_1','intro_image_2','intro_image_3'], fbs: ['w-candle-massage','w-stones','w-couple-massage'], hasEyebrow: true },
+        { key: 'massage', label: 'Massage', imgs: ['massage_image_1','massage_image_2'], fbs: ['w-hot-towel','w-massage-1'], hasEyebrow: true },
+        { key: 'gym', label: 'Gym', imgs: ['gym_image_1','gym_image_2'], fbs: ['w-gym-1','w-gym-2'], hasEyebrow: true },
+      ].map(({ key, label, imgs, fbs }) => (
+        <section key={key} className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">{label}</h3>
+          <div><label className="label">Eyebrow</label><input className="input" value={form[`${key}_eyebrow`]} onChange={(e) => set(`${key}_eyebrow`, e.target.value)} /></div>
+          <div><label className="label">Heading</label><input className="input" value={form[`${key}_heading`]} onChange={(e) => set(`${key}_heading`, e.target.value)} /></div>
+          <div><label className="label">Body Text</label><textarea className="input" rows={4} value={form[`${key}_body`]} onChange={(e) => set(`${key}_body`, e.target.value)} /></div>
+          {imgs.map((imgKey, i) => (
+            <ImagePicker key={imgKey} label={`Image ${i+1}`} value={form[imgKey]} onChange={(v) => set(imgKey, v)} fallbackSrc={`${FB}/${fbs[i]}.jpg`} />
+          ))}
+        </section>
+      ))}
+
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Yoga Dome</h3>
+        <div><label className="label">Eyebrow</label><input className="input" value={form.yoga_eyebrow} onChange={(e) => set('yoga_eyebrow', e.target.value)} /></div>
+        <div><label className="label">Heading</label><input className="input" value={form.yoga_heading} onChange={(e) => set('yoga_heading', e.target.value)} /></div>
+        <div><label className="label">Body Text</label><textarea className="input" rows={4} value={form.yoga_body} onChange={(e) => set('yoga_body', e.target.value)} /></div>
+        <ImagePicker label="Image" value={form.yoga_image} onChange={(v) => set('yoga_image', v)} fallbackSrc={`${FB}/w-yoga-dome.jpg`} />
+      </section>
+
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Pure Paleros Bay Spa</h3>
+        <div><label className="label">Eyebrow</label><input className="input" value={form.spa_eyebrow} onChange={(e) => set('spa_eyebrow', e.target.value)} /></div>
+        <div><label className="label">Heading</label><input className="input" value={form.spa_heading} onChange={(e) => set('spa_heading', e.target.value)} /></div>
+        <div><label className="label">Body Text</label><textarea className="input" rows={4} value={form.spa_body} onChange={(e) => set('spa_body', e.target.value)} /></div>
+        <ImagePicker label="Image 1" value={form.spa_image_1} onChange={(v) => set('spa_image_1', v)} fallbackSrc={`${FB}/w-spa-lounge.jpg`} />
+        <ImagePicker label="Image 2" value={form.spa_image_2} onChange={(v) => set('spa_image_2', v)} fallbackSrc={`${FB}/w-facial.jpg`} />
+        <ImagePicker label="Image 3" value={form.spa_image_3} onChange={(v) => set('spa_image_3', v)} fallbackSrc={`${FB}/w-spa-massage.jpg`} />
+      </section>
+
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">SEO</h3>
+        <div><label className="label">SEO Title</label><input className="input" value={form.seo_title} onChange={(e) => set('seo_title', e.target.value)} /></div>
+        <div><label className="label">SEO Description</label><textarea className="input" rows={2} value={form.seo_description} onChange={(e) => set('seo_description', e.target.value)} /></div>
+        <ImagePicker label="OG Image" value={form.seo_og_image} onChange={(v) => set('seo_og_image', v)} />
+      </section>
+
+      <div className="flex items-center gap-4">
+        <button type="submit" disabled={saving} className="bg-gold hover:bg-gold/90 text-white px-6 py-2 rounded text-sm font-medium disabled:opacity-50">
+          {saving ? 'Saving…' : 'Save Changes'}
+        </button>
+        {saved && <span className="text-emerald-400 text-sm">✓ Saved</span>}
+      </div>
+    </form>
+  )
+}
+
 // ─── Page detail panel ───────────────────────────────────
 function PageDetail({ pageName }) {
   const { data, isLoading } = useAdminPageContent(pageName)
@@ -1579,6 +1800,28 @@ function PageDetail({ pageName }) {
     )
   }
 
+  if (pageName === 'ionian-escape') {
+    return (
+      <IonianEscapeForm
+        data={data}
+        onSave={handleSave}
+        saving={update.isPending}
+        saved={saved}
+      />
+    )
+  }
+
+  if (pageName === 'wellness') {
+    return (
+      <WellnessForm
+        data={data}
+        onSave={handleSave}
+        saving={update.isPending}
+        saved={saved}
+      />
+    )
+  }
+
   return (
     <GenericPageForm
       data={data}
@@ -1596,7 +1839,7 @@ export default function PagesEditor() {
 
   const pageList = pages
     ? pages.sort((a, b) => {
-        const order = ['home', 'rooms', 'gallery', 'amenities', 'experiences', 'dining', 'area', 'hotel']
+        const order = ['home', 'rooms', 'gallery', 'amenities', 'experiences', 'dining', 'area', 'hotel', 'ionian-escape', 'wellness']
         return order.indexOf(a.page_name) - order.indexOf(b.page_name)
       })
     : Object.keys(PAGE_LABELS).map(k => ({ page_name: k }))
