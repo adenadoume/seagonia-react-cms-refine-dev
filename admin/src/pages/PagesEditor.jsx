@@ -436,11 +436,6 @@ function DiningForm({ data, onSave, saving, saved }) {
     cooking_body: extra.cooking_body || '',
     cooking_image_1: extra.cooking_image_1 || '',
     cooking_image_2: extra.cooking_image_2 || '',
-    natural_bites_eyebrow: extra.natural_bites_eyebrow || 'POOL BAR',
-    natural_bites_heading: extra.natural_bites_heading || 'Paleros Natural Bites',
-    natural_bites_body: extra.natural_bites_body || '',
-    natural_bites_image_1: extra.natural_bites_image_1 || '',
-    natural_bites_image_2: extra.natural_bites_image_2 || '',
     beekeeping_eyebrow: extra.beekeeping_eyebrow || 'EXPERIENCE',
     beekeeping_heading: extra.beekeeping_heading || 'Honey Harvesting & Beekeeping',
     beekeeping_body: extra.beekeeping_body || '',
@@ -493,11 +488,6 @@ function DiningForm({ data, onSave, saving, saved }) {
         cooking_body: ex.cooking_body || '',
         cooking_image_1: ex.cooking_image_1 || '',
         cooking_image_2: ex.cooking_image_2 || '',
-        natural_bites_eyebrow: ex.natural_bites_eyebrow || 'POOL BAR',
-        natural_bites_heading: ex.natural_bites_heading || 'Paleros Natural Bites',
-        natural_bites_body: ex.natural_bites_body || '',
-        natural_bites_image_1: ex.natural_bites_image_1 || '',
-        natural_bites_image_2: ex.natural_bites_image_2 || '',
         beekeeping_eyebrow: ex.beekeeping_eyebrow || 'EXPERIENCE',
         beekeeping_heading: ex.beekeeping_heading || 'Honey Harvesting & Beekeeping',
         beekeeping_body: ex.beekeeping_body || '',
@@ -556,11 +546,6 @@ function DiningForm({ data, onSave, saving, saved }) {
         cooking_body: form.cooking_body,
         cooking_image_1: form.cooking_image_1,
         cooking_image_2: form.cooking_image_2,
-        natural_bites_eyebrow: form.natural_bites_eyebrow,
-        natural_bites_heading: form.natural_bites_heading,
-        natural_bites_body: form.natural_bites_body,
-        natural_bites_image_1: form.natural_bites_image_1,
-        natural_bites_image_2: form.natural_bites_image_2,
         beekeeping_eyebrow: form.beekeeping_eyebrow,
         beekeeping_heading: form.beekeeping_heading,
         beekeeping_body: form.beekeeping_body,
@@ -588,25 +573,6 @@ function DiningForm({ data, onSave, saving, saved }) {
           <textarea className="input" rows={2} value={form.hero_subtitle} onChange={(e) => set('hero_subtitle', e.target.value)} />
         </div>
         <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-038.jpg" />
-      </section>
-
-      {/* Paleros Natural Bites */}
-      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
-        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Paleros Natural Bites (Pool Bar) — First section</h3>
-        <div>
-          <label className="label">Eyebrow label</label>
-          <input className="input" value={form.natural_bites_eyebrow} onChange={(e) => set('natural_bites_eyebrow', e.target.value)} />
-        </div>
-        <div>
-          <label className="label">Heading</label>
-          <input className="input" value={form.natural_bites_heading} onChange={(e) => set('natural_bites_heading', e.target.value)} />
-        </div>
-        <div>
-          <label className="label">Body text</label>
-          <textarea className="input" rows={4} value={form.natural_bites_body} onChange={(e) => set('natural_bites_body', e.target.value)} />
-        </div>
-        <ImagePicker label="Image 1 (left)" value={form.natural_bites_image_1} onChange={(v) => set('natural_bites_image_1', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-000.jpg" />
-        <ImagePicker label="Image 2 (right)" value={form.natural_bites_image_2} onChange={(v) => set('natural_bites_image_2', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-043.jpg" />
       </section>
 
       {/* Galiá Restaurant */}
