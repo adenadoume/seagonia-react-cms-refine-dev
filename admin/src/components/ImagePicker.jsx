@@ -3,6 +3,18 @@ import { useAdminGallery } from '../hooks/useAdmin'
 
 const WEBSITE_BASE = 'https://seagonia.vercel.app'
 const PAGE_SIZE = 30
+const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+
+async function uploadToCloudinary(file) {
+  const fd = new FormData()
+  fd.append('file', file)
+  fd.append('upload_preset', UPLOAD_PRESET)
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: 'POST', body: fd })
+  if (!res.ok) throw new Error('Upload failed')
+  const data = await res.json()
+  return data.secure_url
+}
 
 const LOCAL_IMAGES = Array.from({ length: 77 }, (_, i) => {
   const n = String(i + 1).padStart(3, '0')
@@ -20,6 +32,9 @@ export default function ImagePicker({ value, onChange, label = 'Image', fallback
   const [search, setSearch] = useState('')
   const [tab, setTab] = useState('local')
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
+  const [uploading, setUploading] = useState(false)
+  const [uploadError, setUploadError] = useState(null)
+  const fileInputRef = useRef(null)
   const { data: galleryImages } = useAdminGallery()
 
   const galleryUrls = (galleryImages || []).map((img) => resolveUrl(img.image_url)).filter(Boolean)
@@ -61,7 +76,26 @@ export default function ImagePicker({ value, onChange, label = 'Image', fallback
     else setTab('local')
     setSearch('')
     setVisibleCount(PAGE_SIZE)
+    setUploadError(null)
     setOpen(true)
+  }
+
+  async function handleUpload(e) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploading(true)
+    setUploadError(null)
+    try {
+      const url = await uploadToCloudinary(file)
+      onChange(url)
+      setTab('gallery')
+      setOpen(false)
+    } catch {
+      setUploadError('Upload failed. Check Cloudinary settings.')
+    } finally {
+      setUploading(false)
+      e.target.value = ''
+    }
   }
 
   return (
@@ -107,14 +141,36 @@ export default function ImagePicker({ value, onChange, label = 'Image', fallback
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700">
               <h2 className="text-white font-semibold">Pick an Image</h2>
-              <button
-                type="button"
-                onClick={() => { setOpen(false); setSearch('') }}
-                className="text-slate-400 hover:text-white text-lg leading-none"
-              >
-                ✕
-              </button>
+              <div className="flex items-center gap-3">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleUpload}
+                />
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-gold hover:bg-gold/90 text-white rounded font-medium disabled:opacity-50 transition-colors"
+                >
+                  {uploading ? 'Uploading…' : '↑ Upload New'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setOpen(false); setSearch('') }}
+                  className="text-slate-400 hover:text-white text-lg leading-none"
+                >
+                  ✕
+                </button>
+              </div>
             </div>
+            {uploadError && (
+              <div className="px-5 py-2 bg-red-900/40 text-red-300 text-xs border-b border-red-800">
+                {uploadError}
+              </div>
+            )}
 
             {/* Tabs */}
             <div className="flex gap-1 px-5 pt-3 border-b border-slate-700">
