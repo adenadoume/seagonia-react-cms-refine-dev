@@ -80,12 +80,13 @@ function ImageSection({ section }) {
 }
 
 export default function CustomSections({ sections }) {
-  if (!sections?.length) return null
+  const visible = sections?.filter((s) => !s.hidden)
+  if (!visible?.length) return null
 
   return (
     <section className="section-padding bg-white">
       <div className="max-w-6xl mx-auto space-y-20">
-        {sections.map((section) => {
+        {visible.map((section) => {
           if (section.type === 'text') return <TextSection key={section.id} section={section} />
           if (section.type === 'image_text') return <ImageTextSection key={section.id} section={section} />
           if (section.type === 'image') return <ImageSection key={section.id} section={section} />
