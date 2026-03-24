@@ -344,7 +344,7 @@ export default function Hotel() {
             >
               All
             </button>
-            {galleryCategories?.map((cat) => (
+            {galleryCategories?.filter((cat) => cat.slug !== 'all').map((cat) => (
               <button
                 key={cat.slug}
                 onClick={() => setGalleryFilter(cat.slug)}
