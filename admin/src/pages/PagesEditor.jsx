@@ -1,20 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useAdminAllPageContent, useAdminPageContent, useUpdatePageContent } from '../hooks/useAdmin'
 import ImagePicker from '../components/ImagePicker'
-import {
-  DndContext,
-  closestCenter,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from '@dnd-kit/core'
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-  useSortable,
-  arrayMove,
-} from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
 
 const PAGE_LABELS = {
   home: 'Home',
@@ -35,93 +21,10 @@ const SECTION_TYPES = [
   { value: 'image', label: 'Image Only' },
 ]
 
-// ─── Sortable section item ────────────────────────────────
-function SortableSection({ sec, idx, totalCount, onUpdate, onRemove }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-    useSortable({ id: sec.id })
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  }
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className={`bg-slate-800 border rounded-lg p-5 space-y-4 ${sec.hidden ? 'border-slate-700 opacity-60' : 'border-slate-600'}`}
-    >
-      {/* Section header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          {/* Drag handle */}
-          <button
-            type="button"
-            {...attributes}
-            {...listeners}
-            className="cursor-grab active:cursor-grabbing text-slate-500 hover:text-slate-300 px-1 select-none"
-            title="Drag to reorder"
-          >
-            ⠿
-          </button>
-          <select
-            className="bg-slate-700 border border-slate-600 rounded px-2 py-1 text-xs text-slate-300 focus:outline-none focus:border-gold"
-            value={sec.type}
-            onChange={(e) => onUpdate(sec.id, 'type', e.target.value)}
-          >
-            {SECTION_TYPES.map((t) => (
-              <option key={t.value} value={t.value}>{t.label}</option>
-            ))}
-          </select>
-          <span className="text-slate-500 text-xs">Section {idx + 1}</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <button
-            type="button"
-            onClick={() => onUpdate(sec.id, 'hidden', !sec.hidden)}
-            className={`px-2 py-1 text-xs border rounded transition-colors ${
-              sec.hidden
-                ? 'border-amber-600 text-amber-400 hover:bg-amber-600/20'
-                : 'border-slate-600 text-slate-400 hover:text-white'
-            }`}
-            title={sec.hidden ? 'Show section on website' : 'Hide section from website'}
-          >
-            {sec.hidden ? 'Hidden' : 'Visible'}
-          </button>
-          <button type="button" onClick={() => onRemove(sec.id)} className="btn-delete">
-            Remove
-          </button>
-        </div>
-      </div>
-
-      {/* Heading — all types except image-only */}
-      {sec.type !== 'image' && (
-        <div>
-          <label className="label">Heading</label>
-          <input className="input" value={sec.heading || ''} onChange={(e) => onUpdate(sec.id, 'heading', e.target.value)} placeholder="Section heading" />
-        </div>
-      )}
-
-      {/* Body — text and image+text */}
-      {(sec.type === 'text' || sec.type === 'image_text') && (
-        <div>
-          <label className="label">Body text</label>
-          <textarea className="input" rows={4} value={sec.body || ''} onChange={(e) => onUpdate(sec.id, 'body', e.target.value)} placeholder="Section content..." />
-        </div>
-      )}
-
-      {/* Image — image and image+text */}
-      {(sec.type === 'image' || sec.type === 'image_text') && (
-        <ImagePicker label="Image" value={sec.image_url || ''} onChange={(v) => onUpdate(sec.id, 'image_url', v)} />
-      )}
-    </div>
-  )
-}
-
-// ─── Custom Sections editor ───────────────────────────────
+// ─── Custom Sections editor (HTML5 drag-and-drop, no external deps) ──────────
 function CustomSections({ sections, onChange }) {
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }))
+  const dragId = useRef(null)
+  const [dragOverId, setDragOverId] = useState(null)
 
   function addSection() {
     const id = Date.now().toString()
@@ -136,31 +39,109 @@ function CustomSections({ sections, onChange }) {
     onChange(sections.filter((s) => s.id !== id))
   }
 
-  function handleDragEnd(event) {
-    const { active, over } = event
-    if (active.id !== over?.id) {
-      const oldIdx = sections.findIndex((s) => s.id === active.id)
-      const newIdx = sections.findIndex((s) => s.id === over.id)
-      onChange(arrayMove(sections, oldIdx, newIdx))
+  function onDragStart(id) {
+    dragId.current = id
+  }
+
+  function onDragOver(e, id) {
+    e.preventDefault()
+    setDragOverId(id)
+  }
+
+  function onDrop(e, id) {
+    e.preventDefault()
+    if (dragId.current && dragId.current !== id) {
+      const from = sections.findIndex((s) => s.id === dragId.current)
+      const to = sections.findIndex((s) => s.id === id)
+      const next = [...sections]
+      const [moved] = next.splice(from, 1)
+      next.splice(to, 0, moved)
+      onChange(next)
     }
+    dragId.current = null
+    setDragOverId(null)
+  }
+
+  function onDragEnd() {
+    dragId.current = null
+    setDragOverId(null)
   }
 
   return (
     <div className="space-y-4">
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={sections.map((s) => s.id)} strategy={verticalListSortingStrategy}>
-          {sections.map((sec, idx) => (
-            <SortableSection
-              key={sec.id}
-              sec={sec}
-              idx={idx}
-              totalCount={sections.length}
-              onUpdate={updateSection}
-              onRemove={removeSection}
-            />
-          ))}
-        </SortableContext>
-      </DndContext>
+      {sections.map((sec, idx) => (
+        <div
+          key={sec.id}
+          draggable
+          onDragStart={() => onDragStart(sec.id)}
+          onDragOver={(e) => onDragOver(e, sec.id)}
+          onDrop={(e) => onDrop(e, sec.id)}
+          onDragEnd={onDragEnd}
+          className={`bg-slate-800 border rounded-lg p-5 space-y-4 transition-all ${
+            sec.hidden ? 'border-slate-700 opacity-60' : 'border-slate-600'
+          } ${dragOverId === sec.id ? 'border-gold border-2' : ''}`}
+        >
+          {/* Section header */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span
+                className="cursor-grab text-slate-500 hover:text-slate-300 px-1 select-none text-lg"
+                title="Drag to reorder"
+              >
+                ⠿
+              </span>
+              <select
+                className="bg-slate-700 border border-slate-600 rounded px-2 py-1 text-xs text-slate-300 focus:outline-none focus:border-gold"
+                value={sec.type}
+                onChange={(e) => updateSection(sec.id, 'type', e.target.value)}
+              >
+                {SECTION_TYPES.map((t) => (
+                  <option key={t.value} value={t.value}>{t.label}</option>
+                ))}
+              </select>
+              <span className="text-slate-500 text-xs">Section {idx + 1}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => updateSection(sec.id, 'hidden', !sec.hidden)}
+                className={`px-2 py-1 text-xs border rounded transition-colors ${
+                  sec.hidden
+                    ? 'border-amber-600 text-amber-400 hover:bg-amber-600/20'
+                    : 'border-slate-600 text-slate-400 hover:text-white'
+                }`}
+                title={sec.hidden ? 'Click to show on website' : 'Click to hide from website'}
+              >
+                {sec.hidden ? 'Hidden' : 'Visible'}
+              </button>
+              <button type="button" onClick={() => removeSection(sec.id)} className="btn-delete">
+                Remove
+              </button>
+            </div>
+          </div>
+
+          {/* Heading — all types except image-only */}
+          {sec.type !== 'image' && (
+            <div>
+              <label className="label">Heading</label>
+              <input className="input" value={sec.heading || ''} onChange={(e) => updateSection(sec.id, 'heading', e.target.value)} placeholder="Section heading" />
+            </div>
+          )}
+
+          {/* Body — text and image+text */}
+          {(sec.type === 'text' || sec.type === 'image_text') && (
+            <div>
+              <label className="label">Body text</label>
+              <textarea className="input" rows={4} value={sec.body || ''} onChange={(e) => updateSection(sec.id, 'body', e.target.value)} placeholder="Section content..." />
+            </div>
+          )}
+
+          {/* Image — image and image+text */}
+          {(sec.type === 'image' || sec.type === 'image_text') && (
+            <ImagePicker label="Image" value={sec.image_url || ''} onChange={(v) => updateSection(sec.id, 'image_url', v)} />
+          )}
+        </div>
+      ))}
 
       <button
         type="button"
