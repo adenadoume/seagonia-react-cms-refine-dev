@@ -599,6 +599,12 @@ function DiningForm({ data, onSave, saving, saved }) {
         <ImagePicker label="Hero Image" value={form.hero_image_url} onChange={(v) => set('hero_image_url', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-038.jpg" />
       </section>
 
+      {/* Custom sections — shown first so Paleros Natural Bites is easy to find */}
+      <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-4">Custom Sections (e.g. Paleros Natural Bites) — drag ⠿ to reorder</h3>
+        <CustomSections sections={customSections} onChange={setCustomSections} />
+      </div>
+
       {/* Galiá Restaurant */}
       <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
         <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Galiá Restaurant</h3>
@@ -738,12 +744,6 @@ function DiningForm({ data, onSave, saving, saved }) {
         </div>
         <ImagePicker label="OG Share Image (shown when shared on social / WhatsApp)" value={form.seo_og_image} onChange={(v) => set('seo_og_image', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-038.jpg" />
       </section>
-
-      {/* Custom sections */}
-      <div>
-        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-4">Custom Sections</h3>
-        <CustomSections sections={customSections} onChange={setCustomSections} />
-      </div>
 
       <div className="flex items-center gap-3 pt-2">
         <button type="submit" disabled={saving} className="btn-primary">
