@@ -17,12 +17,14 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif font-normal;
   }
-  a, button, [role="button"] {
-    cursor: pointer;
-  }
-  a *, button *, [role="button"] * {
-    cursor: pointer;
-  }
+}
+
+/* Cursor — outside @layer so it wins over all Tailwind utilities */
+a, button, [role="button"] {
+  cursor: pointer;
+}
+a *, button *, [role="button"] * {
+  cursor: inherit;
 }
 
 @layer components {
