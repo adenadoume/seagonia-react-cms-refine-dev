@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useAdminAllPageContent, useAdminPageContent, useUpdatePageContent } from '../hooks/useAdmin'
 import ImagePicker from '../components/ImagePicker'
 
@@ -23,7 +23,6 @@ const SECTION_TYPES = [
 
 // ─── Custom Sections editor (HTML5 drag-and-drop, no external deps) ──────────
 function CustomSections({ sections, onChange }) {
-  const dragId = useRef(null)
   const [dragOverId, setDragOverId] = useState(null)
 
   function addSection() {
@@ -39,31 +38,17 @@ function CustomSections({ sections, onChange }) {
     onChange(sections.filter((s) => s.id !== id))
   }
 
-  function onDragStart(id) {
-    dragId.current = id
-  }
-
-  function onDragOver(e, id) {
+  function handleDrop(e, toId) {
     e.preventDefault()
-    setDragOverId(id)
-  }
-
-  function onDrop(e, id) {
-    e.preventDefault()
-    if (dragId.current && dragId.current !== id) {
-      const from = sections.findIndex((s) => s.id === dragId.current)
-      const to = sections.findIndex((s) => s.id === id)
+    const fromId = e.dataTransfer.getData('text/plain')
+    if (fromId && fromId !== toId) {
+      const from = sections.findIndex((s) => s.id === fromId)
+      const to = sections.findIndex((s) => s.id === toId)
       const next = [...sections]
       const [moved] = next.splice(from, 1)
       next.splice(to, 0, moved)
       onChange(next)
     }
-    dragId.current = null
-    setDragOverId(null)
-  }
-
-  function onDragEnd() {
-    dragId.current = null
     setDragOverId(null)
   }
 
@@ -72,19 +57,23 @@ function CustomSections({ sections, onChange }) {
       {sections.map((sec, idx) => (
         <div
           key={sec.id}
-          draggable
-          onDragStart={() => onDragStart(sec.id)}
-          onDragOver={(e) => onDragOver(e, sec.id)}
-          onDrop={(e) => onDrop(e, sec.id)}
-          onDragEnd={onDragEnd}
+          onDragOver={(e) => { e.preventDefault(); setDragOverId(sec.id) }}
+          onDragLeave={() => setDragOverId(null)}
+          onDrop={(e) => handleDrop(e, sec.id)}
           className={`bg-slate-800 border rounded-lg p-5 space-y-4 transition-all ${
             sec.hidden ? 'border-slate-700 opacity-60' : 'border-slate-600'
-          } ${dragOverId === sec.id ? 'border-gold border-2' : ''}`}
+          } ${dragOverId === sec.id ? 'border-gold' : ''}`}
         >
           {/* Section header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
+              {/* Only the handle is draggable — avoids inputs swallowing drag events */}
               <span
+                draggable
+                onDragStart={(e) => {
+                  e.dataTransfer.setData('text/plain', sec.id)
+                  e.dataTransfer.effectAllowed = 'move'
+                }}
                 className="cursor-grab text-slate-500 hover:text-slate-300 px-1 select-none text-lg"
                 title="Drag to reorder"
               >
