@@ -79,6 +79,8 @@ export default function Area() {
   ]
 
   // How to get here
+  const beachesParagraph = extra.beaches_paragraph || `Just 7 kilometers from the hotel, Vathiavali Beach offers crystal-clear waters and a peaceful, unspoiled setting. Nearby, Varko Bay is perfect for swimming and snorkeling in calm turquoise seas. For a hidden gem, Gerakas Beach — accessible only by boat — promises total seclusion and breathtaking natural beauty.`
+
   const travelModes = [
     {
       icon: Car,
@@ -346,11 +348,7 @@ export default function Area() {
             viewport={{ once: true }}
             className="text-charcoal/70 leading-relaxed text-lg text-center max-w-4xl mx-auto mt-14"
           >
-            Just 7 kilometers from the hotel, Vathiavali Beach offers
-            crystal-clear waters and a peaceful, unspoiled setting. Nearby,
-            Varko Bay is perfect for swimming and snorkeling in calm turquoise
-            seas. For a hidden gem, Gerakas Beach — accessible only by boat —
-            promises total seclusion and breathtaking natural beauty.
+            {beachesParagraph}
           </motion.p>
         </div>
       </section>

@@ -988,6 +988,7 @@ function AreaForm({ data, onSave, saving, saved }) {
     beach_3_name: extra.beach_3_name || '',
     beach_3_image: extra.beach_3_image || '',
     beach_3_description: extra.beach_3_description || '',
+    beaches_paragraph: extra.beaches_paragraph || '',
     travel_car_title: extra.travel_car_title || '',
     travel_car_body: extra.travel_car_body || '',
     travel_ferry_title: extra.travel_ferry_title || '',
@@ -1035,6 +1036,7 @@ function AreaForm({ data, onSave, saving, saved }) {
         beach_3_name: ex.beach_3_name || '',
         beach_3_image: ex.beach_3_image || '',
         beach_3_description: ex.beach_3_description || '',
+        beaches_paragraph: ex.beaches_paragraph || '',
         travel_car_title: ex.travel_car_title || '',
         travel_car_body: ex.travel_car_body || '',
         travel_ferry_title: ex.travel_ferry_title || '',
@@ -1088,6 +1090,7 @@ function AreaForm({ data, onSave, saving, saved }) {
         beach_3_name: form.beach_3_name,
         beach_3_image: form.beach_3_image,
         beach_3_description: form.beach_3_description,
+        beaches_paragraph: form.beaches_paragraph,
         travel_car_title: form.travel_car_title,
         travel_car_body: form.travel_car_body,
         travel_ferry_title: form.travel_ferry_title,
@@ -1212,6 +1215,12 @@ function AreaForm({ data, onSave, saving, saved }) {
             <ImagePicker label="Image" value={form[`beach_${n}_image`]} onChange={(v) => set(`beach_${n}_image`, v)} fallbackSrc={`https://seagonia.vercel.app/images/hotel/img-0${String(20 + n).padStart(2, '0')}.jpg`} />
           </div>
         ))}
+      </section>
+
+        <div className="border-t border-slate-700 pt-4 space-y-2">
+          <p className="text-xs text-slate-400 font-medium">Summary paragraph (shown below the beach cards)</p>
+          <textarea className="input" rows={3} value={form.beaches_paragraph} onChange={(e) => set('beaches_paragraph', e.target.value)} placeholder="Just 7 kilometers from the hotel, Vathiavali Beach offers..." />
+        </div>
       </section>
 
       {/* How to get here */}
