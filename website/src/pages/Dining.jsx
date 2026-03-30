@@ -71,6 +71,12 @@ export default function Dining() {
   const cookingImage1 = extra.cooking_image_1 || HOTEL_IMAGES.cookingClass
   const cookingImage2 = extra.cooking_image_2 || HOTEL_IMAGES.cookingResult
 
+  const nbEyebrow = extra.nb_eyebrow || 'POOL BAR'
+  const nbHeading = extra.nb_heading || 'Paleros Natural Bites'
+  const nbBody = extra.nb_body || `Our Pool Bar serves specialty coffee, nourishing smoothies made with farm-fresh fruits and vegetables, protein-rich blends, and healthy treats entirely free of gluten and refined sugar. Open all day, it is the ideal spot to recharge between swims or unwind as the afternoon light softens over the pool.`
+  const nbImage1 = extra.nb_image_1 || HOTEL_IMAGES.poolDeck
+  const nbImage2 = extra.nb_image_2 || HOTEL_IMAGES.cocktail
+
   useSEO({
     title: extra.seo_title || 'Dining',
     description: extra.seo_description || 'Discover the dining experiences at Seagonia Hotel — from Galia rooftop restaurant to farm-to-table cuisine, cooking classes, and the Natural Bites pool bar on the Ionian coast.',
@@ -96,7 +102,26 @@ export default function Dining() {
         </motion.div>
       </section>
 
-      <CustomSections sections={extra.custom_sections} />
+      {/* Paleros Natural Bites — Pool Bar */}
+      <section className="section-padding bg-ivory">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <motion.div variants={fadeLeft} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+              <p className="eyebrow mb-4">{nbEyebrow}</p>
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-heading font-semibold text-navy leading-tight">{nbHeading}</h2>
+              <p className="text-charcoal/70 text-lg leading-relaxed mt-6">{nbBody}</p>
+            </motion.div>
+            <motion.div variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-2 gap-4">
+              <motion.div variants={fadeRight} className="overflow-hidden rounded-lg">
+                <img src={nbImage1} alt="Paleros Natural Bites pool bar" className="w-full h-64 object-cover" />
+              </motion.div>
+              <motion.div variants={fadeRight} className="overflow-hidden rounded-lg">
+                <img src={nbImage2} alt="Natural bites drinks" className="w-full h-64 object-cover" />
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
 
       {/* Galia Rooftop Restaurant */}
       <section className="section-padding bg-cream">

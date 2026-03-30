@@ -426,6 +426,11 @@ function DiningForm({ data, onSave, saving, saved }) {
     hero_title: data?.hero_title || '',
     hero_subtitle: data?.hero_subtitle || '',
     hero_image_url: data?.hero_image_url || '',
+    nb_eyebrow: extra.nb_eyebrow || 'POOL BAR',
+    nb_heading: extra.nb_heading || 'Paleros Natural Bites',
+    nb_body: extra.nb_body || '',
+    nb_image_1: extra.nb_image_1 || '',
+    nb_image_2: extra.nb_image_2 || '',
     galia_eyebrow: extra.galia_eyebrow || 'ROOFTOP DINING',
     galia_heading: extra.galia_heading || 'Galiá Restaurant',
     galia_body: extra.galia_body || '',
@@ -478,6 +483,11 @@ function DiningForm({ data, onSave, saving, saved }) {
         hero_title: data.hero_title || '',
         hero_subtitle: data.hero_subtitle || '',
         hero_image_url: data.hero_image_url || '',
+        nb_eyebrow: ex.nb_eyebrow || 'POOL BAR',
+        nb_heading: ex.nb_heading || 'Paleros Natural Bites',
+        nb_body: ex.nb_body || '',
+        nb_image_1: ex.nb_image_1 || '',
+        nb_image_2: ex.nb_image_2 || '',
         galia_eyebrow: ex.galia_eyebrow || 'ROOFTOP DINING',
         galia_heading: ex.galia_heading || 'Galiá Restaurant',
         galia_body: ex.galia_body || '',
@@ -536,6 +546,11 @@ function DiningForm({ data, onSave, saving, saved }) {
       hero_image_url: form.hero_image_url,
       extra_content: {
         ...(data.extra_content || {}),
+        nb_eyebrow: form.nb_eyebrow,
+        nb_heading: form.nb_heading,
+        nb_body: form.nb_body,
+        nb_image_1: form.nb_image_1,
+        nb_image_2: form.nb_image_2,
         galia_eyebrow: form.galia_eyebrow,
         galia_heading: form.galia_heading,
         galia_body: form.galia_body,
@@ -600,10 +615,24 @@ function DiningForm({ data, onSave, saving, saved }) {
       </section>
 
       {/* Custom sections — shown first so Paleros Natural Bites is easy to find */}
-      <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
-        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-4">Custom Sections (e.g. Paleros Natural Bites) — drag ⠿ to reorder</h3>
-        <CustomSections sections={customSections} onChange={setCustomSections} />
-      </div>
+      {/* Paleros Natural Bites */}
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Paleros Natural Bites — Pool Bar (1st section)</h3>
+        <div>
+          <label className="label">Eyebrow label</label>
+          <input className="input" value={form.nb_eyebrow} onChange={(e) => set('nb_eyebrow', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Heading</label>
+          <input className="input" value={form.nb_heading} onChange={(e) => set('nb_heading', e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Body text</label>
+          <textarea className="input" rows={4} value={form.nb_body} onChange={(e) => set('nb_body', e.target.value)} />
+        </div>
+        <ImagePicker label="Image 1" value={form.nb_image_1} onChange={(v) => set('nb_image_1', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-000.jpg" />
+        <ImagePicker label="Image 2" value={form.nb_image_2} onChange={(v) => set('nb_image_2', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-043.jpg" />
+      </section>
 
       {/* Galiá Restaurant */}
       <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
