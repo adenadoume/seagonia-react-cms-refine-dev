@@ -979,6 +979,21 @@ function AreaForm({ data, onSave, saving, saved }) {
     paleros_body: extra.paleros_body || '',
     paleros_image_1: extra.paleros_image_1 || '',
     paleros_image_2: extra.paleros_image_2 || '',
+    beach_1_name: extra.beach_1_name || '',
+    beach_1_image: extra.beach_1_image || '',
+    beach_1_description: extra.beach_1_description || '',
+    beach_2_name: extra.beach_2_name || '',
+    beach_2_image: extra.beach_2_image || '',
+    beach_2_description: extra.beach_2_description || '',
+    beach_3_name: extra.beach_3_name || '',
+    beach_3_image: extra.beach_3_image || '',
+    beach_3_description: extra.beach_3_description || '',
+    travel_car_title: extra.travel_car_title || '',
+    travel_car_body: extra.travel_car_body || '',
+    travel_ferry_title: extra.travel_ferry_title || '',
+    travel_ferry_body: extra.travel_ferry_body || '',
+    travel_plane_title: extra.travel_plane_title || '',
+    travel_plane_body: extra.travel_plane_body || '',
     seo_title: extra.seo_title || '',
     seo_description: extra.seo_description || '',
     seo_og_image: extra.seo_og_image || '',
@@ -1011,6 +1026,21 @@ function AreaForm({ data, onSave, saving, saved }) {
         paleros_body: ex.paleros_body || '',
         paleros_image_1: ex.paleros_image_1 || '',
         paleros_image_2: ex.paleros_image_2 || '',
+        beach_1_name: ex.beach_1_name || '',
+        beach_1_image: ex.beach_1_image || '',
+        beach_1_description: ex.beach_1_description || '',
+        beach_2_name: ex.beach_2_name || '',
+        beach_2_image: ex.beach_2_image || '',
+        beach_2_description: ex.beach_2_description || '',
+        beach_3_name: ex.beach_3_name || '',
+        beach_3_image: ex.beach_3_image || '',
+        beach_3_description: ex.beach_3_description || '',
+        travel_car_title: ex.travel_car_title || '',
+        travel_car_body: ex.travel_car_body || '',
+        travel_ferry_title: ex.travel_ferry_title || '',
+        travel_ferry_body: ex.travel_ferry_body || '',
+        travel_plane_title: ex.travel_plane_title || '',
+        travel_plane_body: ex.travel_plane_body || '',
         seo_title: ex.seo_title || '',
         seo_description: ex.seo_description || '',
         seo_og_image: ex.seo_og_image || '',
@@ -1049,6 +1079,21 @@ function AreaForm({ data, onSave, saving, saved }) {
         paleros_body: form.paleros_body,
         paleros_image_1: form.paleros_image_1,
         paleros_image_2: form.paleros_image_2,
+        beach_1_name: form.beach_1_name,
+        beach_1_image: form.beach_1_image,
+        beach_1_description: form.beach_1_description,
+        beach_2_name: form.beach_2_name,
+        beach_2_image: form.beach_2_image,
+        beach_2_description: form.beach_2_description,
+        beach_3_name: form.beach_3_name,
+        beach_3_image: form.beach_3_image,
+        beach_3_description: form.beach_3_description,
+        travel_car_title: form.travel_car_title,
+        travel_car_body: form.travel_car_body,
+        travel_ferry_title: form.travel_ferry_title,
+        travel_ferry_body: form.travel_ferry_body,
+        travel_plane_title: form.travel_plane_title,
+        travel_plane_body: form.travel_plane_body,
         seo_title: form.seo_title,
         seo_description: form.seo_description,
         seo_og_image: form.seo_og_image,
@@ -1146,6 +1191,51 @@ function AreaForm({ data, onSave, saving, saved }) {
         </div>
         <ImagePicker label="Image 1 (promenade)" value={form.paleros_image_1} onChange={(v) => set('paleros_image_1', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-010.jpg" />
         <ImagePicker label="Image 2 (wine & dining)" value={form.paleros_image_2} onChange={(v) => set('paleros_image_2', v)} fallbackSrc="https://seagonia.vercel.app/images/hotel/img-011.jpg" />
+      </section>
+
+      {/* Beaches */}
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-6">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Beaches Section</h3>
+        <p className="text-slate-500 text-xs">Leave blank to use defaults (Vathiavali, Varko Bay, Gerakas).</p>
+
+        {[1, 2, 3].map((n) => (
+          <div key={n} className="space-y-3 border-t border-slate-700 pt-4 first:border-0 first:pt-0">
+            <p className="text-xs text-slate-400 font-medium">Beach {n}</p>
+            <div>
+              <label className="label">Name</label>
+              <input className="input" value={form[`beach_${n}_name`]} onChange={(e) => set(`beach_${n}_name`, e.target.value)} placeholder={['Vathiavali', 'Varko Bay', 'Gerakas'][n - 1]} />
+            </div>
+            <div>
+              <label className="label">Description</label>
+              <textarea className="input" rows={2} value={form[`beach_${n}_description`]} onChange={(e) => set(`beach_${n}_description`, e.target.value)} />
+            </div>
+            <ImagePicker label="Image" value={form[`beach_${n}_image`]} onChange={(v) => set(`beach_${n}_image`, v)} fallbackSrc={`https://seagonia.vercel.app/images/hotel/img-0${String(20 + n).padStart(2, '0')}.jpg`} />
+          </div>
+        ))}
+      </section>
+
+      {/* How to get here */}
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-6">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">How to Get Here</h3>
+        <p className="text-slate-500 text-xs">Leave blank to use the default text.</p>
+
+        {[
+          { key: 'car', label: 'By Car', placeholder: 'By Car' },
+          { key: 'ferry', label: 'By Ferry', placeholder: 'By Ferry' },
+          { key: 'plane', label: 'By Flight', placeholder: 'By Flight' },
+        ].map(({ key, label, placeholder }) => (
+          <div key={key} className="space-y-3 border-t border-slate-700 pt-4 first:border-0 first:pt-0">
+            <p className="text-xs text-slate-400 font-medium">{label}</p>
+            <div>
+              <label className="label">Title <span className="text-slate-600 normal-case font-normal">(leave blank for default "{placeholder}")</span></label>
+              <input className="input" value={form[`travel_${key}_title`]} onChange={(e) => set(`travel_${key}_title`, e.target.value)} placeholder={placeholder} />
+            </div>
+            <div>
+              <label className="label">Description</label>
+              <textarea className="input" rows={3} value={form[`travel_${key}_body`]} onChange={(e) => set(`travel_${key}_body`, e.target.value)} />
+            </div>
+          </div>
+        ))}
       </section>
 
       {/* SEO */}

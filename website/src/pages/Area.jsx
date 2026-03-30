@@ -21,54 +21,12 @@ const nearbyIslands = [
   'Skorpios',
 ]
 
-const travelModes = [
-  {
-    icon: Car,
-    title: 'By Car',
-    description:
-      'A car is recommended for exploring the area. Drive south from Preveza along the coastal road through Vonitsa and Paleros. Ample free parking is available on-site at the hotel.',
-  },
-  {
-    icon: Ship,
-    title: 'By Ferry',
-    description:
-      'Regular ferry connections run from Lefkada (Nidri) to Paleros. A scenic route across the Ionian Sea, arriving in Paleros harbour just 3 km from the hotel.',
-  },
-  {
-    icon: Plane,
-    title: 'By Flight',
-    description:
-      'Fly into Preveza / Aktion Airport (PVK), served by seasonal and charter flights from across Europe. The airport is approximately 40 km from Seagonia, around a 40-minute drive.',
-  },
-]
-
 const distances = [
   { label: 'Beach', value: '80m' },
   { label: 'Paleros', value: '3km' },
   { label: 'Airport (PVK)', value: '40km' },
   { label: 'Lefkada', value: '30km' },
   { label: 'Vathiavali', value: '7km' },
-]
-
-const nearbyBeaches = [
-  {
-    name: 'Vathiavali',
-    image: HOTEL_IMAGES.vathiavali,
-    description:
-      'Crystal-clear turquoise waters and a peaceful, unspoiled sandy beach just 7km from the hotel.',
-  },
-  {
-    name: 'Varko Bay',
-    image: HOTEL_IMAGES.varkoBay,
-    description:
-      'A sheltered bay perfect for swimming and snorkeling in calm, turquoise seas.',
-  },
-  {
-    name: 'Gerakas',
-    image: HOTEL_IMAGES.gerakas,
-    description:
-      'A hidden gem accessible only by boat, promising total seclusion and breathtaking natural beauty.',
-  },
 ]
 
 export default function Area() {
@@ -100,6 +58,44 @@ export default function Area() {
   const palerosBody = extra.paleros_body || `Paleros is a charming coastal town nestled along the Ionian Sea in western Greece, known for its crystal-clear waters, golden beaches, and stunning views of nearby islands. With its relaxed atmosphere, traditional tavernas, and scenic harbor, Paleros offers a perfect blend of natural beauty and authentic Greek hospitality.`
   const palerosImage1 = extra.paleros_image_1 || HOTEL_IMAGES.palerosPromenade
   const palerosImage2 = extra.paleros_image_2 || HOTEL_IMAGES.palerosWineDining
+
+  // Beaches
+  const nearbyBeaches = [
+    {
+      name: extra.beach_1_name || 'Vathiavali',
+      image: extra.beach_1_image || HOTEL_IMAGES.vathiavali,
+      description: extra.beach_1_description || 'Crystal-clear turquoise waters and a peaceful, unspoiled sandy beach just 7km from the hotel.',
+    },
+    {
+      name: extra.beach_2_name || 'Varko Bay',
+      image: extra.beach_2_image || HOTEL_IMAGES.varkoBay,
+      description: extra.beach_2_description || 'A sheltered bay perfect for swimming and snorkeling in calm, turquoise seas.',
+    },
+    {
+      name: extra.beach_3_name || 'Gerakas',
+      image: extra.beach_3_image || HOTEL_IMAGES.gerakas,
+      description: extra.beach_3_description || 'A hidden gem accessible only by boat, promising total seclusion and breathtaking natural beauty.',
+    },
+  ]
+
+  // How to get here
+  const travelModes = [
+    {
+      icon: Car,
+      title: extra.travel_car_title || 'By Car',
+      description: extra.travel_car_body || 'A car is recommended for exploring the area. Drive south from Preveza along the coastal road through Vonitsa and Paleros. Ample free parking is available on-site at the hotel.',
+    },
+    {
+      icon: Ship,
+      title: extra.travel_ferry_title || 'By Ferry',
+      description: extra.travel_ferry_body || 'Regular ferry connections run from Lefkada (Nidri) to Paleros. A scenic route across the Ionian Sea, arriving in Paleros harbour just 3 km from the hotel.',
+    },
+    {
+      icon: Plane,
+      title: extra.travel_plane_title || 'By Flight',
+      description: extra.travel_plane_body || 'Fly into Preveza / Aktion Airport (PVK), served by seasonal and charter flights from across Europe. The airport is approximately 40 km from Seagonia, around a 40-minute drive.',
+    },
+  ]
 
   useSEO({
     title: extra.seo_title || 'The Area',

@@ -59,6 +59,16 @@ export default function Gallery() {
         <div className="max-w-7xl mx-auto">
           {/* Category Filters */}
           <div className="flex flex-wrap justify-center gap-2 mb-10">
+            <button
+              onClick={() => setActiveFilter('all')}
+              className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
+                activeFilter === 'all'
+                  ? 'bg-gold text-white'
+                  : 'bg-cream/50 text-charcoal hover:bg-cream'
+              }`}
+            >
+              All
+            </button>
             {categories?.map((cat) => (
               <button
                 key={cat.slug}

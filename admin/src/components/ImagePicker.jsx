@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { useAdminGallery } from '../hooks/useAdmin'
+import { useAdminGallery, useCreateGalleryImage } from '../hooks/useAdmin'
 
 const WEBSITE_BASE = 'https://seagonia.vercel.app'
 const PAGE_SIZE = 30
@@ -36,6 +36,7 @@ export default function ImagePicker({ value, onChange, label = 'Image', fallback
   const [uploadError, setUploadError] = useState(null)
   const fileInputRef = useRef(null)
   const { data: galleryImages } = useAdminGallery()
+  const createGalleryImage = useCreateGalleryImage()
 
   const galleryUrls = (galleryImages || []).map((img) => resolveUrl(img.image_url)).filter(Boolean)
   const allLocal = LOCAL_IMAGES
@@ -87,6 +88,17 @@ export default function ImagePicker({ value, onChange, label = 'Image', fallback
     setUploadError(null)
     try {
       const url = await uploadToCloudinary(file)
+      // Register in gallery_images so it's visible to all users and on the /gallery page
+      try {
+        await createGalleryImage.mutateAsync({
+          image_url: url,
+          title: file.name.replace(/\.[^.]+$/, ''),
+          display_order: 0,
+          is_published: true,
+        })
+      } catch {
+        // Non-fatal: image URL is still usable even if gallery registration fails
+      }
       onChange(url)
       setTab('gallery')
       setOpen(false)

@@ -24,18 +24,13 @@ const stagger = {
   visible: { transition: { staggerChildren: 0.15 } },
 }
 
-const heroImages = [
-  { src: HOTEL_IMAGES.sunsetDining, alt: 'Sunset dining' },
-  { src: HOTEL_IMAGES.islandBeach, alt: 'Island beach' },
-  { src: HOTEL_IMAGES.massage, alt: 'Outdoor massage' },
-  { src: HOTEL_IMAGES.foodBurrata, alt: 'Burrata salad' },
-  { src: HOTEL_IMAGES.yogaGroup, alt: 'Yoga group session' },
-  { src: HOTEL_IMAGES.hikingView, alt: 'Hiking panoramic view' },
-]
-
 export default function Experiences() {
   const { data: content } = usePageContent('experiences')
   const extra = content?.extra_content || {}
+
+  const heroImage = content?.hero_image_url || HOTEL_IMAGES.sunsetDining
+  const heroTitle = content?.hero_title || 'Activities'
+  const heroSubtitle = content?.hero_subtitle || ''
 
   const wellnessEyebrow = extra.wellness_eyebrow || 'WELLNESS'
   const wellnessHeading = extra.wellness_heading || 'Outdoor Massage & PURE Spa'
@@ -79,29 +74,22 @@ export default function Experiences() {
 
   return (
     <>
-      {/* Hero - Mosaic Grid */}
-      <section className="relative h-[50vh] min-h-[400px] overflow-hidden">
-        <div className="absolute inset-0 grid grid-cols-3 grid-rows-2">
-          {heroImages.map((img, i) => (
-            <div key={i} className="relative overflow-hidden">
-              <img
-                src={img.src}
-                alt={img.alt}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ))}
-        </div>
+      {/* Hero */}
+      <section
+        className="relative h-[50vh] min-h-[400px] flex items-center justify-center"
+        style={{ backgroundImage: `url(${heroImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+      >
         <div className="absolute inset-0 bg-navy/55" />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative z-10 h-full flex items-center justify-center text-center px-4"
+          className="relative z-10 text-center text-white px-4"
         >
           <h1 className="font-serif text-4xl md:text-5xl lg:text-hero font-semibold text-white">
-            Activities
+            {heroTitle}
           </h1>
+          {heroSubtitle && <p className="text-white/80 text-lg mt-4 max-w-2xl mx-auto">{heroSubtitle}</p>}
         </motion.div>
       </section>
 
