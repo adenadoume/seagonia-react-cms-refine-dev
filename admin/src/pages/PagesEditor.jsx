@@ -1215,7 +1215,6 @@ function AreaForm({ data, onSave, saving, saved }) {
             <ImagePicker label="Image" value={form[`beach_${n}_image`]} onChange={(v) => set(`beach_${n}_image`, v)} fallbackSrc={`https://seagonia.vercel.app/images/hotel/img-0${String(20 + n).padStart(2, '0')}.jpg`} />
           </div>
         ))}
-      </section>
 
         <div className="border-t border-slate-700 pt-4 space-y-2">
           <p className="text-xs text-slate-400 font-medium">Summary paragraph (shown below the beach cards)</p>
