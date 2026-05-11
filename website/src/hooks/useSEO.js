@@ -14,7 +14,7 @@ function setMeta(name, content, attr = 'name') {
 const useSEO = ({ title, description, ogImage } = {}) => {
   useEffect(() => {
     const siteName = 'Seagonia Hotel'
-    const fullTitle = title ? `${title} | ${siteName}` : `${siteName} — Your Corner by the Sea`
+    const fullTitle = title ? `${title} | ${siteName}` : `${siteName} — Your Retreat by the Sea`
 
     document.title = fullTitle
 

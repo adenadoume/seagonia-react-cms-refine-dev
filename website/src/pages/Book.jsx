@@ -58,8 +58,8 @@ export default function Book() {
           />
         </div>
 
-        {/* Guarantees Strip */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12">
+        {/* Guarantees Strip — hidden until reservation policy is confirmed */}
+        {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12">
           {guarantees.map((item) => (
             <div
               key={item.label}
@@ -73,7 +73,7 @@ export default function Book() {
               </span>
             </div>
           ))}
-        </div>
+        </div> */}
 
         {/* Phone Alternative */}
         <div className="mt-12 text-center bg-cream rounded-2xl p-8">

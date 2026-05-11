@@ -4,7 +4,7 @@
 
 export const HOTEL = {
   name: 'Seagonia',
-  tagline: 'Your Corner by the Sea',
+  tagline: 'Your Retreat by the Sea',
   location: {
     village: 'Pogonia',
     nearCity: 'Paleros',

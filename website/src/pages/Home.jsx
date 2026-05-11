@@ -51,7 +51,7 @@ export default function Home() {
   // Use page_content fields with fallbacks to static text
   const extra = pageContent?.extra_content || {}
   const heroTitle = pageContent?.hero_title || 'SEAGONIA'
-  const heroSubtitle = pageContent?.hero_subtitle || 'Your Corner by the Sea'
+  const heroSubtitle = pageContent?.hero_subtitle || 'Your Retreat by the Sea'
   const heroImage = pageContent?.hero_image_url || HOTEL_IMAGES.hero
   const introEyebrow = extra.intro_eyebrow || 'Welcome'
   const introHeading = pageContent?.section_1_title || 'A Peaceful Retreat by the Ionian Sea'
@@ -89,7 +89,7 @@ export default function Home() {
 
   useSEO({
     title: extra.seo_title || 'Boutique Hotel in Paleros',
-    description: extra.seo_description || 'Seagonia Hotel — Your Corner by the Sea. A boutique 58-room hotel in Pogonia village near Paleros, on the Ionian coast of Greece.',
+    description: extra.seo_description || 'Seagonia Hotel — Your Retreat by the Sea. A boutique 58-room hotel in Pogonia village near Paleros, on the Ionian coast of Greece.',
     ogImage: extra.seo_og_image,
   })
 

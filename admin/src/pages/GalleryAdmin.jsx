@@ -11,7 +11,7 @@ import {
 const PAGE_SIZE = 20
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
-const WEBSITE_BASE = 'https://seagonia.vercel.app'
+const WEBSITE_BASE = 'https://seagonia.com'
 
 function resolveUrl(url) {
   if (!url) return url

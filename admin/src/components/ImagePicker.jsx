@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useAdminGallery, useCreateGalleryImage } from '../hooks/useAdmin'
 
-const WEBSITE_BASE = 'https://seagonia.vercel.app'
+const WEBSITE_BASE = 'https://seagonia.com'
 const PAGE_SIZE = 30
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
@@ -73,7 +73,7 @@ export default function ImagePicker({ value, onChange, label = 'Image', fallback
 
   function handleOpen() {
     // Switch to gallery tab if current value is a gallery/cloudinary image
-    if (value && value.startsWith('http') && !value.includes('vercel.app')) setTab('gallery')
+    if (value && value.startsWith('http') && !value.includes('seagonia.com')) setTab('gallery')
     else setTab('local')
     setSearch('')
     setVisibleCount(PAGE_SIZE)
